@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hermes-agoge"
+version = "0.1.0.dev0"
+description = "Local-first training and evaluation of purpose-built models for the Hermes ecosystem."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{name = "Kyle French"}]
+dependencies = []
+
+[project.optional-dependencies]
+train = [
+  "torch>=2.4",
+  "transformers>=4.51",
+  "datasets>=3.0",
+  "accelerate>=1.0",
+  "peft>=0.15",
+  "bitsandbytes>=0.45",
+  "trl>=0.20",
+]
+dev = ["pytest>=8.0", "ruff>=0.9"]
+
+[project.scripts]
+agoge = "agoge.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["agoge"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

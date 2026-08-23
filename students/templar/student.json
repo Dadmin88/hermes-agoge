@@ -1,0 +1,20 @@
+{
+  "schema": "agoge.student.v1",
+  "student_id": "templar-v1",
+  "display_name": "Templar",
+  "description": "Low-authority specialist model for bounded Fleet security judgments.",
+  "base_model": "Qwen/Qwen3-0.6B",
+  "task_type": "closed-json-security-classification",
+  "output_contract": {
+    "schema": "agoge.templar-model-output.v1",
+    "decision": ["ALLOW", "DENY", "REVIEW"],
+    "reason_codes_required_for": ["DENY", "REVIEW"],
+    "authority": "none",
+    "note": "Fleet-owned adapter supplies evaluation/request/event bindings; the model never creates authority or binding metadata."
+  },
+  "sources": [
+    {"kind": "git", "uri": "https://github.com/Dadmin88/hermes-fleet", "revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5", "purpose": "Canonical Fleet and Templar architecture/training source"},
+    {"kind": "git", "uri": "https://github.com/Dadmin88/hermes-profile-packs", "revision": "main", "purpose": "Optional Academy faculty/curriculum source; no runtime dependency"}
+  ],
+  "curriculum": "curriculum.json"
+}
