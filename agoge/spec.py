@@ -45,7 +45,7 @@ class SourceRef:
     purpose: str
 
     @classmethod
-    def from_dict(cls, value: object) -> "SourceRef":
+    def from_dict(cls, value: object) -> SourceRef:
         if type(value) is not dict:
             raise SpecError("source must be an object")
         _require_exact_keys(value, {"kind", "uri", "revision", "purpose"}, "source")
@@ -71,7 +71,7 @@ class StudentSpec:
     curriculum: str
 
     @classmethod
-    def load(cls, path: Path) -> "StudentSpec":
+    def load(cls, path: Path) -> StudentSpec:
         value = _load_json(path)
         _require_exact_keys(value, {"schema", "student_id", "display_name", "description", "base_model", "task_type", "output_contract", "sources", "curriculum"}, "student spec")
         if value["schema"] != "agoge.student.v1":
@@ -103,7 +103,7 @@ class CurriculumSpec:
     graduation_gates: dict[str, Any]
 
     @classmethod
-    def load(cls, path: Path) -> "CurriculumSpec":
+    def load(cls, path: Path) -> CurriculumSpec:
         value = _load_json(path)
         _require_exact_keys(value, {"schema", "curriculum_id", "objective", "competencies", "decisions", "graduation_gates"}, "curriculum spec")
         if value["schema"] != "agoge.curriculum.v1":

@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 from .spec import SpecError, canonical_json, digest
 
@@ -18,7 +19,7 @@ class Example:
     provenance: dict[str, Any]
 
     @classmethod
-    def from_dict(cls, value: object) -> "Example":
+    def from_dict(cls, value: object) -> Example:
         if type(value) is not dict:
             raise SpecError("corpus example must be an object")
         required = {"schema", "example_id", "competency", "prompt", "completion", "provenance"}
