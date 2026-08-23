@@ -36,7 +36,8 @@ The repository already implements:
 12. a successful local one-step QLoRA proof on an RTX 4060, documented in `docs/PROOFS.md`;
 13. provider-neutral Teacher request/response contracts with explicit training-use provenance;
 14. a deterministic Fleet-native Templar foundation Teacher across all nine current competencies;
-15. independent candidate review and conservative accepted/rejected/quarantined promotion.
+15. independent candidate review and conservative accepted/rejected/quarantined promotion;
+16. an optional Hermes Academy faculty bridge, live-proven with the Cybersecurity Instructor while keeping unknown-source output quarantined from training.
 
 The seed corpus is **not** a production Templar training corpus. It exists to prove Agoge's data and training pipeline before we generate and independently verify a large Fleet-native corpus.
 

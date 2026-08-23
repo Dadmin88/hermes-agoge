@@ -39,6 +39,59 @@ def cmd_prepare(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_academy_brief(args: argparse.Namespace) -> int:
+    from .academy import AcademyFacultyBinding, build_faculty_prompt
+    from .teacher import load_teacher_request
+
+    request = load_teacher_request(Path(args.request))
+    binding = AcademyFacultyBinding.from_dict(
+        json.loads(Path(args.binding).read_text(encoding="utf-8"))
+    )
+    prompt = build_faculty_prompt(request, binding)
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(prompt + "\n", encoding="utf-8")
+    _json(
+        {
+            "request_id": request.request_id,
+            "faculty_id": binding.faculty_id,
+            "teacher_id": binding.teacher_identity.teacher_id,
+            "training_use": binding.training_use,
+            "out": str(out),
+        }
+    )
+    return 0
+
+
+def cmd_academy_import(args: argparse.Namespace) -> int:
+    from .academy import AcademyFacultyBinding, parse_faculty_payload
+    from .teacher import load_teacher_request
+
+    request = load_teacher_request(Path(args.request))
+    binding = AcademyFacultyBinding.from_dict(
+        json.loads(Path(args.binding).read_text(encoding="utf-8"))
+    )
+    raw = Path(args.payload).read_text(encoding="utf-8")
+    response = parse_faculty_payload(raw, request=request, binding=binding)
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(
+        json.dumps(response.to_dict(), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    _json(
+        {
+            "request_id": request.request_id,
+            "response_hash": response.content_hash,
+            "teacher_id": response.teacher.teacher_id,
+            "training_use": response.teacher.training_use,
+            "items": len(response.items),
+            "out": str(out),
+        }
+    )
+    return 0
+
+
 def cmd_teacher_request(args: argparse.Namespace) -> int:
     from .teacher import TeacherRequest
 
@@ -231,6 +284,23 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--student", required=True)
     prepare.add_argument("--out", required=True)
     prepare.set_defaults(func=cmd_prepare)
+    academy_brief = subs.add_parser(
+        "academy-brief",
+        help="render one bounded Academy faculty prompt from an Agoge Teacher request",
+    )
+    academy_brief.add_argument("--request", required=True)
+    academy_brief.add_argument("--binding", required=True)
+    academy_brief.add_argument("--out", required=True)
+    academy_brief.set_defaults(func=cmd_academy_brief)
+    academy_import = subs.add_parser(
+        "academy-import",
+        help="wrap a bounded Academy faculty payload into the provider-neutral Teacher contract",
+    )
+    academy_import.add_argument("--request", required=True)
+    academy_import.add_argument("--binding", required=True)
+    academy_import.add_argument("--payload", required=True)
+    academy_import.add_argument("--out", required=True)
+    academy_import.set_defaults(func=cmd_academy_import)
     teacher_request = subs.add_parser(
         "teacher-request", help="create one bounded provider-neutral Teacher request"
     )
