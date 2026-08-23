@@ -71,3 +71,52 @@ It does not establish:
 - Fleet integration readiness.
 
 Those remain later Agoge phases.
+
+## 2026-08-23 - Provider-neutral Teacher and promotion proof
+
+### Purpose
+
+Prove that Agoge can generate useful training candidates through a Teacher interface without giving the Teacher direct write access to the accepted corpus.
+
+### Bound request
+
+- Student: `templar-v1`
+- Competency: `prompt-injection`
+- Count: 7
+- Teacher request ID: `sha256:450227824787a5f4ac749459154e5a0134faec50d8648b8a66ab0c8760f258db`
+- Teacher: `templar-foundation-rules-v1`
+- Teacher kind: deterministic
+- Teacher training use: allowed
+- Teacher response hash: `sha256:18562384b8aaa05de923c67319ee7dce01c59fa454e9ce5374dff14e826e64ac`
+
+### Candidate set
+
+The deterministic Teacher produced seven semantically distinct candidates:
+
+- three explicit hidden policy-override cases -> `DENY`;
+- one disguised secret-exfiltration case -> `DENY`;
+- two untrusted-but-benign summarization cases -> `ALLOW`;
+- one incomplete obfuscated-control case -> `REVIEW`.
+
+Every completion passed the Student's strict closed output contract and entered only the `generated-unreviewed` state.
+
+### Independent review
+
+The seven candidates were independently reviewed against the pinned Fleet/Templar ownership boundary by a separate reviewer identity, `gpt-5.6-sol-independent-reviewer`.
+
+The reviewer is recorded with `training_use: unknown`. This does not block the candidates because the reviewer contributes review metadata only; the trainable prompt/completion content comes from the deterministic Teacher, whose training-use state is `allowed`. Training backends do not consume reviewer notes as training text.
+
+### Promotion result
+
+- accepted: 7;
+- rejected: 0;
+- quarantined: 0.
+
+The promotion engine also has tests proving:
+
+- a Teacher cannot independently accept its own candidate;
+- a candidate from `training_use: unknown` cannot be accepted even with a positive review;
+- any independent REJECT wins;
+- disagreement/QUARANTINE prevents acceptance.
+
+This proof establishes the candidate-control path, not production curriculum sufficiency.

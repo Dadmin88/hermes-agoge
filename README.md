@@ -33,7 +33,10 @@ The repository already implements:
 9. `agoge doctor`, `validate`, `prepare`, `train`, `examine`, and `compare` commands;
 10. a Templar reference student pinned to exact Fleet, Academy, and base-model revisions;
 11. a deliberately small deterministic seed corpus for pipeline validation;
-12. a successful local one-step QLoRA proof on an RTX 4060, documented in `docs/PROOFS.md`.
+12. a successful local one-step QLoRA proof on an RTX 4060, documented in `docs/PROOFS.md`;
+13. provider-neutral Teacher request/response contracts with explicit training-use provenance;
+14. a deterministic Fleet-native Templar foundation Teacher across all nine current competencies;
+15. independent candidate review and conservative accepted/rejected/quarantined promotion.
 
 The seed corpus is **not** a production Templar training corpus. It exists to prove Agoge's data and training pipeline before we generate and independently verify a large Fleet-native corpus.
 

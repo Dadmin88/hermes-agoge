@@ -39,6 +39,93 @@ def cmd_prepare(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_teacher_request(args: argparse.Namespace) -> int:
+    from .teacher import TeacherRequest
+
+    request = TeacherRequest.from_student(
+        Path(args.student),
+        competency=args.competency,
+        count=args.count,
+    )
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(request.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    _json({"request_id": request.request_id, "out": str(out), "count": request.count})
+    return 0
+
+
+def cmd_teacher_deterministic(args: argparse.Namespace) -> int:
+    from .generators.templar import generate_response
+    from .teacher import load_teacher_request
+
+    request = load_teacher_request(Path(args.request))
+    response = generate_response(request)
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(
+        json.dumps(response.to_dict(), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    _json(
+        {
+            "request_id": request.request_id,
+            "response_hash": response.content_hash,
+            "teacher_id": response.teacher.teacher_id,
+            "items": len(response.items),
+            "out": str(out),
+        }
+    )
+    return 0
+
+
+def cmd_teacher_import(args: argparse.Namespace) -> int:
+    from .corpus import write_jsonl
+    from .teacher import load_teacher_request, load_teacher_response, response_to_candidates
+
+    request = load_teacher_request(Path(args.request))
+    response = load_teacher_response(Path(args.response))
+    candidates = response_to_candidates(request, response)
+    out = Path(args.out)
+    write_jsonl(out, candidates)
+    _json(
+        {
+            "request_id": request.request_id,
+            "response_hash": response.content_hash,
+            "teacher_id": response.teacher.teacher_id,
+            "training_use": response.teacher.training_use,
+            "candidates": len(candidates),
+            "out": str(out),
+        }
+    )
+    return 0
+
+
+def cmd_candidate_promote(args: argparse.Namespace) -> int:
+    from .corpus import read_jsonl, write_jsonl
+    from .review import load_reviews, promote_candidates
+
+    candidates = read_jsonl(Path(args.candidates))
+    reviews = load_reviews(Path(args.reviews))
+    accepted, rejected, quarantined = promote_candidates(candidates, reviews)
+    out_dir = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if accepted:
+        write_jsonl(out_dir / "accepted.jsonl", accepted)
+    if rejected:
+        write_jsonl(out_dir / "rejected.jsonl", rejected)
+    if quarantined:
+        write_jsonl(out_dir / "quarantined.jsonl", quarantined)
+    _json(
+        {
+            "accepted": len(accepted),
+            "rejected": len(rejected),
+            "quarantined": len(quarantined),
+            "out_dir": str(out_dir),
+        }
+    )
+    return 0
+
+
 def cmd_train(args: argparse.Namespace) -> int:
     run_dir = Path(args.run)
     if args.backend == "dry-run":
@@ -144,6 +231,36 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--student", required=True)
     prepare.add_argument("--out", required=True)
     prepare.set_defaults(func=cmd_prepare)
+    teacher_request = subs.add_parser(
+        "teacher-request", help="create one bounded provider-neutral Teacher request"
+    )
+    teacher_request.add_argument("--student", required=True)
+    teacher_request.add_argument("--competency", required=True)
+    teacher_request.add_argument("--count", type=int, required=True)
+    teacher_request.add_argument("--out", required=True)
+    teacher_request.set_defaults(func=cmd_teacher_request)
+    teacher_deterministic = subs.add_parser(
+        "teacher-deterministic",
+        help="fulfill one Teacher request with the Fleet-native deterministic Templar rule generator",
+    )
+    teacher_deterministic.add_argument("--request", required=True)
+    teacher_deterministic.add_argument("--out", required=True)
+    teacher_deterministic.set_defaults(func=cmd_teacher_deterministic)
+    teacher_import = subs.add_parser(
+        "teacher-import", help="validate one Teacher response into unreviewed corpus candidates"
+    )
+    teacher_import.add_argument("--request", required=True)
+    teacher_import.add_argument("--response", required=True)
+    teacher_import.add_argument("--out", required=True)
+    teacher_import.set_defaults(func=cmd_teacher_import)
+    candidate_promote = subs.add_parser(
+        "candidate-promote",
+        help="apply independent reviews and partition candidates into accepted/rejected/quarantined sets",
+    )
+    candidate_promote.add_argument("--candidates", required=True)
+    candidate_promote.add_argument("--reviews", required=True)
+    candidate_promote.add_argument("--out-dir", required=True)
+    candidate_promote.set_defaults(func=cmd_candidate_promote)
     compare = subs.add_parser(
         "compare", help="compare base and adapter Exam results for one Askesis split"
     )
