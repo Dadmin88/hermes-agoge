@@ -16,6 +16,7 @@ def test_templar_student_and_curriculum_validate() -> None:
     curriculum = CurriculumSpec.load(STUDENT.parent / student.curriculum)
     assert student.student_id == "templar-v1"
     assert student.base_model == "Qwen/Qwen3-0.6B"
+    assert student.base_model_revision == "c1899de289a04d12100db370d81485cdf75e47ca"
     assert set(curriculum.decisions) == {"ALLOW", "DENY", "REVIEW"}
     assert student.content_hash.startswith("sha256:")
     assert curriculum.content_hash.startswith("sha256:")

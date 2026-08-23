@@ -4,6 +4,7 @@
   "display_name": "Templar",
   "description": "Low-authority specialist model for bounded Fleet security judgments.",
   "base_model": "Qwen/Qwen3-0.6B",
+  "base_model_revision": "c1899de289a04d12100db370d81485cdf75e47ca",
   "task_type": "closed-json-security-classification",
   "output_contract": {
     "schema": "agoge.templar-model-output.v1",
@@ -14,7 +15,7 @@
   },
   "sources": [
     {"kind": "git", "uri": "https://github.com/Dadmin88/hermes-fleet", "revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5", "purpose": "Canonical Fleet and Templar architecture/training source"},
-    {"kind": "git", "uri": "https://github.com/Dadmin88/hermes-profile-packs", "revision": "main", "purpose": "Optional Academy faculty/curriculum source; no runtime dependency"}
+    {"kind": "git", "uri": "https://github.com/Dadmin88/hermes-profile-packs", "revision": "efd367a5b1f86afc641726a70a52b610e774efc7", "purpose": "Optional Academy faculty/curriculum source; no runtime dependency"}
   ],
   "curriculum": "curriculum.json"
 }

@@ -1,5 +1,18 @@
 # Hermes Agoge Master Plan v0.1
 
+## Current implementation status - 2026-08-23
+
+- Phase 0: initial architecture/boundary contract implemented.
+- Phase 1: initial closed student/curriculum contracts implemented; exact base-model/source revisions are pinned.
+- Phase 2: provenance substrate and deterministic seed corpus implemented; production candidate lifecycle remains open.
+- Phase 3: deterministic prototype split implemented; named immutable production exam banks remain open.
+- Phase 4: immutable prepared-run snapshot/manifest implemented; full lifecycle state machine remains open.
+- Phase 5: local QLoRA smoke proof complete on Katana RTX 4060; production tuning/OOM policy remains open.
+- Phase 6: strict base/adapter Exam plus comparison implemented; competency/security metrics remain open.
+- Phase 7: next major implementation target.
+
+See `PROOFS.md` for bounded evidence. No current Templar model is production-ready.
+
 ## Phase 0 - Freeze identity, terminology, and boundaries
 
 - Canonical project: Hermes Agoge.

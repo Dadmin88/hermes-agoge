@@ -28,9 +28,12 @@ The repository already implements:
 4. immutable Askesis run snapshots/manifests;
 5. a dry-run backend for plumbing tests;
 6. an initial local CUDA QLoRA backend using Transformers/TRL/PEFT/bitsandbytes;
-7. `agoge doctor`, `validate`, `prepare`, and `train` commands;
-8. a Templar reference student pinned to a canonical Fleet revision;
-9. a deliberately small deterministic seed corpus for pipeline validation.
+7. strict held-out Exam inference with closed-JSON/contract validation;
+8. base-versus-adapter Exam comparison and transition reporting;
+9. `agoge doctor`, `validate`, `prepare`, `train`, `examine`, and `compare` commands;
+10. a Templar reference student pinned to exact Fleet, Academy, and base-model revisions;
+11. a deliberately small deterministic seed corpus for pipeline validation;
+12. a successful local one-step QLoRA proof on an RTX 4060, documented in `docs/PROOFS.md`.
 
 The seed corpus is **not** a production Templar training corpus. It exists to prove Agoge's data and training pipeline before we generate and independently verify a large Fleet-native corpus.
 
@@ -52,9 +55,14 @@ For local QLoRA:
 ```bash
 pip install -e '.[train,dev]'
 agoge train --run runs/templar-smoke --backend qlora
+agoge examine --run runs/templar-smoke --model base --split test
+agoge examine --run runs/templar-smoke --model adapter --split test
+agoge compare --run runs/templar-smoke --split test
 ```
 
-The initial Templar base candidate is `Qwen/Qwen3-0.6B`. Model selection is an experiment, not an architectural commitment.
+Agoge roles may be split across machines. The initial layout uses Katana as Trainer/Examiner and Psalmbox as an always-on Faculty/corpus worker for CPU/network-oriented generation, teacher orchestration, provenance, and validation jobs.
+
+The initial Templar base candidate is `Qwen/Qwen3-0.6B`, pinned by exact Hub revision in the student spec. Model selection is an experiment, not an architectural commitment.
 
 ## Safety boundary
 

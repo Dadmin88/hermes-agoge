@@ -43,6 +43,7 @@ def prepare_run(student_path: Path, out_dir: Path) -> PreparedRun:
         "curriculum_id": curriculum.curriculum_id,
         "curriculum_hash": curriculum.content_hash,
         "base_model": student.base_model,
+        "base_model_revision": student.base_model_revision,
         "prepared_at_unix_ms": time.time_ns() // 1_000_000,
         "corpus_hash": digest([item.to_dict() for item in examples]),
         "counts": {name: len(items) for name, items in splits.items()},
