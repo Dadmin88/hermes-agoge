@@ -120,3 +120,97 @@ The promotion engine also has tests proving:
 - disagreement/QUARANTINE prevents acceptance.
 
 This proof establishes the candidate-control path, not production curriculum sufficiency.
+
+## 2026-08-23 - Templar Phase 19 closed-class foundation proof
+
+### Purpose
+
+Prove that a small locally trained model can learn Templar's bounded Phase 19 Fleet-security disposition task from real Fleet-shaped events while eliminating free-form verdict/reason-code generation from the neural contract.
+
+### Bound inputs
+
+- Student: `templar-v1`
+- Student hash: `sha256:eaabc2035dba64562530ccffcd938d53b4471997b7aceae92e656e84b2fcb8f1`
+- Base model: `Qwen/Qwen3-0.6B`
+- Base model revision: `c1899de289a04d12100db370d81485cdf75e47ca`
+- Fleet source revision: `591ea20bb1b7268254ddeaffaf16a5f853aa2db5`
+- Accepted Phase 19 corpus: 252 Fleet-runtime-oracle events
+- Corpus hash: `sha256:74cc797f7b7e08fb59f8eb0205028e34802a27058cfc7ba869ae4be77e9203ce`
+- Candidate admission: 252 accepted / 0 rejected / 0 quarantined after independent event-fact review
+- Split strategy: deterministic disposition-family stratification
+- Split: 214 train / 19 validation / 19 test
+- Closed disposition registry: 7 classes
+- Disposition registry hash: `sha256:8ab61f2172c012c020b228e883acff40309753a6f69c38a1556cb5ad58305c97`
+
+### Runtime security projection
+
+The sequence classifier does not receive the full serialized Fleet event. A deterministic Agoge/Fleet-facing projection removes unique identity/hash noise and retains bounded runtime security evidence such as risk levels/signals, secret-interception posture, quarantine state, requested tools, network posture, resource envelope, principal kind, and target source.
+
+Across the 252-event corpus with the pinned Qwen tokenizer:
+
+- raw Fleet-event median: 1,141 tokens;
+- projected median: 163 tokens;
+- raw maximum: 1,476 tokens;
+- projected maximum: 210 tokens;
+- median reduction: approximately 85.7%.
+
+Projection tests require deterministic output and assert that `sha256:` identities are absent from the model-facing projection.
+
+### Production-oriented classifier architecture
+
+The model predicts one closed disposition class rather than generating JSON text. Deterministic code maps the class to the exact `ALLOW | DENY | REVIEW` plus canonical reason-code tuple. This removes invented reason-code spelling/synonym failure by construction.
+
+Backend/configuration for the successful bounded run:
+
+- backend: QLoRA sequence classification;
+- base quantization: NF4 4-bit with double quantization;
+- LoRA rank: 16;
+- LoRA alpha: 32;
+- classifier head persisted with the adapter;
+- BF16 compute;
+- class-balanced training rows;
+- per-device batch size: 8;
+- gradient accumulation: 1;
+- learning rate: `5e-5`;
+- max steps: 100;
+- max length: 512;
+- observed max projected tokens: 212;
+- runtime: approximately 64.33 seconds;
+- peak CUDA allocation: approximately 1.43 GB;
+- train loss: approximately 0.546.
+
+### Held-out foundation result
+
+The 19-row test split contains unseen variants from each exact disposition family represented in the deterministic Phase 19 foundation corpus.
+
+Untrained sequence-classification base/head:
+
+- verdict accuracy: 6/19 = 31.6%;
+- exact disposition/reason tuple: 1/19 = 5.3%.
+
+Locally trained adapter:
+
+- `ALLOW`: 8/8;
+- `DENY`: 6/6;
+- `REVIEW`: 5/5;
+- verdict accuracy: 19/19 = 100%;
+- exact disposition/reason tuple: 19/19 = 100%;
+- deterministic output-contract validity: 19/19.
+
+Base-versus-adapter comparison reports 13 improved decisions and zero decision regressions on this split.
+
+Adapter tree hash recorded by the Exam: `sha256:1b87eb3a49ece539520171f7a20bfd54f73d505aa382b346f42c1e0bfcc0a2bc`.
+
+### What this proof does not establish
+
+This is a foundation-family proof, not Templar graduation. It does not establish:
+
+- performance on an immutable human-designed adversarial bank;
+- fresh semantic transfer outside the deterministic generator families;
+- Phase 23 `fleet.learning-promotion-event.v1` competence;
+- calibrated classifier probability/confidence;
+- production Fleet adapter/sandbox integration;
+- release-level false-ALLOW bounds;
+- robustness to novel or malformed security signals.
+
+Those remain required before any production claim.

@@ -16,7 +16,7 @@
       "candidate_count": 36,
       "competency": "secret-handling",
       "request_id": "sha256:00a1edc105d96fa032d061dcead9aa22dc82b6e41e6ab27c5fc478b943f8d1d2",
-      "response_hash": "sha256:dfdc2870afa4961059860e9417015696a3e8f5f7a7b8651ad30ab24dd9c54388"
+      "response_hash": "sha256:6ae1c38550d963bd61cfa4651156567e718885def83d896b0401a25338486c7f"
     },
     {
       "candidate_count": 36,
@@ -28,13 +28,13 @@
       "candidate_count": 36,
       "competency": "capability-combinations",
       "request_id": "sha256:4af5ea7ca64af284eb6cfc9143fa4df7f3037b829a356fa1d460918163b3784c",
-      "response_hash": "sha256:01abc8dd8f6e773e81b76a7bea5880d7576a98796b7fd38b8a2f294bf8511fca"
+      "response_hash": "sha256:615c2b59d4637c1eb0dbe5d8d8829a947df76e77287aa298981df7b7ddc26f50"
     },
     {
       "candidate_count": 36,
       "competency": "benign-nonoverblocking",
       "request_id": "sha256:a52401623f55521998e8e045034b9a68e7857fb66c9fcc4076949da6ebcb7b73",
-      "response_hash": "sha256:389ce897c9a1096d5c206297a25a710241d69704204fbf6c2b5b110748ee68cf"
+      "response_hash": "sha256:8e054608a8159af37ca76a895fd726f849cdaf9cce54e8077fe23b37e61cd585"
     },
     {
       "candidate_count": 36,

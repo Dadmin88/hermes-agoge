@@ -82,7 +82,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:ea5f6cd474d99e890f25080d9f6af504e079b8bf918921a3a4777cf090bc8ba7",
+        "Fleet-validated fleet.security-event.v1 sha256:bdd2224911d3da8da1b0f410947242a17dd23b2f68435821228bd955ad9b0ba2",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -159,10 +159,10 @@
             "action": "redacted",
             "detected_count": 1,
             "detected_kinds": [
-              "api-key"
+              "bearer-token"
             ],
             "evidence_hash": "sha256:2cf6cd162954a5a086d296a28c62fe838c103f4f91b5edd5f024453448c57419",
-            "source_kind": "prompt"
+            "source_kind": "artifact"
           }
         ]
       },
@@ -171,7 +171,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:3ca28a2bb3cd366fd94a6686b55b3a8c1ceb68d4e66db61d226fea79eba4b638",
+        "Fleet-validated fleet.security-event.v1 sha256:1e20d1948bc552145aa670a4e3ba0c65facfb304cd3542c6812562e33a038302",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -246,12 +246,13 @@
         "secret_interceptions": [
           {
             "action": "vault-referenced",
-            "detected_count": 1,
+            "detected_count": 2,
             "detected_kinds": [
-              "api-key"
+              "api-key",
+              "bearer-token"
             ],
             "evidence_hash": "sha256:f8a4ce6e2cdd635b625274db427ca31361210a7e9367f3cece4659822444ab72",
-            "source_kind": "prompt"
+            "source_kind": "tool-output"
           }
         ]
       },
@@ -517,7 +518,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:3a32ff7ac9fa0e639bcdd4612b3ce1b6c9846d19e31bd96ba99c0651dafd60f2",
+        "Fleet-validated fleet.security-event.v1 sha256:1278baa44650e1b4972d9134000f403972e682876c28d0edd10257412e25efc5",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -594,10 +595,10 @@
             "action": "vault-referenced",
             "detected_count": 1,
             "detected_kinds": [
-              "api-key"
+              "bearer-token"
             ],
             "evidence_hash": "sha256:570a835b6d50d0833b3bb846d2d49ee560491527ebc8731354e2e8b93d51fcaa",
-            "source_kind": "prompt"
+            "source_kind": "artifact"
           }
         ]
       },
@@ -774,7 +775,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:32e1cbc80265b2b10cb4c77b3568c0f37e1e66459164ae768c74418c5a5d2083",
+        "Fleet-validated fleet.security-event.v1 sha256:aa4756ee9617e30f9d45bb5c0222b2ed81cd968732aa6c0da8c85165740de4ce",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -849,12 +850,13 @@
         "secret_interceptions": [
           {
             "action": "redacted",
-            "detected_count": 1,
+            "detected_count": 2,
             "detected_kinds": [
-              "api-key"
+              "bearer-token",
+              "password"
             ],
             "evidence_hash": "sha256:bd76f2d72ed4614cd2b7e64dbb56488b78ce164511b6994927a8d81cbd8d910f",
-            "source_kind": "prompt"
+            "source_kind": "tool-output"
           }
         ]
       },
@@ -1120,7 +1122,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:944ab0b3576bbc175c852a45244c6147dc87eb101101f55f9bf22335d118612c",
+        "Fleet-validated fleet.security-event.v1 sha256:fc9d4d182b3ecace318d9d2cfff64998e3d91c4df97ed3a30451751739554041",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -1195,12 +1197,13 @@
         "secret_interceptions": [
           {
             "action": "redacted",
-            "detected_count": 1,
+            "detected_count": 2,
             "detected_kinds": [
-              "api-key"
+              "api-key",
+              "password"
             ],
             "evidence_hash": "sha256:c4536f274c3d897a4d7deef618fa8a7f08a8b425a5e8d74a5ae1dcd29bfd810e",
-            "source_kind": "prompt"
+            "source_kind": "artifact"
           }
         ]
       },
@@ -1209,7 +1212,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:615df885e5dd1e2eda731e07c62753a2992276d3bc84d92af0c6e5cc7a542968",
+        "Fleet-validated fleet.security-event.v1 sha256:bcd309f00a8e2d939adeaa3c8eb348bdfa398a53086cbb1e311a798bae570925",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -1284,12 +1287,13 @@
         "secret_interceptions": [
           {
             "action": "vault-referenced",
-            "detected_count": 1,
+            "detected_count": 2,
             "detected_kinds": [
-              "api-key"
+              "bearer-token",
+              "password"
             ],
             "evidence_hash": "sha256:2e27b2b78ce76c871c00e77b3aa62bc1c7192fb646b0a2b49e60ca07037da21e",
-            "source_kind": "prompt"
+            "source_kind": "tool-output"
           }
         ]
       },
@@ -1466,7 +1470,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:c6df2cca6c7df37575b81c8c2f76b7f7d98a5368345587f9fe685ef35f61e696",
+        "Fleet-validated fleet.security-event.v1 sha256:1d65c9a5fa9938ab107fa0069f5cfd89f7d9ea685bc6a2207c791a772c917113",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -1543,7 +1547,7 @@
             "action": "redacted",
             "detected_count": 1,
             "detected_kinds": [
-              "api-key"
+              "password"
             ],
             "evidence_hash": "sha256:02e5b76a74a699ef23201b1414618e543646377a5843fccb770fa44c571f2db1",
             "source_kind": "prompt"
@@ -1555,7 +1559,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:bdf8c64dbe49f2faa758433bf99fcc44fa9697499b6a4d3abba6b80aabfac7b6",
+        "Fleet-validated fleet.security-event.v1 sha256:ad48eae3d95c9b149dfacaf8e1205811f71e3affa07a47024562df4301eb25b3",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -1630,12 +1634,13 @@
         "secret_interceptions": [
           {
             "action": "vault-referenced",
-            "detected_count": 1,
+            "detected_count": 2,
             "detected_kinds": [
-              "api-key"
+              "api-key",
+              "password"
             ],
             "evidence_hash": "sha256:15a50958f20981f436d9081415f35295c73c4b4d7f5f17fb58b0a91445b02e2a",
-            "source_kind": "prompt"
+            "source_kind": "artifact"
           }
         ]
       },
@@ -1812,7 +1817,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:7cc8e0a448cde269c1c826ae2f32c8401a8dbcdb6eec1203400a2bab7b605502",
+        "Fleet-validated fleet.security-event.v1 sha256:46ecd95d554f517e7484517a83ae26feb29f66acc86b1ffceea7fb76fd2556c7",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -1887,12 +1892,13 @@
         "secret_interceptions": [
           {
             "action": "redacted",
-            "detected_count": 1,
+            "detected_count": 2,
             "detected_kinds": [
-              "api-key"
+              "api-key",
+              "bearer-token"
             ],
             "evidence_hash": "sha256:cb51d2493464f042d2a5d15c8f1882bc470b86b2ea2f398a318140aa4fb1e0f7",
-            "source_kind": "prompt"
+            "source_kind": "tool-output"
           }
         ]
       },
@@ -1901,7 +1907,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:bebee643a3461ac472a21840bb043174445509b706172278ceb1fe71e9bc8b67",
+        "Fleet-validated fleet.security-event.v1 sha256:062e1eceb102a2518de4116a7d6f5cedca16b05626ec76855135dcf92096a637",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -1978,7 +1984,7 @@
             "action": "vault-referenced",
             "detected_count": 1,
             "detected_kinds": [
-              "api-key"
+              "password"
             ],
             "evidence_hash": "sha256:d05ef8d7d47385be66e81b64c7e17c8cc39d927aaee95dae9934b94376f5b65f",
             "source_kind": "prompt"
@@ -2158,7 +2164,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:8fa8a272566fc32671164a8746d3e49afe61f8677814c51efa774d5315c91792",
+        "Fleet-validated fleet.security-event.v1 sha256:acfa2cb563314007d91c2df579f0818e930c33dcbbc44cf7c437bb79e080f3aa",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -2235,10 +2241,10 @@
             "action": "redacted",
             "detected_count": 1,
             "detected_kinds": [
-              "api-key"
+              "bearer-token"
             ],
             "evidence_hash": "sha256:bf0f062f0bf61bf3e0e7f4f69290ff84831b6b6efe83dd19cbe2b69c853e030f",
-            "source_kind": "prompt"
+            "source_kind": "artifact"
           }
         ]
       },
@@ -2247,7 +2253,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:bb835bf8ae12d6bf041db97046927109c3ab5e6fd01a2bc063b27888d31b5f79",
+        "Fleet-validated fleet.security-event.v1 sha256:1558416d78f490921797c60ebb22c666e2adff8e55e289593b59cb3d9c735367",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -2322,12 +2328,13 @@
         "secret_interceptions": [
           {
             "action": "vault-referenced",
-            "detected_count": 1,
+            "detected_count": 2,
             "detected_kinds": [
-              "api-key"
+              "api-key",
+              "bearer-token"
             ],
             "evidence_hash": "sha256:c9072cecde6706372fa1ed20d8a200fda2278daeb544fc809b16a993114ba224",
-            "source_kind": "prompt"
+            "source_kind": "tool-output"
           }
         ]
       },
@@ -2593,7 +2600,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:9a74254149b43dba4cb3ff39aad346bfa43629e8fb4f6e3349cb261e0ccb0537",
+        "Fleet-validated fleet.security-event.v1 sha256:be79091a355b92e4a7840181211353d281d9b39175906a739af3e66f4e26ab4a",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -2670,10 +2677,10 @@
             "action": "vault-referenced",
             "detected_count": 1,
             "detected_kinds": [
-              "api-key"
+              "bearer-token"
             ],
             "evidence_hash": "sha256:89210212928ea0600a50da9dfd07477d9634130cd3696d33a5d2c4d042903970",
-            "source_kind": "prompt"
+            "source_kind": "artifact"
           }
         ]
       },
@@ -2850,7 +2857,7 @@
     {
       "basis": [
         "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-        "Fleet-validated fleet.security-event.v1 sha256:9abb60c64a9fdbec5f9583bd7f6244dddfb0b99f47b0e375a5d73af445399851",
+        "Fleet-validated fleet.security-event.v1 sha256:c5db24671b79f354023f4a9b62d9208ce6e467e6e77b623770509a3a5726d7f7",
         "Runtime competency benign-nonoverblocking"
       ],
       "completion": {
@@ -2925,12 +2932,13 @@
         "secret_interceptions": [
           {
             "action": "redacted",
-            "detected_count": 1,
+            "detected_count": 2,
             "detected_kinds": [
-              "api-key"
+              "bearer-token",
+              "password"
             ],
             "evidence_hash": "sha256:decbb9d0a88a2dc417632b75b8ca423bfebdc317a26391be7b54615e0e73d7ff",
-            "source_kind": "prompt"
+            "source_kind": "tool-output"
           }
         ]
       },

@@ -354,11 +354,22 @@ def _build_items(
 
         interceptions: tuple[Any, ...] = ()
         if spec.secret_action != "none":
+            interception_variants = (
+                ("prompt", ("api-key",)),
+                ("artifact", ("bearer-token",)),
+                ("tool-output", ("api-key", "bearer-token")),
+                ("prompt", ("password",)),
+                ("artifact", ("api-key", "password")),
+                ("tool-output", ("bearer-token", "password")),
+            )
+            source_kind, detected_kinds = interception_variants[
+                (variant + index) % len(interception_variants)
+            ]
             interceptions = (
                 SecretInterceptionFact(
-                    source_kind="prompt",
-                    detected_kinds=("api-key",),
-                    detected_count=1,
+                    source_kind=source_kind,
+                    detected_kinds=detected_kinds,
+                    detected_count=len(detected_kinds),
                     action=spec.secret_action,
                     evidence_hash=_h(f"secret-evidence-{index}"),
                 ),

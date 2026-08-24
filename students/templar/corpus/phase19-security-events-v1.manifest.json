@@ -72,7 +72,7 @@
       "review_reject": 0
     }
   ],
-  "corpus_hash": "sha256:4301c66bf89ee451b684922cda250c5c0520d0d677cb6f8c04ebcab67affc1c6",
+  "corpus_hash": "sha256:74cc797f7b7e08fb59f8eb0205028e34802a27058cfc7ba869ae4be77e9203ce",
   "count": 252,
   "event_family": "fleet.security-event.v1",
   "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",

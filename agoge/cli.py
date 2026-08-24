@@ -258,6 +258,7 @@ def cmd_train(args: argparse.Namespace) -> int:
 
         result = train(
             run_dir,
+            learning_rate=args.learning_rate,
             max_steps=args.max_steps,
             max_length=args.max_length,
             gradient_accumulation_steps=args.gradient_accumulation_steps,
@@ -267,8 +268,10 @@ def cmd_train(args: argparse.Namespace) -> int:
 
         result = train(
             run_dir,
+            learning_rate=args.learning_rate,
             max_steps=args.max_steps,
             max_length=args.max_length,
+            per_device_train_batch_size=args.batch_size,
             gradient_accumulation_steps=args.gradient_accumulation_steps,
         )
     _json(result)
@@ -532,6 +535,13 @@ def parser() -> argparse.ArgumentParser:
         help="bound QLoRA to an exact optimizer-step count; useful for hardware smoke tests",
     )
     train.add_argument("--max-length", type=int, default=1024)
+    train.add_argument("--learning-rate", type=float, default=2e-4)
+    train.add_argument(
+        "--batch-size",
+        type=int,
+        default=1,
+        help="per-device batch size for sequence-classification QLoRA",
+    )
     train.add_argument("--gradient-accumulation-steps", type=int, default=8)
     train.set_defaults(func=cmd_train)
     return root

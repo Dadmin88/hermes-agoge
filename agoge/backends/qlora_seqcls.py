@@ -112,6 +112,7 @@ def train(
     max_length: int = 2048,
     lora_r: int = 16,
     lora_alpha: int = 32,
+    per_device_train_batch_size: int = 1,
     gradient_accumulation_steps: int = 4,
     balance_classes: bool = True,
     seed: int = 41,
@@ -124,6 +125,8 @@ def train(
         raise RuntimeError("max_steps must be positive when supplied")
     if max_length < 1:
         raise RuntimeError("max_length must be positive")
+    if per_device_train_batch_size < 1:
+        raise RuntimeError("per_device_train_batch_size must be positive")
     if gradient_accumulation_steps < 1:
         raise RuntimeError("gradient_accumulation_steps must be positive")
 
@@ -216,7 +219,7 @@ def train(
         learning_rate=learning_rate,
         num_train_epochs=epochs,
         max_steps=max_steps if max_steps is not None else -1,
-        per_device_train_batch_size=1,
+        per_device_train_batch_size=per_device_train_batch_size,
         gradient_accumulation_steps=gradient_accumulation_steps,
         logging_steps=1 if max_steps is not None else 5,
         save_strategy="no" if max_steps is not None else "epoch",
@@ -256,6 +259,7 @@ def train(
             "learning_rate": learning_rate,
             "lora_r": lora_r,
             "lora_alpha": lora_alpha,
+            "per_device_train_batch_size": per_device_train_batch_size,
             "gradient_accumulation_steps": gradient_accumulation_steps,
             "compute_dtype": str(compute_dtype),
             "observed_max_tokens": observed_max_tokens,
