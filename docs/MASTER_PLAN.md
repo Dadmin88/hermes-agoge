@@ -1,4 +1,4 @@
-# Hermes Agoge Master Plan v0.1
+# Hermes Agoge Master Plan v0.2
 
 ## Current implementation status - 2026-08-23
 
@@ -13,30 +13,124 @@
 - Phase 8: Academy faculty binding/brief/import bridge implemented and proven live with `academy-cybersecurity-instructor`; Academy remains optional and generated content remains blocked from training when source terms are unknown.
 - Phase 9: source-derived pinned Fleet contract snapshot, Fleet-runtime-oracle Phase 19 generator, independent event-fact reviewer, canonical closed reason-code vocabulary, anti-curriculum-leakage rules, compact identity-free runtime security projection, seven-class disposition registry, and a 252-event independently accepted Phase 19 foundation corpus are implemented. A bounded local QLoRA sequence-classifier Askesis reached 19/19 exact dispositions on the deterministic held-out foundation-family test; this is a foundation proof only. Phase 23 production curriculum, fresh transfer, calibration, and immutable adversarial banks remain open.
 - Phase 14-17: shared-base/profile specialization/continuing neural education/Agoge model-trainer operator profile are explicit future roadmap tracks, gated on Templar proving Agoge's production path. The provider-neutral Hugging Face Base Model Auditor is already implemented and live-smoke-proven as an early Phase 17 prerequisite; hardware/backend probes and Student-local shortlist benchmarking remain open.
+- Phase 18-27: capability intervention routing, automated training-strategy selection, distillation, agent-environment RL, adapter composition, artifact genealogy, tournaments, Fleet-backed training placement, the Academy-to-Agoge closed loop, and the autonomous capability-factory challenge are now explicit roadmap tracks. These extend Agoge without changing its existing security boundaries or making every capability request a gradient-training request.
 
 See `PROOFS.md` for bounded evidence. No current Templar model is production-ready.
+
+## Architectural thesis - capability acquisition, not fine-tuning for its own sake
+
+Hermes Agoge is a **capability acquisition system**.
+
+Its north-star user intent is:
+
+```text
+Make this profile/model better at <capability>.
+```
+
+Agoge must determine the cheapest correct intervention rather than assuming that every weakness requires weight changes.
+
+Canonical intervention ladder:
+
+```text
+information/retrieval gap
+        -> memory / retrieval / source grounding
+
+reusable procedural gap
+        -> Hermes skill and/or Academy continuing education
+
+stable behavioral or domain prior gap
+        -> adapter / supervised fine-tuning
+
+preference, ranking, or style-selection gap
+        -> preference optimization when justified
+
+mechanically verifiable interactive capability gap
+        -> bounded agent-environment reinforcement learning when justified
+
+strong teacher already demonstrates desired capability
+        -> distillation when training rights and provenance permit it
+
+underlying base cannot support required capability efficiently
+        -> select a better base model
+
+already competent or evidence too weak
+        -> no model change
+```
+
+The intervention decision is evidence-driven and auditable. A GPU is never treated as the default answer to a capability problem.
+
+### System boundary
+
+```text
+Hermes profile / user goal
+        |
+        v
+Capability diagnosis
+        |
+        +------> Academy / native Hermes learning
+        |           teaches the persistent agent
+        |
+        +------> Agoge Askesis
+        |           changes model artifacts
+        |
+        +------> Base-model replacement
+        |
+        v
+Evaluation / fresh transfer / regression proof
+        |
+        v
+Graduated capability or explicit rejection
+```
+
+- Academy teaches agents through normal Hermes conversation, goals, and skills.
+- Agoge changes model artifacts through reproducible Askesis runs.
+- Evaluation proves capability transfer and catches regressions.
+- Fleet may eventually provide placement, reservations, isolation, and distributed compute for Agoge jobs, but Fleet does not choose educational/training semantics.
+- Agoge core remains independent of Fleet, Keryx, Nodescale, and Academy runtime imports.
+- Academy remains fully useful without Agoge.
+- Training never grants execution authority.
+
+The desired long-term outcome is not merely a collection of fine-tuning scripts. It is a system that can determine **what kind of learning is required**, perform it through the correct layer, prove the result, and preserve complete lineage.
 
 ## Phase 0 - Freeze identity, terminology, and boundaries
 
 - Canonical project: Hermes Agoge.
 - Canonical namespace/package: `agoge`.
-- Canonical training cycle: Askesis.
+- Canonical gradient/model-training cycle: Askesis.
+- Canonical capability target: Competency Contract.
+- Canonical pre-training decision: Intervention Plan.
+- Canonical algorithm/backend decision: Training Strategy.
+- Canonical durable model/adapter lineage surface: Artifact Registry.
 - Academy is optional faculty, never a runtime dependency.
 - Agoge is generic; Templar is the first reference student, not a hard dependency.
 - No model output may grant authority merely because Agoge trained it.
+- Not every capability-acquisition request produces an Askesis. Agoge may route to Academy/native Hermes learning, select another base model, or conclude that no model change is justified.
 
 Acceptance: architecture contract and dependency direction are documented and tested by package structure.
 
-## Phase 1 - Reproducible student and curriculum contracts
+## Phase 1 - Reproducible student, competency, and curriculum contracts
 
 - closed `agoge.student.v1` schema;
+- closed `agoge.competency.v1` schema;
 - closed `agoge.curriculum.v1` schema;
 - exact source revision references;
 - content hashes;
 - explicit output contract;
+- target capabilities that should improve;
+- anchor capabilities that must not materially regress;
+- observable evaluation criteria;
 - explicit graduation gates.
 
-Acceptance: invalid/extra fields fail closed; same content yields same identity.
+A Competency Contract should answer:
+
+- what the Student must be able to do;
+- under what conditions;
+- what counts as successful transfer;
+- which general/profile capabilities must remain intact;
+- which measurements are authoritative enough for graduation;
+- what evidence would prove that training is unnecessary or the selected base model is unsuitable.
+
+Acceptance: invalid/extra fields fail closed; same content yields same identity; no Askesis can graduate against an undefined capability target.
 
 ## Phase 2 - Corpus and provenance substrate
 
@@ -44,37 +138,69 @@ Acceptance: invalid/extra fields fail closed; same content yields same identity.
 - deterministic/programmatic examples;
 - imported human examples;
 - teacher-generated examples;
+- corrected failure examples;
+- preference-pair examples where justified;
+- approved successful trajectory candidates where justified;
 - provider/model/prompt/version provenance;
-- license/terms metadata where applicable;
+- source class: deterministic, human, Academy, teacher model, real Hermes execution, synthetic, failed eval, corrected failure, or other explicit origin;
+- license/terms/training-use metadata where applicable;
+- consent/usage basis where user-originated material is involved;
+- secret/credential scanning;
+- privacy/PII handling policy;
 - duplicate/near-duplicate detection;
 - contamination tracking;
+- quality/review evidence;
 - generated/reviewed/accepted/rejected/quarantined lifecycle.
 
-Acceptance: no unprovenanced example can enter an accepted training set.
+Raw Hermes conversations, raw production trajectories, private memories, unrelated user data, credentials, and arbitrary successful sessions are **not** training data merely because Agoge can observe them.
 
-## Phase 3 - Exam isolation
+Production-derived material follows:
+
+```text
+raw evidence
+   -> candidate example
+   -> sanitize
+   -> provenance bind
+   -> secret/privacy scan
+   -> deduplicate
+   -> independent review/verification
+   -> accepted corpus
+```
+
+Acceptance: no unprovenanced or unreviewed example can enter an accepted training set, and no private/secret material silently becomes weight data.
+
+## Phase 3 - Exam isolation and transfer banks
 
 - deterministic train/validation/test split for prototypes;
 - named immutable exam suites for production;
 - hidden adversarial exam bank;
+- fresh transfer suites distinct from taught examples;
+- target-capability Exam families;
+- anchor/regression Exam families;
 - contamination detector;
-- rule preventing exam-to-training leakage.
+- rule preventing exam-to-training leakage;
+- rule preventing a failed held-out item from being copied verbatim into corrective training.
 
-Acceptance: a corpus rebuild cannot silently move a held-out exam into training.
+A failed Exam may inspire a **new, distinct** training example. The original held-out item remains immutable.
+
+Acceptance: a corpus rebuild cannot silently move a held-out exam into training, and success requires novel transfer rather than memorization of the lesson/example.
 
 ## Phase 4 - Askesis run lifecycle
 
 - immutable prepared run manifest;
 - base-model identity;
+- Training Strategy identity;
 - training config hash;
 - corpus/split hashes;
 - source revisions;
+- target/anchor Competency Contract identity;
 - lifecycle: PREPARED -> BASELINED -> TRAINING -> TRAINED -> EXAMINED -> GRADUATED/FAILED;
+- explicit REJECTED artifact outcome when a trained candidate fails graduation even though training itself completed;
 - resumable checkpoints without changing run identity.
 
-Acceptance: every artifact can be reconstructed to exact inputs/config.
+Acceptance: every artifact can be reconstructed to exact inputs/config, and `TRAINED` is never confused with `GRADUATED`.
 
-## Phase 5 - Local QLoRA backend
+## Phase 5 - Local QLoRA backend and trainer abstraction
 
 - CUDA readiness doctor;
 - Qwen3 0.6B first smoke model;
@@ -83,11 +209,13 @@ Acceptance: every artifact can be reconstructed to exact inputs/config.
 - bounded batch/context defaults for 8 GB VRAM;
 - checkpoints and adapter export;
 - OOM diagnostics and safe config fallback;
-- later compare Unsloth backend against plain TRL/PEFT.
+- backend-neutral trainer interface around Agoge contracts;
+- compare plain TRL/PEFT, Unsloth, Axolotl, or later compatible backends through pinned compatibility proofs rather than making any one project Agoge's identity;
+- training backend must not weaken corpus provenance, Exam isolation, or artifact identity.
 
-Acceptance: Katana completes a real adapter-training smoke run without remote training compute.
+Acceptance: Katana completes a real adapter-training smoke run without remote training compute, and the Askesis manifest remains stable across supported backend implementations.
 
-## Phase 6 - Evaluation engine
+## Phase 6 - Evaluation engine and profile-native competency scoring
 
 - strict output parser;
 - task accuracy;
@@ -96,9 +224,30 @@ Acceptance: Katana completes a real adapter-training smoke run without remote tr
 - false-ALLOW / false-DENY / false-REVIEW metrics;
 - latency and memory footprint;
 - base-vs-trained A/B comparison;
-- confidence/calibration experiment without trusting raw model confidence as authority.
+- target-capability deltas;
+- anchor/regression deltas;
+- confidence/calibration experiment without trusting raw model confidence as authority;
+- fresh transfer scoring;
+- adversarial scoring where relevant;
+- evaluation of the actual quantized/deployment artifact, not merely a training checkpoint;
+- Sixcat/Hermes-native profile evaluations as the preferred signal for real profile suitability where such evals exist;
+- optional generic benchmark bridges such as Lighteval when they provide useful standardized coverage, without letting generic leaderboard scores override profile-native evidence.
 
-Acceptance: graduation is metric-gated, not vibes-gated.
+Model selection should be able to report profile-oriented results such as:
+
+```text
+candidate A
+  Backend Engineer competency: 91%
+  anchor/general capability: 88%
+
+candidate B
+  Backend Engineer competency: 84%
+  anchor/general capability: 93%
+```
+
+rather than relying only on generic benchmark averages.
+
+Acceptance: graduation is metric-gated, not vibes-gated, and the winning artifact demonstrably improves the target capability without unacceptable anchor regressions.
 
 ## Phase 7 - Teacher interface
 
@@ -113,18 +262,45 @@ Teacher sources may include:
 
 Implement provider-neutral teacher records before provider-specific adapters. Teacher disagreement is preserved as evidence rather than majority-voted away blindly.
 
-Acceptance: one example can show who proposed it, who criticized it, who adjudicated it, and why it was accepted.
+Teacher outputs may include:
 
-## Phase 8 - Academy bridge
+- curriculum proposals;
+- explanations;
+- demonstrations;
+- critiques;
+- corrected answers;
+- preference comparisons;
+- adversarial/counterexample generation;
+- approved distillation trajectories;
+- rubric/adjudication evidence.
+
+The teacher interface records whether provider/model terms permit the proposed training use. A strong answer from a teacher does not automatically become lawful or acceptable training material.
+
+Acceptance: one example can show who proposed it, who criticized it, who adjudicated it, why it was accepted, and whether its source permits the intended training use.
+
+## Phase 8 - Academy bridge and synthetic curriculum faculty
 
 - optional Agoge curriculum request contract;
 - Academy Dean may route competencies to faculty;
 - instructors generate lessons/exercises/counterexamples;
+- instructors identify common misconceptions and likely failure modes;
+- instructors produce increasing-difficulty practice;
+- instructors produce novel transfer exercises rather than rephrasing the exact taught example;
 - Academy assesses demonstrated gaps;
 - Agoge converts accepted teaching artifacts into corpus candidates;
+- Academy material passes the same provenance, review, license/terms, contamination, and promotion gates as every other source;
 - Academy never calls gradient code or owns model artifacts.
 
-Acceptance: Academy can assist model education while remaining fully usable without Agoge.
+Dependency direction:
+
+```text
+Agoge may request teaching from Academy.
+Academy never requires Agoge.
+```
+
+The Academy Continuing Education lifecycle remains agent education. Agoge may learn from the curriculum or from sanitized, approved evidence of successful education, but Academy itself does not become a training framework.
+
+Acceptance: Academy can assist model education while remaining fully usable without Agoge, and Academy-generated examples must still prove fresh transfer before they influence graduation.
 
 ## Phase 9 - Templar production curriculum
 
@@ -150,7 +326,9 @@ Acceptance: corpus is Fleet-native and independently reviewed, not generic cyber
 - hidden instruction variants;
 - multi-signal interaction cases;
 - teacher-model red teams;
-- held-out human-designed attacks.
+- held-out human-designed attacks;
+- counterexample generation targeted at discovered shallow heuristics;
+- failure clusters converted into new corrective curriculum families rather than copied Exam items.
 
 Acceptance: newly discovered weaknesses become corrective curriculum without contaminating the original exam bank.
 
@@ -179,9 +357,26 @@ Required before production claim:
 - fresh transfer suite;
 - Fleet regression suite;
 - sandbox/fail-closed suite;
+- target-capability improvement threshold;
+- anchor/general-capability regression thresholds;
 - model card and source/provenance manifest;
 - reproducible adapter hash;
+- exact base-model and deployment-artifact identity;
+- explicit artifact lifecycle state;
 - signed/tagged release artifact where ecosystem release policy requires it.
+
+Artifact lifecycle states:
+
+```text
+experiment
+candidate
+validated
+graduated
+deprecated
+rejected
+```
+
+`TRAINED`, `candidate`, or `validated` never imply production selection. Only a `graduated` artifact may become an approved default, and even then deployment remains an explicit consumer/operator decision.
 
 ## Phase 13 - Fleet Brain research track
 
@@ -228,6 +423,8 @@ Implement:
 - versioned base-model registry with exact revision/artifact hashes;
 - adapter compatibility metadata binding each adapter to an exact base-model family/revision;
 - local base-model caching so many adapters do not duplicate base weights;
+- multiple independent adapters per base where the runtime supports it;
+- deterministic adapter activation/switching and optional hotswap experiments where supported by the pinned runtime;
 - immutable adapter manifests binding Student, Curriculum, Corpus, Askesis, Exams, and artifact hashes;
 - deterministic adapter loading and fail-closed base/adapter mismatch rejection;
 - evaluation of the actual quantized deployment artifact, not merely the training checkpoint;
@@ -238,7 +435,7 @@ The shared-base pattern is an optimization, not a dogma. A specialist may use an
 
 Acceptance: two independently trained specialist adapters can share one pinned local base model, load deterministically, remain provenance-isolated, and reproduce their respective Exam results without duplicating the base weights.
 
-## Phase 15 - Hermes Profile neural specialization program
+## Phase 15 - Hermes Profile neural specialization and Competency Contracts
 
 After Templar proves Agoge can reliably form, evaluate, package, and deploy a specialist model, allow Hermes profiles to become optional Agoge Students.
 
@@ -259,17 +456,19 @@ Candidate families may include code-review/software-quality specialists, securit
 Implement:
 
 - a versioned profile-to-Student binding referencing exact profile-distribution revisions without making Profile Packs a runtime dependency;
+- a profile Competency Contract that identifies target capabilities and anchor capabilities;
 - role/jobs/skills extraction as **curriculum candidates**, never automatic ground truth;
 - optional Academy-assisted curriculum decomposition;
 - deterministic, teacher-generated, and human-reviewed role corpora through normal provenance gates;
 - untuned-base baselines before any training;
 - profile-specific held-out, transfer, and adversarial exams;
 - cross-profile/general-capability regression checks so specialization does not destroy important baseline capability;
+- profile suitability scores for candidate bases so Agoge can compare models in the context of the actual Hermes role;
 - profile manifests that may select a local base+adapter while preserving normal SOUL/skill/memory/tool boundaries.
 
 Acceptance: at least one non-Templar Hermes profile demonstrates a measurable held-out improvement from an Agoge adapter, with no material regression on its required general capabilities and with the adapter optional/removable at runtime.
 
-## Phase 16 - Continuing neural education
+## Phase 16 - Continuing neural education and failure harvesting
 
 Extend the Academy/Agoge educational philosophy into explicit, versioned corrective model education.
 
@@ -304,7 +503,11 @@ Requirements:
 
 - production telemetry/failure evidence is sanitized and provenance-bound before entering Agoge;
 - private user data, secrets, raw conversations, and unrelated memory never become training data by default;
+- successful trajectories are also candidates, not automatic training examples;
+- failure clusters preserve the model's original bad output when safe/useful for diagnosis;
+- corrected failures may produce supervised examples or preference pairs after review;
 - an Exam failure may inspire a new distinct training example but the original held-out item remains immutable;
+- Academy instructors may explain why the Student failed and construct new exercises targeting the misconception;
 - new adapters never replace a production artifact merely because training completed;
 - promotion requires the same graduation/regression gates as a fresh model release;
 - old model/adapter versions remain reproducible and rollback-capable;
@@ -314,7 +517,7 @@ Acceptance: a known weak capability can produce a corrective Askesis that improv
 
 ## Phase 17 - Agoge model-trainer operator profile
 
-Create a dedicated Hermes profile whose job is to operate Agoge for a user. The user should be able to describe the outcome they want in ordinary language, for example: "I want a small local model that reviews accessibility issues" or "train an adapter for this profile," and the profile should coordinate the remaining workflow locally whenever the available hardware permits it.
+Create a dedicated Hermes profile whose job is to operate Agoge for a user. The user should be able to describe the outcome they want in ordinary language, for example: "I want a small local model that reviews accessibility issues," "train an adapter for this profile," or simply "make this profile better at API security."
 
 Working profile namespace/name: `agoge-model-trainer` until a better ecosystem name is chosen.
 
@@ -326,10 +529,20 @@ Goal-driven workflow:
 user goal
    |
    v
-define observable model competency
+define observable Competency Contract
+   |
+   v
+run Capability Intervention Router
+   |
+   +----> Academy/skill/native Hermes learning when sufficient
+   |
+   +----> no model change when already competent
    |
    v
 choose/benchmark candidate base model(s)
+   |
+   v
+choose Training Strategy
    |
    v
 create Student + Curriculum
@@ -347,7 +560,7 @@ baseline untuned model
 prepare Askesis
    |
    v
-train locally
+train locally or through authorized compute adapter
    |
    v
 Exam + diagnose gaps
@@ -364,7 +577,8 @@ present graduation/deployment evidence to user
 Implement:
 
 - a Hermes profile with explicit SOUL/role/jobs and Agoge operating skills;
-- natural-language goal intake converted into a bounded Student/Curriculum proposal;
+- natural-language goal intake converted into a bounded Competency Contract and Student/Curriculum proposal;
+- automatic Intervention Plan before any training job is created;
 - a provider-neutral **Base Model Auditor** that treats Hugging Face Hub as a discovery/catalog source rather than assuming Qwen or any other family;
 - Hugging Face candidate discovery using task, library, parameter-count, architecture, model-card metadata, and repository/config evidence;
 - mandatory license/usage/training-compatibility review before a candidate may enter benchmarking; unknown or incompatible terms fail closed rather than being guessed;
@@ -372,10 +586,11 @@ Implement:
 - local smoke benchmarks of shortlisted base models on the target Student's baseline/Exam tasks before selection;
 - recorded base-model selection evidence: candidates considered, rejection reasons, benchmark results, exact Hub revision, artifact size/hash, and why the winner was selected;
 - no permanent preferred-family rule: Qwen, Llama, Gemma, Mistral, SmolLM, Phi, or any future family may win when evidence supports it, and an unfamiliar architecture is rejected until Agoge proves backend compatibility;
-- automatic preference for local compute, with Katana-like GPU workers handling gradients and CPU workers such as Psalmbox handling corpus/review/orchestration jobs when available;
+- automatic preference for local compute when it satisfies the request, with GPU workers handling gradients and CPU workers handling corpus/review/orchestration jobs where appropriate;
 - optional Academy Dean/faculty routing for curriculum design without making Academy mandatory;
 - provider-neutral Teacher orchestration across locally available models, Nous Portal, OpenAI/other permitted inference, deterministic generators, and human review;
 - training-use/license/provenance checks before any generated material is allowed into weights;
+- automatic selection among supported training strategies only after Phase 19 proves the selector;
 - automatic baseline, Askesis, Exam, comparison, failure clustering, and corrective-curriculum loops;
 - bounded budgets for iterations, inference use, disk, and training steps;
 - resumable native Hermes goal/mission state for long model-development workflows;
@@ -386,10 +601,498 @@ Implement:
 The intended user experience is eventually as simple as:
 
 ```text
-User: Train me a small local specialist for <goal>.
-Agoge Trainer: I will define the competency, build and review the curriculum,
-benchmark candidate bases, train locally, test transfer, correct weaknesses,
-and return the best reproducible artifact with its evidence.
+User: Make this profile better at <goal>.
+Agoge Trainer: I will determine whether this needs teaching, a skill, a different
+base, an adapter, preference optimization, distillation, RL, or no model change;
+then I will prove the chosen intervention against fresh transfer and regression
+checks and return the best reproducible result with its evidence.
 ```
 
-Acceptance: from one bounded natural-language user goal, the profile can autonomously produce a reproducible local specialist adapter through Agoge's normal contracts and Exams, while surfacing only genuine blockers/decisions that require the user and never bypassing safety, provenance, or graduation policy.
+Acceptance: from one bounded natural-language user goal, the profile can autonomously produce the correct Intervention Plan and, when weight training is justified, a reproducible local specialist artifact through Agoge's normal contracts and Exams, while surfacing only genuine blockers/decisions that require the user and never bypassing safety, provenance, or graduation policy.
+
+## Phase 18 - Capability Intervention Router
+
+Build the decision layer that prevents Agoge from treating every weakness as a fine-tuning task.
+
+Inputs:
+
+- user/profile capability goal;
+- current profile identity;
+- current model/base/adapter identity;
+- profile Competency Contract;
+- relevant existing skills/memory/retrieval capabilities;
+- baseline evaluation evidence;
+- hardware/resource constraints;
+- privacy/offline/latency/cost requirements;
+- change-rate of required knowledge;
+- training-data availability and usage rights.
+
+Possible dispositions:
+
+```text
+NO_CHANGE
+RETRIEVAL_OR_MEMORY
+HERMES_SKILL
+ACADEMY_EDUCATION
+BASE_MODEL_REPLACEMENT
+SUPERVISED_TUNING
+PREFERENCE_TUNING
+DISTILLATION
+AGENT_RL
+NEEDS_REVIEW
+INELIGIBLE
+```
+
+Rules:
+
+- rapidly changing facts should normally remain outside weights;
+- explicit reusable procedures should prefer skills when the model already has the underlying capability;
+- Academy should be preferred for agent-level education when durable native Hermes learning is sufficient;
+- adapter/tuning should require a stable measurable behavioral/domain gap;
+- RL should require an environment with bounded, reproducible, mechanically meaningful rewards;
+- distillation should require a demonstrably stronger teacher and acceptable training-use rights;
+- base-model replacement should be considered before attempting to force an unsuitable base through increasingly expensive tuning;
+- no intervention is a valid outcome when baseline evidence already satisfies the Competency Contract.
+
+Every disposition carries deterministic reason codes and evidence references.
+
+Acceptance: representative capability requests route to the correct layer, including cases where Agoge refuses to create an Askesis because a skill, Academy class, different base model, or no change is the better intervention.
+
+## Phase 19 - Automated Training Strategy Planner
+
+When Phase 18 selects a weight-changing intervention, choose the training method from evidence rather than user jargon.
+
+Candidate strategies may include, subject to the exact pinned training stack:
+
+- supervised fine-tuning;
+- LoRA / QLoRA;
+- full fine-tuning where genuinely justified;
+- preference optimization such as DPO/KTO or other supported objectives;
+- distillation;
+- reward-model training where justified;
+- GRPO or other supported agent/RL methods where reward semantics are deterministic enough;
+- multi-stage strategies, for example SFT followed by preference optimization.
+
+Decision signals:
+
+```text
+high-quality demonstrations available
+        -> SFT candidate
+
+good/bad or ranked responses available
+        -> preference optimization candidate
+
+strong teacher distribution/trajectory available
+        -> distillation candidate
+
+mechanically verifiable interactive outcome available
+        -> RL candidate
+
+limited VRAM / adapter-friendly architecture
+        -> LoRA/QLoRA candidate
+
+base incapable or inefficient
+        -> return to base-model selection instead of forcing training
+```
+
+Requirements:
+
+- strategy selection is represented in an immutable Training Strategy record;
+- trainer/backend is distinct from learning objective;
+- backend candidates such as TRL/PEFT, Axolotl, Unsloth, or future systems are replaceable implementations behind Agoge contracts;
+- unsupported algorithms fail closed rather than being approximated silently;
+- strategy planner estimates compute, storage, wall-clock bounds, and corpus requirements before launch;
+- full fine-tuning is not chosen merely because hardware permits it;
+- strategy selection is evaluated against a cheaper baseline/intervention whenever practical.
+
+Acceptance: the same Competency Contract can produce different justified Training Strategies depending on the available evidence, teacher, model architecture, and hardware, with the rationale preserved.
+
+## Phase 20 - Teacher distillation and approved trajectory factory
+
+Allow a stronger permitted teacher to transfer bounded capability into a smaller/local Student.
+
+Pipeline:
+
+```text
+Competency Contract
+   -> teacher qualification
+   -> task/curriculum generation
+   -> teacher demonstrations/trajectories
+   -> independent correctness review
+   -> provenance/license/training-use gate
+   -> sanitized accepted distillation corpus
+   -> Student Askesis
+   -> fresh transfer Exam
+```
+
+Trajectory records may include:
+
+- task input;
+- observable intermediate tool/action sequence where appropriate and lawful;
+- final result;
+- correction/retry information;
+- deterministic execution evidence;
+- evaluator verdict;
+- teacher/provider/version identity.
+
+Do not require or preserve private hidden chain-of-thought. Distillation focuses on outputs, tool/action trajectories, structured rationales where explicitly available, and verifiable behavior.
+
+Requirements:
+
+- compare teacher, base Student, and distilled Student on the same target/anchor contracts;
+- never assume the teacher is correct because it is expensive or large;
+- teacher failures are retained as negative evidence, not promoted;
+- high-quality real Hermes task traces may become candidate material only after Phase 2 sanitation/review;
+- allow multiple teachers and preserve disagreement;
+- record the cost/performance tradeoff obtained by distillation.
+
+Acceptance: a smaller/local Student measurably approaches or exceeds the target behavior of a stronger teacher on fresh transfer tasks while preserving provenance and required anchors.
+
+## Phase 21 - Agent-environment reinforcement learning research track
+
+Train Hermes-native interactive capability through bounded environments when success can be mechanically verified.
+
+Example research environments:
+
+### Software engineering
+
+```text
+isolated repository + task
+   -> inspect
+   -> edit
+   -> run tests
+   -> final repository state
+   -> reward from objective test/evidence contract
+```
+
+### Research
+
+```text
+bounded source corpus
+   -> retrieve
+   -> synthesize
+   -> cite
+   -> reward citation/source correctness + task rubric
+```
+
+### Systems administration
+
+```text
+sandbox service topology
+   -> diagnose
+   -> repair
+   -> health checks
+   -> reward from bounded service/test state
+```
+
+Requirements:
+
+- fresh disposable environment per rollout where required;
+- no production credentials or unrestricted host access;
+- reward logic outside the model;
+- environment state and reward function versioned and hash-bound;
+- no reward for bypassing safety/authority boundaries;
+- tool calls/actions are bounded by the environment contract;
+- success is determined by environment evidence, not self-report;
+- use agent/RL methods only after deterministic supervised baselines exist;
+- detect reward hacking and shortcut behavior with adversarial/held-out environment variants;
+- route any real distributed execution through the future Fleet integration boundary rather than granting Agoge raw infrastructure authority.
+
+Acceptance: at least one sandboxed Hermes-native task family shows improved interactive completion on held-out environment variants with no authority expansion or reward-hacking shortcut accepted as success.
+
+## Phase 22 - Adapter composition, hierarchy, and profile runtime
+
+Research whether reusable capability layers can be composed without destructive interference.
+
+Possible hierarchy:
+
+```text
+base model
+   +
+Hermes/tool-use adapter
+   +
+pack/domain adapter
+   +
+profile-specialist adapter
+```
+
+This is a hypothesis, not an architectural assumption.
+
+Implement:
+
+- single-adapter baseline;
+- multi-adapter activation where supported;
+- ordering/composition experiments;
+- deterministic activation manifests;
+- hotswap/load-latency measurements where supported;
+- target and anchor eval after every composition;
+- interference detection;
+- consolidation path that trains one combined adapter when stacking performs worse;
+- explicit maximum composition depth until evidence supports deeper stacks;
+- no hidden inheritance of permissions, SOUL, memory, or skills through adapter composition.
+
+Potential runtime mapping:
+
+```text
+Hermes profile selection
+   -> profile identity / SOUL
+   -> skill + memory scopes
+   -> approved base-model reference
+   -> approved adapter set
+   -> inference runtime
+```
+
+Acceptance: adapter composition is enabled only for combinations with reproducible evidence that they improve the target profile without unacceptable regressions relative to the best single-adapter alternative.
+
+## Phase 23 - Model/adapter Artifact Registry and genealogy
+
+Create a durable, content-addressed registry for every Agoge-produced or admitted model artifact.
+
+Artifact record should include at least:
+
+- artifact ID/version;
+- lifecycle state;
+- parent/base model identity and exact revision/hash;
+- parent adapter/artifact identities where derived;
+- Student;
+- Competency Contract;
+- Curriculum;
+- corpus identity/digest;
+- Askesis identity;
+- Training Strategy;
+- trainer/backend/version;
+- hyperparameters;
+- seed where applicable;
+- hardware/environment identity;
+- target baseline scores;
+- final target scores;
+- anchor/regression scores;
+- transfer/adversarial results;
+- quantization/deployment format;
+- license/usage constraints;
+- provenance manifest;
+- creation/promote/deprecate/reject timestamps and reasons.
+
+Genealogy should make a history reconstructible, for example:
+
+```text
+backend-engineer-v7
+   <- backend-engineer-v6
+   <- corrective curriculum api-auth-gap-14
+   <- Askesis a_...
+   <- base model hf:...@revision
+
+change:
+  +11.2 target capability
+  -0.3 anchor/general score
+  graduated because all gates passed
+```
+
+Registry invariants:
+
+- mutable aliases such as `latest` never replace immutable artifact identity;
+- rejected candidates remain auditable but cannot be selected as approved defaults;
+- graduation evidence is immutable/content-addressed;
+- rollback selects a prior graduated artifact, not an untracked local checkpoint;
+- registry stores metadata and references without absorbing private corpus bodies unnecessarily.
+
+Acceptance: any deployed specialist can be traced through exact base, corpus, teachers, training configuration, exams, and promotion decision, and an operator can reproduce or roll back the selected artifact.
+
+## Phase 24 - Model and training-recipe tournaments
+
+Allow Agoge to compare multiple candidate bases and training recipes under one Competency Contract.
+
+Tournament entrants may vary:
+
+- base model;
+- untouched base versus tuned candidate;
+- adapter rank/config;
+- quantization;
+- Training Strategy;
+- teacher/curriculum family;
+- training backend where semantics remain equivalent;
+- resource budget.
+
+Example:
+
+```text
+A: Base-1 untouched
+B: Base-1 + QLoRA recipe A
+C: Base-1 + QLoRA recipe B
+D: Base-2 + QLoRA
+E: Base-3 + distillation
+```
+
+Rules:
+
+- identical target/anchor evaluation contracts across entrants;
+- no entrant sees held-out tournament exams through training;
+- resource/cost budgets are recorded;
+- early elimination is allowed only from valid non-held-out evidence;
+- winner selection can optimize a declared frontier such as capability, latency, VRAM, disk, or inference cost rather than raw score alone;
+- a completely untuned base may win;
+- the tournament may conclude that none of the trained candidates are worth promoting.
+
+Acceptance: Agoge can select the best evidence-backed artifact for a bounded goal rather than merely returning the last model it trained.
+
+## Phase 25 - Fleet-backed training execution contract
+
+Integrate Agoge with Fleet only after the local training/evaluation contracts are stable.
+
+Ownership:
+
+### Agoge owns
+
+- Student;
+- Competency Contract;
+- Curriculum/corpus;
+- Training Strategy;
+- Askesis identity;
+- trainer command/Recipe requirements;
+- checkpoints/artifact semantics;
+- Exams and graduation.
+
+### Fleet owns
+
+- node capability observation;
+- placement;
+- CPU/RAM/GPU/VRAM/storage reservations;
+- isolation;
+- RunAuthority/Run Capsule where applicable;
+- scheduling/queueing;
+- remote execution transport through normal Fleet/Keryx boundaries;
+- resource/deadline evidence.
+
+Agoge must not become a second scheduler.
+
+Training Recipe requirements should explicitly declare or resolve:
+
+- CPU;
+- RAM;
+- GPU family/capability where relevant;
+- VRAM;
+- scratch storage;
+- dataset/model/artifact sizes;
+- network requirements;
+- expected checkpoint behavior;
+- bounded duration/step budget;
+- required runtime/toolchain.
+
+First-run unknown workloads may use Fleet's normal conservative requirement inference/probe concepts, but the resulting resource observations are execution evidence, not permission for Agoge to widen future authority.
+
+The integration should support a user-level goal such as:
+
+```text
+Train the best local Backend Engineer specialist that can be produced
+with the currently available authorized hardware.
+```
+
+Fleet may determine where the job runs. Agoge determines what experiment is being run and whether the result graduates.
+
+Acceptance: the same immutable Askesis can run on an authorized compatible Fleet node without changing Student, corpus, Exam, Training Strategy, or graduation semantics, and remote placement cannot grant Agoge additional authority.
+
+## Phase 26 - Academy -> Agoge -> Academy capability inheritance loop
+
+Close the loop between agent education and model education while preserving the boundary between them.
+
+Conceptual loop:
+
+```text
+Hermes profile fails or shows a weak capability
+        |
+        v
+Academy teaches the individual profile
+        |
+        v
+profile demonstrates the capability on novel transfer
+        |
+        v
+sanitized/proven successful education evidence becomes Agoge candidates
+        |
+        v
+Agoge distills/trains the reusable capability where justified
+        |
+        v
+fresh profile instance begins with stronger inherited model prior
+        |
+        v
+Academy moves on to harder gaps
+```
+
+This creates two distinct forms of learning:
+
+### Acquired capability
+
+- memories;
+- skills;
+- profile-specific continuing education;
+- learned during the life of a persistent Hermes Agent Instance/profile.
+
+### Inherited capability
+
+- base-model selection;
+- adapters;
+- distilled/tuned weights;
+- available to future instances once a graduated artifact is explicitly selected.
+
+Rules:
+
+- successful Academy learning is not automatically promoted into weights;
+- only sanitized, reviewed, provenance-bound artifacts may enter Agoge;
+- Academy does not mutate models;
+- Agoge does not replace Academy as the preferred layer for fast-changing knowledge or explicit procedures;
+- new inherited capability must still pass fresh transfer and anchor regression exams;
+- a new inherited model should reduce repeated foundational teaching, allowing Academy to target more advanced gaps rather than repeating the same curriculum indefinitely.
+
+Acceptance: one controlled profile capability can be taught through Academy, independently verified, converted into an Agoge training candidate set, trained into a new versioned artifact, and shown to improve a fresh profile's starting performance without bypassing any provenance or graduation gate.
+
+## Phase 27 - Autonomous capability factory challenge
+
+This is the end-to-end proof of the expanded Agoge vision.
+
+User request:
+
+```text
+Make this Hermes profile better at <bounded capability>.
+```
+
+The Agoge model-trainer operator profile must, with no training jargon required from the user:
+
+1. inspect the target profile/model and available evidence;
+2. create a measurable Competency Contract;
+3. baseline the current capability;
+4. run the Capability Intervention Router;
+5. if native Hermes/Academy learning is sufficient, perform/route that path and prove the result without creating an unnecessary Askesis;
+6. if weight-level learning is justified, audit candidate base models rather than assuming a family;
+7. benchmark shortlisted bases on profile-native tasks;
+8. choose and record the Training Strategy;
+9. source/build curriculum through deterministic generators, Academy, teachers, human material, and/or approved failure evidence;
+10. sanitize, deduplicate, review, and provenance-bind all accepted corpus material;
+11. execute the Askesis locally or through an authorized Fleet execution adapter;
+12. evaluate target capability on fresh transfer tasks;
+13. evaluate anchor/regression capability;
+14. cluster failures and run bounded corrective iterations when useful;
+15. optionally run a tournament when multiple plausible candidates exist;
+16. package the winning artifact into the Artifact Registry with full genealogy;
+17. reject the result if training made the model worse or failed to justify the complexity;
+18. surface a clear final evidence report and require explicit deployment/promotion policy.
+
+Required proof cases:
+
+- a goal that routes to Academy/skill learning rather than weights;
+- a goal where an untouched better base model wins;
+- a goal where a LoRA/QLoRA adapter wins;
+- a distillation case;
+- an agent-environment RL research case when Phase 21 is proven;
+- a failed training candidate that is explicitly rejected;
+- an anchor-regression failure that blocks graduation despite target improvement;
+- a corrected-failure loop that improves a distinct fresh transfer suite;
+- a profile adapter sharing a base with another specialist;
+- a rollback from a newly graduated artifact to a prior graduated version;
+- a Fleet-backed remote training job whose placement does not alter Agoge semantics or authority.
+
+Final acceptance:
+
+From one natural-language capability goal, Hermes can determine **how the capability should be acquired**, perform the appropriate bounded workflow, and return a reproducible evidence-backed result. The user does not need to know whether the winning path involved Academy, a skill, model replacement, QLoRA, preference tuning, distillation, RL, a tournament, or no model change at all.
+
+That is the definition of Hermes Agoge as a capability acquisition system.
