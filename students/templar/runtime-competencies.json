@@ -1,0 +1,154 @@
+{
+  "schema": "agoge.templar-runtime-competency-map.v1",
+  "student_id": "templar-v1",
+  "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+  "fleet_contract_snapshot_hash": "sha256:14b1bc98ce7ad9844a209dec43dff556c48a7b1a065663727d669616f9a342b5",
+  "model_input": {
+    "kind": "fleet-event-document",
+    "supported_schemas": [
+      "fleet.learning-promotion-event.v1",
+      "fleet.security-event.v1"
+    ],
+    "outer_binding_owned_by": "deterministic-fleet-templar-adapter"
+  },
+  "unavailable_or_forbidden_model_inputs": [
+    "raw user prompt merely because Templar is evaluating security",
+    "secret bodies",
+    "raw memory or skill bodies outside the bounded event material explicitly allowed by the event schema",
+    "Fleet authorization power",
+    "RunAuthority mutation capability",
+    "deterministic hard-denied requests that stop before Templar",
+    "model-generated request/event/evaluation binding metadata"
+  ],
+  "competencies": [
+    {
+      "id": "authority-boundaries",
+      "runtime_role": "background-and-indirect",
+      "observable_via": [
+        "fleet.security-event.v1.request.run_authority_hash",
+        "fleet.security-event.v1.memory_skill_risks[].signal_codes",
+        "fleet.learning-promotion-event.v1.risk_signals[]"
+      ],
+      "must_not_assume": [
+        "the model can inspect or widen RunAuthority",
+        "an ALLOW verdict grants execution"
+      ],
+      "production_training_rule": "Teach authority-manipulation recognition only through event-visible signals/material; deterministic Fleet remains responsible for exact authority enforcement."
+    },
+    {
+      "id": "prompt-injection",
+      "runtime_role": "derived-signal-interpretation",
+      "observable_via": [
+        "fleet.security-event.v1.memory_skill_risks[].risk_level",
+        "fleet.security-event.v1.memory_skill_risks[].signal_codes",
+        "fleet.security-event.v1.quarantine_signals[].reason_codes",
+        "fleet.learning-promotion-event.v1.risk_signals[]",
+        "fleet.learning-promotion-event.v1.request.evaluation_material"
+      ],
+      "must_not_assume": [
+        "raw original user prompt is available in Phase 20 security-event evaluation"
+      ],
+      "production_training_rule": "Do not train Phase 20 prompt-injection classification from raw prompt text; use the sanitized signals/material that the real supported event family carries."
+    },
+    {
+      "id": "secret-handling",
+      "runtime_role": "interception-posture-interpretation",
+      "observable_via": [
+        "fleet.security-event.v1.secret_interceptions[].source_kind",
+        "fleet.security-event.v1.secret_interceptions[].detected_kinds",
+        "fleet.security-event.v1.secret_interceptions[].detected_count",
+        "fleet.security-event.v1.secret_interceptions[].action",
+        "fleet.learning-promotion-event.v1.risk_signals[]"
+      ],
+      "must_not_assume": [
+        "secret value/body is visible to Templar"
+      ],
+      "production_training_rule": "Judge sanitized interception posture and suspicious promotion handling, never the secret body itself."
+    },
+    {
+      "id": "cross-principal-isolation",
+      "runtime_role": "event-context-and-derived-signal-interpretation",
+      "observable_via": [
+        "fleet.security-event.v1.request.principal",
+        "fleet.security-event.v1.memory_skill_risks[].scope_kind",
+        "fleet.security-event.v1.memory_skill_risks[].signal_codes",
+        "fleet.learning-promotion-event.v1.request.source_owner_principal_id",
+        "fleet.learning-promotion-event.v1.request.administrator",
+        "fleet.learning-promotion-event.v1.request.source_scope",
+        "fleet.learning-promotion-event.v1.request.target_scope",
+        "fleet.learning-promotion-event.v1.risk_signals[]"
+      ],
+      "must_not_assume": [
+        "missing ownership metadata can be invented from prompt text"
+      ],
+      "production_training_rule": "Prefer REVIEW when the supported event lacks enough bound scope/ownership evidence; exact membership authorization remains deterministic outside the model."
+    },
+    {
+      "id": "skill-memory-poisoning",
+      "runtime_role": "direct-risk-interpretation",
+      "observable_via": [
+        "fleet.security-event.v1.memory_skill_risks[]",
+        "fleet.security-event.v1.quarantine_signals[]",
+        "fleet.learning-promotion-event.v1.request.evaluation_material",
+        "fleet.learning-promotion-event.v1.risk_signals[]"
+      ],
+      "must_not_assume": [],
+      "production_training_rule": "This is a primary learned Templar responsibility; train ALLOW/DENY/REVIEW across risk levels, signals, quarantine state, verification state, and sanitized promotion material."
+    },
+    {
+      "id": "capability-combinations",
+      "runtime_role": "cross-field-reasoning",
+      "observable_via": [
+        "fleet.security-event.v1.request.requested_tools",
+        "fleet.security-event.v1.request.authorized_toolsets",
+        "fleet.security-event.v1.request.resources",
+        "fleet.security-event.v1.request.network",
+        "fleet.security-event.v1.memory_skill_risks[]",
+        "fleet.security-event.v1.secret_interceptions[]",
+        "fleet.security-event.v1.quarantine_signals[]"
+      ],
+      "must_not_assume": [
+        "Templar may override deterministic tool/network/resource authorization"
+      ],
+      "production_training_rule": "Train only combinations still reachable after deterministic admission, emphasizing risky composition of otherwise bounded facts."
+    },
+    {
+      "id": "benign-nonoverblocking",
+      "runtime_role": "primary-negative-control",
+      "observable_via": [
+        "both supported event families"
+      ],
+      "must_not_assume": [
+        "presence of security metadata means the request is malicious"
+      ],
+      "production_training_rule": "Maintain a large clean/handled/verified negative-control bank so security sensitivity does not collapse into always-DENY behavior."
+    },
+    {
+      "id": "uncertainty-review",
+      "runtime_role": "primary-calibration",
+      "observable_via": [
+        "medium or conflicting risk signals",
+        "needs-review quarantine state",
+        "incomplete or ambiguous supported promotion material",
+        "cross-field combinations whose effective risk is not established by the event"
+      ],
+      "must_not_assume": [
+        "uncertainty should be guessed away to produce ALLOW or DENY"
+      ],
+      "production_training_rule": "REVIEW must be an explicitly trained and separately evaluated outcome, not merely a low-confidence fallback added after inference."
+    },
+    {
+      "id": "architecture-ownership",
+      "runtime_role": "background-constitution-not-standalone-sensor",
+      "observable_via": [
+        "supported event schema boundaries",
+        "the absence of authority-bearing fields from model output"
+      ],
+      "must_not_assume": [
+        "Keryx route state or Nodescale trust is present when it is not in the supported event",
+        "the model may infer authority from architecture knowledge"
+      ],
+      "production_training_rule": "Teach ownership as a constitutional constraint on reasoning/output. Do not create standalone classification cases that require Keryx/Nodescale facts absent from the model input."
+    }
+  ]
+}

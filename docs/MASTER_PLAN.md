@@ -11,7 +11,7 @@
 - Phase 6: strict base/adapter Exam plus comparison implemented; competency/security metrics remain open.
 - Phase 7: provider-neutral Teacher requests/responses, training-use provenance, deterministic Templar foundation teacher, independent candidate review, and conservative promotion partition implemented; provider-specific model adapters/disagreement adjudication remain open.
 - Phase 8: Academy faculty binding/brief/import bridge implemented and proven live with `academy-cybersecurity-instructor`; Academy remains optional and generated content remains blocked from training when source terms are unknown.
-- Phase 9: next major implementation target.
+- Phase 9: source-derived pinned Fleet contract snapshot and Fleet-parser-validated golden Phase 19 event implemented; production event-family generators, pinned-parser validation, balanced corpus expansion, and immutable adversarial banks remain open.
 
 See `PROOFS.md` for bounded evidence. No current Templar model is production-ready.
 

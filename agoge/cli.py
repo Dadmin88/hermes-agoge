@@ -39,6 +39,27 @@ def cmd_prepare(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_fleet_snapshot(args: argparse.Namespace) -> int:
+    from .fleet_snapshot import write_fleet_contract_snapshot
+
+    snapshot = write_fleet_contract_snapshot(
+        student_path=Path(args.student),
+        fleet_repo=Path(args.fleet_repo),
+        out=Path(args.out),
+    )
+    _json(
+        {
+            "student_id": snapshot["student_id"],
+            "student_hash": snapshot["student_hash"],
+            "fleet_revision": snapshot["fleet_revision"],
+            "snapshot_hash": snapshot["snapshot_hash"],
+            "modules": sorted(snapshot["modules"]),
+            "out": args.out,
+        }
+    )
+    return 0
+
+
 def cmd_academy_brief(args: argparse.Namespace) -> int:
     from .academy import AcademyFacultyBinding, build_faculty_prompt
     from .teacher import load_teacher_request
@@ -284,6 +305,14 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--student", required=True)
     prepare.add_argument("--out", required=True)
     prepare.set_defaults(func=cmd_prepare)
+    fleet_snapshot = subs.add_parser(
+        "fleet-snapshot",
+        help="extract a source-derived Fleet contract snapshot from the Student's pinned revision",
+    )
+    fleet_snapshot.add_argument("--student", required=True)
+    fleet_snapshot.add_argument("--fleet-repo", required=True)
+    fleet_snapshot.add_argument("--out", required=True)
+    fleet_snapshot.set_defaults(func=cmd_fleet_snapshot)
     academy_brief = subs.add_parser(
         "academy-brief",
         help="render one bounded Academy faculty prompt from an Agoge Teacher request",

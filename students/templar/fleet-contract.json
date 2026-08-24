@@ -1,0 +1,936 @@
+{
+  "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+  "modules": {
+    "hermes_fleet/learning_promotion_gate.py": {
+      "constants": {
+        "LEARNING_PROMOTION_EVENT_SCHEMA": "fleet.learning-promotion-event.v1",
+        "LEARNING_PROMOTION_REQUEST_SCHEMA": "fleet.learning-promotion-request.v1",
+        "PROMOTION_EVALUATION_MATERIAL_SCHEMA": "fleet.promotion-evaluation-material.v1"
+      },
+      "dataclasses": {
+        "LearningPromotionEvent": {
+          "fields": [
+            {
+              "name": "request",
+              "type": "LearningPromotionRequest"
+            },
+            {
+              "name": "risk_signals",
+              "type": "tuple[str, ...]"
+            }
+          ]
+        },
+        "LearningPromotionOutcome": {
+          "fields": [
+            {
+              "name": "status",
+              "type": "str"
+            },
+            {
+              "name": "request_hash",
+              "type": "str"
+            },
+            {
+              "name": "event_hash",
+              "type": "str"
+            },
+            {
+              "name": "candidate_hash",
+              "type": "str"
+            },
+            {
+              "name": "reason_codes",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "risk_signals",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "review_reference",
+              "type": "str | None"
+            },
+            {
+              "name": "verdict",
+              "type": "TemplarVerdict | None"
+            },
+            {
+              "name": "authorization",
+              "type": "PromotionAuthorization | None"
+            }
+          ]
+        },
+        "LearningPromotionRequest": {
+          "fields": [
+            {
+              "name": "subject_kind",
+              "type": "str"
+            },
+            {
+              "name": "subject_key",
+              "type": "str"
+            },
+            {
+              "name": "source_owner_principal_id",
+              "type": "str"
+            },
+            {
+              "name": "agent_instance_id",
+              "type": "str"
+            },
+            {
+              "name": "source_scope",
+              "type": "PromotionScopeRef"
+            },
+            {
+              "name": "target_scope",
+              "type": "PromotionScopeRef"
+            },
+            {
+              "name": "source_content_hash",
+              "type": "str"
+            },
+            {
+              "name": "approved_content_hash",
+              "type": "str"
+            },
+            {
+              "name": "administrator",
+              "type": "PrincipalReference"
+            },
+            {
+              "name": "policy_digest",
+              "type": "str"
+            },
+            {
+              "name": "sanitized",
+              "type": "bool"
+            },
+            {
+              "name": "evaluation_material",
+              "type": "PromotionEvaluationMaterial"
+            },
+            {
+              "name": "verification_digest",
+              "type": "str | None"
+            },
+            {
+              "name": "expected_current_promotion_id",
+              "type": "str | None"
+            }
+          ]
+        },
+        "PromotionEvaluationFile": {
+          "fields": [
+            {
+              "name": "path",
+              "type": "str"
+            },
+            {
+              "name": "sha256",
+              "type": "str"
+            },
+            {
+              "name": "bytes",
+              "type": "int"
+            },
+            {
+              "name": "text",
+              "type": "str"
+            }
+          ]
+        },
+        "PromotionEvaluationMaterial": {
+          "fields": [
+            {
+              "name": "kind",
+              "type": "str"
+            },
+            {
+              "name": "content_hash",
+              "type": "str"
+            },
+            {
+              "name": "text",
+              "type": "str | None"
+            },
+            {
+              "name": "files",
+              "type": "tuple[PromotionEvaluationFile, ...]"
+            }
+          ]
+        }
+      },
+      "source_sha256": "661bab86c95505126f89b662a6beea2d8f9fe09683a91a7abebbf6a01f141377"
+    },
+    "hermes_fleet/pre_execution_gate.py": {
+      "constants": {
+        "DESTINATION_ADMISSION_SCHEMA": "fleet.destination-admission.v1",
+        "DETERMINISTIC_POLICY_SCHEMA": "fleet.pre-execution-policy.v1",
+        "FLEET_FINAL_DECISION_SCHEMA": "fleet.pre-execution-final-decision.v1",
+        "PRE_EXECUTION_PERMIT_SCHEMA": "fleet.pre-execution-permit.v1",
+        "PRE_EXECUTION_REQUEST_SCHEMA": "fleet.pre-execution-request.v1"
+      },
+      "dataclasses": {
+        "DestinationAdmissionDecision": {
+          "fields": [
+            {
+              "name": "gate_request_hash",
+              "type": "str"
+            },
+            {
+              "name": "security_request_hash",
+              "type": "str"
+            },
+            {
+              "name": "event_hash",
+              "type": "str"
+            },
+            {
+              "name": "target_digest",
+              "type": "str"
+            },
+            {
+              "name": "status",
+              "type": "str"
+            },
+            {
+              "name": "reason_codes",
+              "type": "tuple[str, ...]"
+            }
+          ]
+        },
+        "DeterministicPolicyDecision": {
+          "fields": [
+            {
+              "name": "gate_request_hash",
+              "type": "str"
+            },
+            {
+              "name": "security_request_hash",
+              "type": "str"
+            },
+            {
+              "name": "event_hash",
+              "type": "str"
+            },
+            {
+              "name": "policy_digest",
+              "type": "str"
+            },
+            {
+              "name": "templar_required",
+              "type": "bool"
+            },
+            {
+              "name": "hard_denies",
+              "type": "tuple[DeterministicHardDeny, ...]"
+            }
+          ]
+        },
+        "FleetFinalDecision": {
+          "fields": [
+            {
+              "name": "gate_request_hash",
+              "type": "str"
+            },
+            {
+              "name": "security_request_hash",
+              "type": "str"
+            },
+            {
+              "name": "event_hash",
+              "type": "str"
+            },
+            {
+              "name": "policy_digest",
+              "type": "str"
+            },
+            {
+              "name": "destination_admission_hash",
+              "type": "str"
+            },
+            {
+              "name": "decision",
+              "type": "str"
+            },
+            {
+              "name": "reason_codes",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "templar_verdict_hash",
+              "type": "str | None"
+            }
+          ]
+        },
+        "PreExecutionContext": {
+          "fields": [
+            {
+              "name": "principal",
+              "type": "PrincipalReference"
+            },
+            {
+              "name": "agent_instance_id",
+              "type": "str"
+            },
+            {
+              "name": "recipe_hash",
+              "type": "str"
+            },
+            {
+              "name": "resolved_recipe_hash",
+              "type": "str"
+            },
+            {
+              "name": "policy_digest",
+              "type": "str"
+            },
+            {
+              "name": "capabilities_hash",
+              "type": "str"
+            },
+            {
+              "name": "target_digest",
+              "type": "str"
+            },
+            {
+              "name": "provider",
+              "type": "str | None"
+            },
+            {
+              "name": "model",
+              "type": "str | None"
+            }
+          ]
+        },
+        "PreExecutionOutcome": {
+          "fields": [
+            {
+              "name": "status",
+              "type": "str"
+            },
+            {
+              "name": "gate_request_hash",
+              "type": "str"
+            },
+            {
+              "name": "security_request_hash",
+              "type": "str"
+            },
+            {
+              "name": "event_hash",
+              "type": "str"
+            },
+            {
+              "name": "reason_codes",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "review_reference",
+              "type": "str | None"
+            },
+            {
+              "name": "verdict",
+              "type": "TemplarVerdict | None"
+            },
+            {
+              "name": "final_decision",
+              "type": "FleetFinalDecision | None"
+            },
+            {
+              "name": "permit",
+              "type": "PreExecutionPermit | None"
+            },
+            {
+              "name": "capsule_spec",
+              "type": "RunCapsuleSpec | None"
+            }
+          ]
+        },
+        "PreExecutionPermit": {
+          "fields": [
+            {
+              "name": "gate_request_hash",
+              "type": "str"
+            },
+            {
+              "name": "security_request_hash",
+              "type": "str"
+            },
+            {
+              "name": "event_hash",
+              "type": "str"
+            },
+            {
+              "name": "policy_digest",
+              "type": "str"
+            },
+            {
+              "name": "run_authority_hash",
+              "type": "str"
+            },
+            {
+              "name": "capsule_hash",
+              "type": "str"
+            },
+            {
+              "name": "final_decision_hash",
+              "type": "str"
+            },
+            {
+              "name": "issued_at_ms",
+              "type": "int"
+            },
+            {
+              "name": "valid_until_ms",
+              "type": "int"
+            },
+            {
+              "name": "seal",
+              "type": "str"
+            },
+            {
+              "name": "templar_verdict_hash",
+              "type": "str | None"
+            },
+            {
+              "name": "authority",
+              "type": "str"
+            }
+          ]
+        },
+        "PreExecutionRequest": {
+          "fields": [
+            {
+              "name": "operation",
+              "type": "str"
+            },
+            {
+              "name": "authenticated_principal",
+              "type": "PrincipalReference"
+            },
+            {
+              "name": "authority",
+              "type": "RunAuthority"
+            },
+            {
+              "name": "event",
+              "type": "SecurityEvent"
+            }
+          ]
+        }
+      },
+      "source_sha256": "3c7b820a0f4051c36b3cf4b61d0b0a7dbf8cbfce503a728ee9d45053ed5faa76"
+    },
+    "hermes_fleet/security_event.py": {
+      "constants": {
+        "HARD_DENY_SCHEMA": "fleet.security-hard-deny.v1",
+        "SECURITY_EVENT_SCHEMA": "fleet.security-event.v1",
+        "SECURITY_REQUEST_SCHEMA": "fleet.security-request.v1",
+        "_MAX_DETECTED_KINDS": 32,
+        "_QUARANTINE_STATES": [
+          "needs-review",
+          "rejected",
+          "verification-ready"
+        ],
+        "_RISK_LEVELS": [
+          "critical",
+          "high",
+          "info",
+          "low",
+          "medium"
+        ],
+        "_SECRET_ACTIONS": [
+          "blocked",
+          "failed-closed",
+          "none",
+          "redacted",
+          "vault-referenced"
+        ],
+        "_VERIFICATION_STATES": [
+          "failed",
+          "not-run",
+          "verified"
+        ]
+      },
+      "dataclasses": {
+        "DeterministicHardDeny": {
+          "fields": [
+            {
+              "name": "request_hash",
+              "type": "str"
+            },
+            {
+              "name": "event_hash",
+              "type": "str"
+            },
+            {
+              "name": "policy_digest",
+              "type": "str"
+            },
+            {
+              "name": "code",
+              "type": "str"
+            },
+            {
+              "name": "subject",
+              "type": "str"
+            },
+            {
+              "name": "evidence_hash",
+              "type": "str"
+            }
+          ]
+        },
+        "MemorySkillRisk": {
+          "fields": [
+            {
+              "name": "subject_kind",
+              "type": "str"
+            },
+            {
+              "name": "subject_hash",
+              "type": "str"
+            },
+            {
+              "name": "scope_kind",
+              "type": "str"
+            },
+            {
+              "name": "risk_level",
+              "type": "str"
+            },
+            {
+              "name": "signal_codes",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "evidence_hash",
+              "type": "str"
+            }
+          ]
+        },
+        "PolicyMismatch": {
+          "fields": [
+            {
+              "name": "code",
+              "type": "str"
+            },
+            {
+              "name": "subject",
+              "type": "str"
+            },
+            {
+              "name": "expected_hash",
+              "type": "str | None"
+            },
+            {
+              "name": "observed_hash",
+              "type": "str | None"
+            },
+            {
+              "name": "evidence_hash",
+              "type": "str"
+            }
+          ]
+        },
+        "QuarantineSignal": {
+          "fields": [
+            {
+              "name": "candidate_hash",
+              "type": "str"
+            },
+            {
+              "name": "quarantine_digest",
+              "type": "str"
+            },
+            {
+              "name": "state",
+              "type": "str"
+            },
+            {
+              "name": "reason_digest",
+              "type": "str"
+            },
+            {
+              "name": "reason_codes",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "verification_state",
+              "type": "str"
+            },
+            {
+              "name": "verification_digest",
+              "type": "str | None"
+            }
+          ]
+        },
+        "SecretInterceptionFact": {
+          "fields": [
+            {
+              "name": "source_kind",
+              "type": "str"
+            },
+            {
+              "name": "detected_kinds",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "detected_count",
+              "type": "int"
+            },
+            {
+              "name": "action",
+              "type": "str"
+            },
+            {
+              "name": "evidence_hash",
+              "type": "str"
+            }
+          ]
+        },
+        "SecurityEvent": {
+          "fields": [
+            {
+              "name": "principal",
+              "type": "PrincipalReference"
+            },
+            {
+              "name": "recipe",
+              "type": "SecurityRecipeBinding"
+            },
+            {
+              "name": "run_authority_hash",
+              "type": "str"
+            },
+            {
+              "name": "target",
+              "type": "SecurityTargetBinding"
+            },
+            {
+              "name": "requested_tools",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "authorized_toolsets",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "resources",
+              "type": "SecurityResourceFacts"
+            },
+            {
+              "name": "network",
+              "type": "SecurityNetworkFacts"
+            },
+            {
+              "name": "policy_digest",
+              "type": "str"
+            },
+            {
+              "name": "capabilities_hash",
+              "type": "str"
+            },
+            {
+              "name": "memory_skill_risks",
+              "type": "tuple[MemorySkillRisk, ...]"
+            },
+            {
+              "name": "secret_interceptions",
+              "type": "tuple[SecretInterceptionFact, ...]"
+            },
+            {
+              "name": "policy_mismatches",
+              "type": "tuple[PolicyMismatch, ...]"
+            },
+            {
+              "name": "quarantine_signals",
+              "type": "tuple[QuarantineSignal, ...]"
+            }
+          ]
+        },
+        "SecurityNetworkDestination": {
+          "fields": [
+            {
+              "name": "host",
+              "type": "str"
+            },
+            {
+              "name": "resolved_ips",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "ports",
+              "type": "tuple[int, ...]"
+            }
+          ]
+        },
+        "SecurityNetworkFacts": {
+          "fields": [
+            {
+              "name": "mode",
+              "type": "str"
+            },
+            {
+              "name": "policy_hash",
+              "type": "str"
+            },
+            {
+              "name": "destinations",
+              "type": "tuple[SecurityNetworkDestination, ...]"
+            },
+            {
+              "name": "approval_ref",
+              "type": "str | None"
+            }
+          ]
+        },
+        "SecurityRecipeBinding": {
+          "fields": [
+            {
+              "name": "recipe_hash",
+              "type": "str"
+            },
+            {
+              "name": "resolved_recipe_hash",
+              "type": "str"
+            },
+            {
+              "name": "compiler_version",
+              "type": "str"
+            },
+            {
+              "name": "provenance_digest",
+              "type": "str"
+            },
+            {
+              "name": "workflow_hash",
+              "type": "str | None"
+            },
+            {
+              "name": "workflow_step_id",
+              "type": "str | None"
+            }
+          ]
+        },
+        "SecurityResourceFacts": {
+          "fields": [
+            {
+              "name": "cpu_millis",
+              "type": "int"
+            },
+            {
+              "name": "memory_bytes",
+              "type": "int"
+            },
+            {
+              "name": "pids_limit",
+              "type": "int"
+            },
+            {
+              "name": "max_iterations",
+              "type": "int"
+            },
+            {
+              "name": "deadline_ms",
+              "type": "int"
+            }
+          ]
+        },
+        "SecurityTargetBinding": {
+          "fields": [
+            {
+              "name": "target_digest",
+              "type": "str"
+            },
+            {
+              "name": "target_canonical",
+              "type": "bytes"
+            }
+          ]
+        }
+      },
+      "source_sha256": "a4ce9c7c2dc26ab4161a5bbfc5073d62315526895fb7624cef985fda035a5f6f"
+    },
+    "hermes_fleet/templar.py": {
+      "constants": {
+        "TEMPLAR_BACKEND_RESPONSE_SCHEMA": "fleet.templar-backend-response.v1",
+        "TEMPLAR_REQUEST_SCHEMA": "fleet.templar-evaluation-request.v1",
+        "TEMPLAR_VERDICT_SCHEMA": "fleet.templar-verdict.v1",
+        "_SUPPORTED_EVENT_SCHEMAS": [
+          "fleet.learning-promotion-event.v1",
+          "fleet.security-event.v1"
+        ]
+      },
+      "dataclasses": {
+        "TemplarBackendResponse": {
+          "fields": [
+            {
+              "name": "evaluation_id",
+              "type": "str"
+            },
+            {
+              "name": "request_hash",
+              "type": "str"
+            },
+            {
+              "name": "event_hash",
+              "type": "str"
+            },
+            {
+              "name": "decision",
+              "type": "str"
+            },
+            {
+              "name": "reason_codes",
+              "type": "tuple[str, ...]"
+            }
+          ]
+        },
+        "TemplarEvaluationRequest": {
+          "fields": [
+            {
+              "name": "request_hash",
+              "type": "str"
+            },
+            {
+              "name": "event_hash",
+              "type": "str"
+            },
+            {
+              "name": "fleet_policy_digest",
+              "type": "str"
+            },
+            {
+              "name": "templar_policy",
+              "type": "TemplarPolicyRef"
+            },
+            {
+              "name": "evaluator",
+              "type": "TemplarEvaluatorIdentity"
+            },
+            {
+              "name": "issued_at_ms",
+              "type": "int"
+            },
+            {
+              "name": "deadline_ms",
+              "type": "int"
+            },
+            {
+              "name": "event",
+              "type": "Mapping[str, Any]"
+            }
+          ]
+        },
+        "TemplarEvaluatorIdentity": {
+          "fields": [
+            {
+              "name": "evaluator_id",
+              "type": "str"
+            },
+            {
+              "name": "implementation_version",
+              "type": "str"
+            },
+            {
+              "name": "model_provider",
+              "type": "str"
+            },
+            {
+              "name": "model_name",
+              "type": "str"
+            },
+            {
+              "name": "model_version",
+              "type": "str"
+            }
+          ]
+        },
+        "TemplarPolicyRef": {
+          "fields": [
+            {
+              "name": "policy_id",
+              "type": "str"
+            },
+            {
+              "name": "policy_version",
+              "type": "str"
+            },
+            {
+              "name": "policy_digest",
+              "type": "str"
+            }
+          ]
+        },
+        "TemplarVerdict": {
+          "fields": [
+            {
+              "name": "evaluation_id",
+              "type": "str"
+            },
+            {
+              "name": "request_hash",
+              "type": "str"
+            },
+            {
+              "name": "event_hash",
+              "type": "str"
+            },
+            {
+              "name": "fleet_policy_digest",
+              "type": "str"
+            },
+            {
+              "name": "templar_policy",
+              "type": "TemplarPolicyRef"
+            },
+            {
+              "name": "evaluator",
+              "type": "TemplarEvaluatorIdentity"
+            },
+            {
+              "name": "decision",
+              "type": "str"
+            },
+            {
+              "name": "reason_codes",
+              "type": "tuple[str, ...]"
+            },
+            {
+              "name": "origin",
+              "type": "str"
+            },
+            {
+              "name": "evaluation_issued_at_ms",
+              "type": "int"
+            },
+            {
+              "name": "evaluation_deadline_ms",
+              "type": "int"
+            },
+            {
+              "name": "issued_at_ms",
+              "type": "int"
+            },
+            {
+              "name": "valid_until_ms",
+              "type": "int"
+            },
+            {
+              "name": "authority",
+              "type": "str"
+            }
+          ]
+        }
+      },
+      "source_sha256": "75e24e2bf80e5b5e34f7afd4e9ad6cac82a9fd64ac52862f12e5ebe267bcddb7"
+    }
+  },
+  "schema": "agoge.fleet-contract-snapshot.v1",
+  "snapshot_hash": "sha256:14b1bc98ce7ad9844a209dec43dff556c48a7b1a065663727d669616f9a342b5",
+  "student_hash": "sha256:de6e1ca544aa883f34864d42a9532a100e26be0c9f50f39aa618a5b92e3ad6d2",
+  "student_id": "templar-v1"
+}

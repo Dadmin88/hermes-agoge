@@ -37,7 +37,10 @@ The repository already implements:
 13. provider-neutral Teacher request/response contracts with explicit training-use provenance;
 14. a deterministic Fleet-native Templar foundation Teacher across all nine current competencies;
 15. independent candidate review and conservative accepted/rejected/quarantined promotion;
-16. an optional Hermes Academy faculty bridge, live-proven with the Cybersecurity Instructor while keeping unknown-source output quarantined from training.
+16. an optional Hermes Academy faculty bridge, live-proven with the Cybersecurity Instructor while keeping unknown-source output quarantined from training;
+17. a source-derived snapshot of the Student's exact pinned Fleet Phase 19–23 contracts;
+18. a golden `fleet.security-event.v1` fixture produced and round-trip-validated by the pinned Fleet implementation;
+19. a runtime competency map that distinguishes what Templar can actually observe from what deterministic Fleet owns or withholds.
 
 The seed corpus is **not** a production Templar training corpus. It exists to prove Agoge's data and training pipeline before we generate and independently verify a large Fleet-native corpus.
 

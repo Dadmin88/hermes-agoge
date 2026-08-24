@@ -1,0 +1,129 @@
+{
+  "document": {
+    "memory_skill_risks": [
+      {
+        "evidence_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "risk_level": "medium",
+        "scope_kind": "project",
+        "signal_codes": [
+          "network-requirement"
+        ],
+        "subject_hash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "subject_kind": "skill"
+      },
+      {
+        "evidence_hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "risk_level": "high",
+        "scope_kind": "principal",
+        "signal_codes": [
+          "authority-manipulation",
+          "stored-instruction"
+        ],
+        "subject_hash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "subject_kind": "memory"
+      }
+    ],
+    "policy_mismatches": [
+      {
+        "code": "stale-capability",
+        "evidence_hash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "expected_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "observed_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "subject": "destination-capabilities"
+      }
+    ],
+    "quarantine_signals": [
+      {
+        "candidate_hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "quarantine_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "reason_codes": [
+          "network-requirement",
+          "protected-host-path"
+        ],
+        "reason_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "state": "needs-review",
+        "verification_digest": null,
+        "verification_state": "not-run"
+      }
+    ],
+    "request": {
+      "authorized_toolsets": [
+        "fleet-terminal"
+      ],
+      "capabilities_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "network": {
+        "approval_ref": null,
+        "destinations": [
+          {
+            "host": "example.com",
+            "ports": [
+              443
+            ],
+            "resolved_ips": [
+              "1.1.1.1"
+            ]
+          }
+        ],
+        "mode": "project-allowlist",
+        "policy_hash": "sha256:d139651d9bce4f9f882f00d846812586ab5c1c7810ba38210b08223c39865179"
+      },
+      "policy_digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+      "principal": {
+        "binding_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "generation": 3,
+        "kind": "owner",
+        "principal_id": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "recipe": {
+        "compiler_version": "fleet.workflow-recipe-compiler.v1",
+        "provenance_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "recipe_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+        "resolved_recipe_hash": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+        "workflow_hash": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+        "workflow_step_id": "build"
+      },
+      "requested_tools": [
+        "artifact.write",
+        "terminal.exec"
+      ],
+      "resources": {
+        "cpu_millis": 2000,
+        "deadline_ms": 5000,
+        "max_iterations": 8,
+        "memory_bytes": 536870912,
+        "pids_limit": 96
+      },
+      "run_authority_hash": "sha256:45fff9cafc6d069ff997b1e6d0659c685fbe34d6889ecfdf8e3ec67f320fed87",
+      "schema": "fleet.security-request.v1",
+      "target": {
+        "target": {
+          "generation": 7,
+          "node_id": "node-phase19",
+          "source": "local"
+        },
+        "target_digest": "sha256:3bda2126954cf2d4c84c7acb8bb4cfe96c553b9cbab67238b17d599222211401"
+      }
+    },
+    "request_hash": "sha256:40dda288745ef2ee5e8512eddb5a545144d449448900b41fafadc73f846d8419",
+    "schema": "fleet.security-event.v1",
+    "secret_interceptions": [
+      {
+        "action": "redacted",
+        "detected_count": 2,
+        "detected_kinds": [
+          "api-key",
+          "bearer-token"
+        ],
+        "evidence_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source_kind": "prompt"
+      }
+    ]
+  },
+  "document_sha256": "5dcfa163d2276863469507ca25ab33f87ddc473d0a00915371aaf7743f888ba2",
+  "event_hash": "sha256:5dcfa163d2276863469507ca25ab33f87ddc473d0a00915371aaf7743f888ba2",
+  "event_schema": "fleet.security-event.v1",
+  "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+  "request_hash": "sha256:40dda288745ef2ee5e8512eddb5a545144d449448900b41fafadc73f846d8419",
+  "schema": "agoge.fleet-golden-fixture.v1",
+  "source_test": "tests/unit/test_security_event.py::event"
+}
