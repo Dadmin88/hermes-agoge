@@ -316,6 +316,30 @@ def cmd_model_probe(args: argparse.Namespace) -> int:
     return 0 if result["status"] == "benchmark-compatible" else 2
 
 
+def cmd_base_tournament(args: argparse.Namespace) -> int:
+    from .base_tournament import run_base_tournament
+
+    result = run_base_tournament(
+        competency_path=Path(args.competency),
+        run_dirs=[Path(item) for item in args.run],
+    )
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    _json(
+        {
+            "tournament_id": result["tournament_id"],
+            "candidate_count": result["candidate_count"],
+            "hard_gate_pass_count": result["hard_gate_pass_count"],
+            "recommended_for_next_stage": result["recommended_for_next_stage"],
+            "pareto_frontier": result["pareto_frontier"],
+            "graduated": result["graduated"],
+            "out": str(out),
+        }
+    )
+    return 0
+
+
 def cmd_base_benchmark_prepare(args: argparse.Namespace) -> int:
     from .base_benchmark import prepare_base_candidate_run
 
@@ -549,6 +573,19 @@ def parser() -> argparse.ArgumentParser:
     model_probe.add_argument("--num-labels", type=int, required=True)
     model_probe.add_argument("--out", default=None)
     model_probe.set_defaults(func=cmd_model_probe)
+    base_tournament = subs.add_parser(
+        "base-tournament",
+        help="compare equal-budget local base-model adaptation runs under one Competency Contract",
+    )
+    base_tournament.add_argument("--competency", required=True)
+    base_tournament.add_argument(
+        "--run",
+        action="append",
+        required=True,
+        help="base-benchmark run directory; provide at least twice",
+    )
+    base_tournament.add_argument("--out", required=True)
+    base_tournament.set_defaults(func=cmd_base_tournament)
     benchmark_prepare = subs.add_parser(
         "base-benchmark-prepare",
         help="prepare a non-promotable candidate-Student run for local base-model comparison",

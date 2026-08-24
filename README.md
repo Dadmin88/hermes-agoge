@@ -54,7 +54,8 @@ Agoge already implements a substantial end-to-end vertical slice:
 16. live Hermes provider catalog discovery and pricing/free-tier metadata for API-hosted runtime candidates;
 17. credential-isolated API inference through short-lived Hermes subprocesses so Agoge never receives or persists provider credentials;
 18. API Exams using the same Templar projection, closed contract, held-out split, false-ALLOW/false-DENY metrics, latency, and usage accounting as local candidates;
-19. a normalized **Runtime Tournament** that compares local and API candidates under one Competency Contract and recommends only a next-stage candidate, never automatic graduation.
+19. a normalized **Runtime Tournament** that compares local and API candidates under one Competency Contract and recommends only a next-stage candidate, never automatic graduation;
+20. an equal-budget **Base Adaptation Tournament** that recomputes Exam metrics, verifies identical training budgets, ranks trainable bases on capability, and exposes a capability/resource Pareto frontier across training time, CUDA footprint, and inference latency.
 
 ## First mixed-runtime proof
 
@@ -83,15 +84,11 @@ Agoge deliberately separates two related searches.
 
 `agoge model-audit` discovers Hugging Face candidates without assuming any family. The shortlist is then subjected to `agoge model-probe` on the actual training machine.
 
-The first cross-family probe has already verified:
+The current compatibility/audit path has admitted multiple Qwen, Llama-derived, Phi, and MiniCPM candidates while rejecting `microsoft/bitnet-b1.58-2B-4T` for this task because the installed Transformers stack exposes no compatible sequence-classification mapping.
 
-- `Qwen/Qwen3-0.6B` ✅
-- `TinyLlama/TinyLlama-1.1B-Chat-v1.0` ✅
-- `microsoft/phi-1_5` ✅
-- `HuggingFaceTB/SmolLM2-1.7B-Instruct` ✅
-- `microsoft/bitnet-b1.58-2B-4T` ❌ for the current sequence-classification backend because the installed Transformers stack exposes no compatible sequence-classification mapping.
+Six compatible candidates have now completed the same 100-step Templar adaptation budget. `Qwen/Qwen3-0.6B` wins the capability ranking at 93.3% exact disposition on validation, while `Qwen/Qwen2.5-0.5B-Instruct` remains on the capability/resource Pareto frontier at 86.7% exact with lower training time, CUDA footprint, and inference latency. The other evaluated challengers were MiniCPM5-1B, SmolLM2-1.7B-Instruct, TinyLlama-1.1B, and Phi-1.5.
 
-Hub popularity never selects the winner. Candidate bases must earn selection on the target Competency Contract.
+Hub popularity never selects the winner. Candidate bases must earn selection on the target Competency Contract, and another base should replace the current winner when a later audit/tournament proves it better.
 
 ### API-hosted runtimes
 

@@ -502,3 +502,58 @@ The tournament explicitly reports `graduated: false`. Remaining blockers include
 - release-level availability/privacy/offline/cost policy for any remote Templar deployment.
 
 This proof establishes that Agoge can now **discover, train, call, measure, hard-gate, and compare local and API-hosted model runtimes under one capability target**.
+
+## 2026-08-24 - Equal-budget local base adaptation tournament
+
+### Purpose
+
+Prove that Agoge can choose a trainable local base from evidence rather than family preference, while keeping runtime selection distinct from base-selection economics.
+
+Every candidate received the same Templar Competency Contract, 504-event combined corpus, event-stratified 414/45/45 split, 16-class disposition registry, QLoRA sequence-classification backend, seed, sampler, and fixed adaptation budget:
+
+- max steps: 100;
+- batch size: 8;
+- gradient accumulation: 1;
+- learning rate: `5e-5`;
+- LoRA rank/alpha: 16/32;
+- NF4 4-bit base with double quantization;
+- BF16 compute;
+- max length: 512;
+- class-balanced sampling.
+
+Candidates were first required to pass the local compatibility probe. `microsoft/bitnet-b1.58-2B-4T` was rejected before training because the installed Transformers stack exposes no compatible sequence-classification mapping. Six compatible candidates entered the equal-budget tournament.
+
+### Results
+
+| Base | Validation decision | Exact disposition | False ALLOW | Train runtime | Peak CUDA | Median inference |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `Qwen/Qwen3-0.6B` | **95.6%** | **93.3%** | **0** | ~60.0 s | ~1.43 GB | ~49.4 ms |
+| `Qwen/Qwen2.5-0.5B-Instruct` | 86.7% | 86.7% | 0 | **~48.9 s** | **~1.27 GB** | **~38.2 ms** |
+| `openbmb/MiniCPM5-1B` | 77.8% | 68.9% | 0 | ~79.3 s | ~1.92 GB | ~38.4 ms |
+| `HuggingFaceTB/SmolLM2-1.7B-Instruct` | 57.8% | 46.7% | 0 | ~193.5 s | ~2.60 GB | ~63.6 ms |
+| `TinyLlama/TinyLlama-1.1B-Chat-v1.0` | 53.3% | 44.4% | 0 | ~131.0 s | ~1.92 GB | ~41.7 ms |
+| `microsoft/phi-1_5` | 46.7% | 31.1% | 0 | ~154.4 s | ~2.25 GB | ~50.6 ms |
+
+All six candidates remained conservative on this validation split with zero false-ALLOWs, so capability and resource evidence separated the field rather than the safety gate alone.
+
+Agoge's dedicated Base Adaptation Tournament recomputes capability metrics from Exam rows, verifies that every candidate used the same training budget, requires benchmark-only/non-promotable provenance, and ranks final capability before resource tie-breakers. It separately reports a capability/resource Pareto frontier rather than pretending one scalar score captures every deployment tradeoff.
+
+Tournament ID: `sha256:ce30ea7632522eb9a4393e915c38c5179c5bf83c4cb43a68827ddcb475aa2df8`.
+
+Result:
+
+- recommended for next stage: `Qwen/Qwen3-0.6B`;
+- Pareto frontier: `Qwen/Qwen3-0.6B` and `Qwen/Qwen2.5-0.5B-Instruct`;
+- `Qwen3-0.6B` wins on learned Templar capability;
+- `Qwen2.5-0.5B-Instruct` remains a meaningful efficiency alternative because it trains/infer faster with lower CUDA footprint while retaining substantially better capability than the other non-Qwen challengers;
+- tournament reports `graduated: false` and requires corpus rebinding before any benchmark candidate could be promoted.
+
+### What this proof establishes
+
+The current Qwen3 research base is no longer merely a manually chosen incumbent. It has now defended its position against multiple independently audited, backend-compatible model families under an equal adaptation budget.
+
+The result does **not** create a permanent Qwen preference. Future Hugging Face candidates must be allowed to enter the same audit -> compatibility probe -> equal-budget benchmark path, and another base should replace Qwen when the evidence supports it.
+
+### Remaining blockers
+
+Base selection is still foundation evidence. Templar still requires fresh semantic transfer, immutable adversarial evaluation, calibration/REVIEW policy, production Fleet integration, and release-level regression evidence before graduation.

@@ -75,4 +75,10 @@ Hermes owns provider credentials. Agoge's API benchmark path uses a short-lived 
 
 ## Current Templar status
 
-`Qwen/Qwen3-0.6B` remains the pinned Templar research base. It was originally selected manually, but its Competency-bound adapter has now also won the first mixed local/API foundation Runtime Tournament against the strongest three currently free Nous candidates. That does **not** complete the base-model audit: TinyLlama 1.1B, Phi-1.5, and SmolLM2 1.7B have already passed the exact local 4-bit/PEFT sequence-classification compatibility probe and still need equal-budget adaptation benchmarks before Qwen can be called the best trainable base for Templar. Microsoft BitNet passed Hub metadata policy but was rejected by the current backend because Transformers exposes no compatible sequence-classification mapping for that model type.
+`Qwen/Qwen3-0.6B` remains the pinned Templar research base, but it is no longer merely a manually chosen incumbent. It has now won both the first mixed local/API foundation Runtime Tournament and the first equal-budget local Base Adaptation Tournament.
+
+Under the same 100-step Templar adaptation budget it outperformed `Qwen/Qwen2.5-0.5B-Instruct`, `openbmb/MiniCPM5-1B`, `HuggingFaceTB/SmolLM2-1.7B-Instruct`, `TinyLlama/TinyLlama-1.1B-Chat-v1.0`, and `microsoft/phi-1_5` on validation capability while maintaining zero false-ALLOWs. `Qwen/Qwen2.5-0.5B-Instruct` remains on the capability/resource Pareto frontier because it trained and inferred faster with lower CUDA footprint while retaining substantially stronger capability than the other challengers.
+
+Microsoft BitNet passed Hub metadata policy but was rejected before training because the installed Transformers stack exposes no compatible sequence-classification mapping for that model type.
+
+This is evidence for Templar's current next-stage base, not an Agoge-wide model preference. Future Hub candidates must be allowed to challenge Qwen through the same metadata audit -> local compatibility probe -> equal-budget Base Adaptation Tournament, and a better candidate should replace it when the evidence supports that change.
