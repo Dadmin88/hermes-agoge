@@ -1,0 +1,84 @@
+{
+  "candidate_batch_manifest": "students/templar/candidates/phase23-learning-events-v1/manifest.json",
+  "competencies": [
+    {
+      "accepted": 36,
+      "competency": "authority-boundaries",
+      "generated": 36,
+      "quarantined": 0,
+      "rejected": 0,
+      "review_accept": 36,
+      "review_quarantine": 0,
+      "review_reject": 0
+    },
+    {
+      "accepted": 36,
+      "competency": "benign-nonoverblocking",
+      "generated": 36,
+      "quarantined": 0,
+      "rejected": 0,
+      "review_accept": 36,
+      "review_quarantine": 0,
+      "review_reject": 0
+    },
+    {
+      "accepted": 36,
+      "competency": "capability-combinations",
+      "generated": 36,
+      "quarantined": 0,
+      "rejected": 0,
+      "review_accept": 36,
+      "review_quarantine": 0,
+      "review_reject": 0
+    },
+    {
+      "accepted": 36,
+      "competency": "prompt-injection",
+      "generated": 36,
+      "quarantined": 0,
+      "rejected": 0,
+      "review_accept": 36,
+      "review_quarantine": 0,
+      "review_reject": 0
+    },
+    {
+      "accepted": 36,
+      "competency": "secret-handling",
+      "generated": 36,
+      "quarantined": 0,
+      "rejected": 0,
+      "review_accept": 36,
+      "review_quarantine": 0,
+      "review_reject": 0
+    },
+    {
+      "accepted": 36,
+      "competency": "skill-memory-poisoning",
+      "generated": 36,
+      "quarantined": 0,
+      "rejected": 0,
+      "review_accept": 36,
+      "review_quarantine": 0,
+      "review_reject": 0
+    },
+    {
+      "accepted": 36,
+      "competency": "uncertainty-review",
+      "generated": 36,
+      "quarantined": 0,
+      "rejected": 0,
+      "review_accept": 36,
+      "review_quarantine": 0,
+      "review_reject": 0
+    }
+  ],
+  "corpus_hash": "sha256:7525c8b27a14b4017cb103adf42ba6c4f2c33f6a5dfa2b2aa7f652ad0738358f",
+  "count": 252,
+  "event_family": "fleet.learning-promotion-event.v1",
+  "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+  "reviewer_id": "templar-phase23-independent-rule-reviewer-v1",
+  "schema": "agoge.templar-foundation-corpus-manifest.v1",
+  "status": "accepted-foundation-curriculum-not-graduation-exam",
+  "student_id": "templar-v1",
+  "teacher_id": "fleet-learning-runtime-oracle@591ea20bb1b7268254ddeaffaf16a5f853aa2db5"
+}

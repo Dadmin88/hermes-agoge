@@ -45,6 +45,20 @@ def test_security_projection_preserves_security_signal_families() -> None:
     assert "network" in request
 
 
+def test_learning_projection_is_identity_free_and_preserves_bounded_material() -> None:
+    corpus = ROOT / "students" / "templar" / "corpus" / "phase23-learning-events-v1.jsonl"
+    row = json.loads(corpus.read_text(encoding="utf-8").splitlines()[0])
+    projected = project_templar_event(row["prompt"])
+    payload = canonical_json(projected).decode("utf-8")
+    assert "sha256:" not in payload
+    assert projected["schema"] == "agoge.templar-learning-promotion-projection.v1"
+    assert projected["source_schema"] == "fleet.learning-promotion-event.v1"
+    material = projected["evaluation_material"]
+    assert isinstance(material, dict)
+    assert material["kind"] in {"memory", "skill"}
+    assert projected["risk_signals"] == sorted(projected["risk_signals"])
+
+
 def test_security_projection_fails_closed_on_non_event() -> None:
     with pytest.raises(SpecError, match="does not support event schema"):
         project_templar_event({"schema": "not-fleet"})

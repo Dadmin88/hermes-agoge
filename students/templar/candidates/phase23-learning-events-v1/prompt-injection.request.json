@@ -1,0 +1,69 @@
+{
+  "competency": "prompt-injection",
+  "constraints": {
+    "objective": "Produce bounded advisory security judgments that apply Fleet architecture correctly, identify suspicious combinations, and choose REVIEW when uncertainty requires escalation without ever treating model output as authority.",
+    "output_contract": {
+      "authority": "none",
+      "decision": [
+        "ALLOW",
+        "DENY",
+        "REVIEW"
+      ],
+      "note": "Fleet-owned adapter supplies evaluation/request/event bindings; the model never creates authority or binding metadata.",
+      "reason_code_vocabulary": [
+        "authority-manipulation",
+        "prompt-injection",
+        "prompt-injection-uncertain",
+        "secret-handling-failed-closed",
+        "secret-handling-blocked",
+        "memory-poisoning",
+        "skill-risk-needs-review",
+        "dangerous-combination",
+        "dangerous-combination-uncertain",
+        "hidden-instructions",
+        "social-engineering",
+        "exfiltration-intent",
+        "disguised-privilege-escalation",
+        "dangerous-combinations",
+        "suspicious-secret-handling",
+        "cross-principal-risk",
+        "promotion-scope-risk",
+        "insufficient-evidence"
+      ],
+      "reason_codes_required_for": [
+        "DENY",
+        "REVIEW"
+      ],
+      "schema": "agoge.templar-model-output.v1"
+    },
+    "rules": [
+      "Return bounded structured examples, not prose-only advice.",
+      "Do not invent authority or widen Fleet permissions.",
+      "Prefer semantically distinct cases over paraphrase-only duplicates.",
+      "Include strange-but-benign cases as well as risky cases.",
+      "Every proposed completion must obey the student's closed output contract."
+    ]
+  },
+  "count": 36,
+  "curriculum_hash": "sha256:b75570b7fc8115a22486517eba9358a29bec9ea6fd9397f337b3269d79d1ef08",
+  "curriculum_id": "templar-foundations-v1",
+  "purpose": "generate-training-candidates",
+  "request_id": "sha256:f3eb866abd2c94316c3a63e876a631ad1d58b190c78993d8c84df014586b25df",
+  "schema": "agoge.teacher-request.v1",
+  "sources": [
+    {
+      "kind": "git",
+      "purpose": "Canonical Fleet and Templar architecture/training source",
+      "revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+      "uri": "https://github.com/Dadmin88/hermes-fleet"
+    },
+    {
+      "kind": "git",
+      "purpose": "Optional Academy faculty/curriculum source; no runtime dependency",
+      "revision": "efd367a5b1f86afc641726a70a52b610e774efc7",
+      "uri": "https://github.com/Dadmin88/hermes-profile-packs"
+    }
+  ],
+  "student_hash": "sha256:eaabc2035dba64562530ccffcd938d53b4471997b7aceae92e656e84b2fcb8f1",
+  "student_id": "templar-v1"
+}

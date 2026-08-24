@@ -192,6 +192,14 @@ def cmd_review_templar_phase19(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_review_templar_phase23(args: argparse.Namespace) -> int:
+    from .reviewers.templar_phase23 import review_file
+
+    counts = review_file(Path(args.candidates), Path(args.out))
+    _json({**counts, "out": args.out})
+    return 0
+
+
 def cmd_candidate_promote(args: argparse.Namespace) -> int:
     from .corpus import read_jsonl, write_jsonl
     from .review import load_reviews, promote_candidates
@@ -475,6 +483,13 @@ def parser() -> argparse.ArgumentParser:
     phase19_review.add_argument("--candidates", required=True)
     phase19_review.add_argument("--out", required=True)
     phase19_review.set_defaults(func=cmd_review_templar_phase19)
+    phase23_review = subs.add_parser(
+        "review-templar-phase23",
+        help="independently review Fleet Phase 23 learning-promotion candidates",
+    )
+    phase23_review.add_argument("--candidates", required=True)
+    phase23_review.add_argument("--out", required=True)
+    phase23_review.set_defaults(func=cmd_review_templar_phase23)
     candidate_promote = subs.add_parser(
         "candidate-promote",
         help="apply independent reviews and partition candidates into accepted/rejected/quarantined sets",
