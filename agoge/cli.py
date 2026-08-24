@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 from .askesis import prepare_run
-from .spec import CurriculumSpec, SpecError, StudentSpec
+from .spec import CompetencySpec, CurriculumSpec, SpecError, StudentSpec
 
 
 def _json(value: object) -> None:
@@ -19,17 +19,25 @@ def cmd_validate(args: argparse.Namespace) -> int:
     student_path = Path(args.student)
     student = StudentSpec.load(student_path)
     curriculum = CurriculumSpec.load(student_path.parent / student.curriculum)
-    _json(
-        {
-            "ok": True,
-            "student_id": student.student_id,
-            "student_hash": student.content_hash,
-            "curriculum_id": curriculum.curriculum_id,
-            "curriculum_hash": curriculum.content_hash,
-            "base_model": student.base_model,
-            "base_model_revision": student.base_model_revision,
-        }
-    )
+    competency_path = student_path.parent / "competency.json"
+    competency: CompetencySpec | None = None
+    if competency_path.is_file():
+        competency = CompetencySpec.load(competency_path)
+        if competency.student_id != student.student_id:
+            raise SpecError("competency contract belongs to another Student")
+    result: dict[str, object] = {
+        "ok": True,
+        "student_id": student.student_id,
+        "student_hash": student.content_hash,
+        "curriculum_id": curriculum.curriculum_id,
+        "curriculum_hash": curriculum.content_hash,
+        "base_model": student.base_model,
+        "base_model_revision": student.base_model_revision,
+    }
+    if competency is not None:
+        result["competency_id"] = competency.competency_id
+        result["competency_hash"] = competency.content_hash
+    _json(result)
     return 0
 
 
@@ -226,6 +234,104 @@ def cmd_candidate_promote(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_api_model_audit(args: argparse.Namespace) -> int:
+    from .api_runtime import discover_hermes_api_catalog
+
+    result = discover_hermes_api_catalog(
+        provider=args.provider,
+        free_only=args.free_only,
+        refresh=args.refresh,
+    )
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    _json(
+        {
+            "catalog_id": result["catalog_id"],
+            "provider": result["provider"],
+            "count": result["count"],
+            "free_only": result["free_only"],
+            "out": str(out),
+        }
+    )
+    return 0
+
+
+def cmd_examine_api(args: argparse.Namespace) -> int:
+    from .api_exam import examine_api_runtime
+
+    result = examine_api_runtime(
+        student_path=Path(args.student),
+        competency_path=Path(args.competency),
+        corpus_path=Path(args.corpus),
+        provider=args.provider,
+        model=args.model,
+        split=args.split,
+        split_strategy=args.split_strategy,
+        max_tokens=args.max_tokens,
+        temperature=args.temperature,
+        request_timeout_seconds=args.request_timeout_seconds,
+        workers=args.workers,
+        limit=args.limit,
+        out=Path(args.out),
+    )
+    _json(result["summary"])
+    return 0
+
+
+def cmd_runtime_tournament(args: argparse.Namespace) -> int:
+    from .runtime_tournament import run_runtime_tournament
+
+    result = run_runtime_tournament(
+        competency_path=Path(args.competency),
+        exam_paths=[Path(item) for item in args.exam],
+        catalog_paths=[Path(item) for item in args.catalog],
+    )
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    _json(
+        {
+            "tournament_id": result["tournament_id"],
+            "candidate_count": result["candidate_count"],
+            "hard_gate_pass_count": result["hard_gate_pass_count"],
+            "recommended_for_next_stage": result["recommended_for_next_stage"],
+            "graduated": result["graduated"],
+            "out": str(out),
+        }
+    )
+    return 0
+
+
+def cmd_model_probe(args: argparse.Namespace) -> int:
+    from .model_probe import probe_sequence_classifier
+
+    result = probe_sequence_classifier(
+        model_id=args.model,
+        revision=args.revision,
+        num_labels=args.num_labels,
+        out=Path(args.out) if args.out else None,
+    )
+    _json(result)
+    return 0 if result["status"] == "benchmark-compatible" else 2
+
+
+def cmd_base_benchmark_prepare(args: argparse.Namespace) -> int:
+    from .base_benchmark import prepare_base_candidate_run
+
+    manifest = prepare_base_candidate_run(
+        reference_student_path=Path(args.student),
+        competency_path=Path(args.competency),
+        corpus_path=Path(args.corpus),
+        model_id=args.model,
+        revision=args.revision,
+        out_dir=Path(args.out),
+        split_strategy=args.split_strategy,
+    )
+    _json(manifest)
+    return 0
+
+
 def cmd_model_audit(args: argparse.Namespace) -> int:
     from .model_audit import ModelAuditCriteria, audit_huggingface
 
@@ -281,6 +387,7 @@ def cmd_train(args: argparse.Namespace) -> int:
             max_length=args.max_length,
             per_device_train_batch_size=args.batch_size,
             gradient_accumulation_steps=args.gradient_accumulation_steps,
+            balance_mode=args.balance_mode,
         )
     _json(result)
     return 0
@@ -411,6 +518,53 @@ def parser() -> argparse.ArgumentParser:
     model_audit.add_argument("--sort", default="likes")
     model_audit.add_argument("--out", required=True)
     model_audit.set_defaults(func=cmd_model_audit)
+    api_model_audit = subs.add_parser(
+        "api-model-audit",
+        help="discover live API-hosted runtime candidates through Hermes provider catalogs",
+    )
+    api_model_audit.add_argument("--provider", required=True)
+    api_model_audit.add_argument("--free-only", action="store_true")
+    api_model_audit.add_argument("--refresh", action="store_true")
+    api_model_audit.add_argument("--out", required=True)
+    api_model_audit.set_defaults(func=cmd_api_model_audit)
+    runtime_tournament = subs.add_parser(
+        "runtime-tournament",
+        help="rank local and API runtime candidates under one Competency Contract",
+    )
+    runtime_tournament.add_argument("--competency", required=True)
+    runtime_tournament.add_argument(
+        "--exam", action="append", required=True, help="candidate Exam JSON; repeat per runtime"
+    )
+    runtime_tournament.add_argument(
+        "--catalog", action="append", default=[], help="optional API catalog JSON for pricing/free metadata"
+    )
+    runtime_tournament.add_argument("--out", required=True)
+    runtime_tournament.set_defaults(func=cmd_runtime_tournament)
+    model_probe = subs.add_parser(
+        "model-probe",
+        help="prove one exact model revision can load as a local 4-bit PEFT sequence classifier",
+    )
+    model_probe.add_argument("--model", required=True)
+    model_probe.add_argument("--revision", required=True)
+    model_probe.add_argument("--num-labels", type=int, required=True)
+    model_probe.add_argument("--out", default=None)
+    model_probe.set_defaults(func=cmd_model_probe)
+    benchmark_prepare = subs.add_parser(
+        "base-benchmark-prepare",
+        help="prepare a non-promotable candidate-Student run for local base-model comparison",
+    )
+    benchmark_prepare.add_argument("--student", required=True)
+    benchmark_prepare.add_argument("--competency", required=True)
+    benchmark_prepare.add_argument("--corpus", required=True)
+    benchmark_prepare.add_argument("--model", required=True)
+    benchmark_prepare.add_argument("--revision", required=True)
+    benchmark_prepare.add_argument(
+        "--split-strategy",
+        choices=("stable", "stratified", "event-stratified"),
+        default="event-stratified",
+    )
+    benchmark_prepare.add_argument("--out", required=True)
+    benchmark_prepare.set_defaults(func=cmd_base_benchmark_prepare)
     validate = subs.add_parser("validate", help="validate one student and curriculum contract")
     validate.add_argument("--student", required=True)
     validate.set_defaults(func=cmd_validate)
@@ -423,9 +577,12 @@ def parser() -> argparse.ArgumentParser:
     )
     prepare.add_argument(
         "--split-strategy",
-        choices=("stable", "stratified"),
+        choices=("stable", "stratified", "event-stratified"),
         default="stable",
-        help="deterministic split policy; stratified preserves disposition families in held-out sets",
+        help=(
+            "deterministic split policy; stratified preserves disposition families, "
+            "event-stratified also preserves each runtime event schema independently"
+        ),
     )
     prepare.add_argument("--out", required=True)
     prepare.set_defaults(func=cmd_prepare)
@@ -516,6 +673,40 @@ def parser() -> argparse.ArgumentParser:
     )
     examine.add_argument("--max-new-tokens", type=int, default=128)
     examine.set_defaults(func=cmd_examine)
+    examine_api = subs.add_parser(
+        "examine-api",
+        help="evaluate one API-hosted runtime candidate against a Competency Contract",
+    )
+    examine_api.add_argument("--student", required=True)
+    examine_api.add_argument("--competency", required=True)
+    examine_api.add_argument("--corpus", required=True)
+    examine_api.add_argument("--provider", required=True)
+    examine_api.add_argument("--model", required=True)
+    examine_api.add_argument(
+        "--split", choices=("train", "validation", "test"), default="validation"
+    )
+    examine_api.add_argument(
+        "--split-strategy",
+        choices=("stable", "stratified", "event-stratified"),
+        default="event-stratified",
+    )
+    examine_api.add_argument("--max-tokens", type=int, default=128)
+    examine_api.add_argument("--temperature", type=float, default=0.0)
+    examine_api.add_argument(
+        "--request-timeout-seconds",
+        type=float,
+        default=30.0,
+        help="per-request API runtime deadline; slow endpoints fail the screen instead of blocking it",
+    )
+    examine_api.add_argument("--workers", type=int, default=2)
+    examine_api.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="deterministically screen only the first N examples from the selected split",
+    )
+    examine_api.add_argument("--out", required=True)
+    examine_api.set_defaults(func=cmd_examine_api)
     compare_seqcls = subs.add_parser(
         "compare-seqcls",
         help="compare untrained and adapted sequence-classification Exam results",
@@ -556,6 +747,23 @@ def parser() -> argparse.ArgumentParser:
         type=int,
         default=1,
         help="per-device batch size for sequence-classification QLoRA",
+    )
+    train.add_argument(
+        "--balance-mode",
+        choices=(
+            "none",
+            "class",
+            "event-stratum",
+            "hierarchical",
+            "decision-hierarchical",
+        ),
+        default="class",
+        help=(
+            "sequence-classification resampling policy; event-stratum balances each "
+            "event schema + competency + disposition group; hierarchical equalizes "
+            "disposition classes across those groups; decision-hierarchical first "
+            "equalizes ALLOW/DENY/REVIEW, then reason dispositions, then runtime strata"
+        ),
     )
     train.add_argument("--gradient-accumulation-steps", type=int, default=8)
     train.set_defaults(func=cmd_train)

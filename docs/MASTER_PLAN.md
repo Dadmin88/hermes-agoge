@@ -1,18 +1,18 @@
 # Hermes Agoge Master Plan v0.2
 
-## Current implementation status - 2026-08-23
+## Current implementation status - 2026-08-24
 
 - Phase 0: initial architecture/boundary contract implemented.
-- Phase 1: initial closed student/curriculum contracts implemented; exact base-model/source revisions are pinned.
+- Phase 1: closed Student, base-independent Competency, and Curriculum contracts are implemented; exact base-model/source revisions are pinned and new Askesis runs snapshot the Competency identity alongside the Student.
 - Phase 2: provenance substrate and deterministic seed corpus implemented; production candidate lifecycle remains open.
 - Phase 3: deterministic prototype split implemented; named immutable production exam banks remain open.
 - Phase 4: immutable prepared-run snapshot/manifest implemented; full lifecycle state machine remains open.
 - Phase 5: local QLoRA smoke proof complete on Katana RTX 4060; production tuning/OOM policy remains open.
-- Phase 6: strict base/adapter Exam plus comparison implemented; competency/security metrics remain open.
+- Phase 6: strict local and API Runtime Exams, base/adapter comparison, exact-disposition scoring, false-ALLOW/false-DENY metrics, contract validity, and local/API latency measurements are implemented; fresh-transfer, adversarial, and calibration suites remain open.
 - Phase 7: provider-neutral Teacher requests/responses, training-use provenance, deterministic Templar foundation teacher, independent candidate review, and conservative promotion partition implemented; provider-specific model adapters/disagreement adjudication remain open.
 - Phase 8: Academy faculty binding/brief/import bridge implemented and proven live with `academy-cybersecurity-instructor`; Academy remains optional and generated content remains blocked from training when source terms are unknown.
-- Phase 9: source-derived pinned Fleet contract snapshot, real runtime-oracle generators and independent reviewers for both supported Templar event families, canonical closed reason-code vocabulary, anti-curriculum-leakage rules, identity-free model projections, and separate 252-event independently accepted Phase 19 and Phase 23 foundation corpora are implemented. Bounded local QLoRA sequence-classifier Askesis runs reached 19/19 exact Phase 19 test dispositions and 26/26 exact Phase 23 test dispositions (with 26/26 validation) on deterministic foundation-family splits. These are foundation proofs only. A combined two-family adapter, fresh transfer, calibration, and immutable adversarial banks remain open.
-- Phase 14-17: shared-base/profile specialization/continuing neural education/Agoge model-trainer operator profile are explicit future roadmap tracks, gated on Templar proving Agoge's production path. The provider-neutral Hugging Face Base Model Auditor is already implemented and live-smoke-proven as an early Phase 17 prerequisite; hardware/backend probes and Student-local shortlist benchmarking remain open.
+- Phase 9: source-derived pinned Fleet contracts, runtime-oracle generators and independent reviewers for both supported Templar event families, closed disposition vocabularies, anti-curriculum-leakage rules, identity-free model projections, and separate 252-event accepted Phase 19/23 corpora are implemented. Those are combined into a content-addressed 504-event two-family runtime foundation corpus with event-family-aware splitting. A Competency-bound unified local QLoRA classifier reaches 44/45 exact dispositions on validation with zero false-ALLOWs and roughly 48 ms median latency on Katana; test remains safely conservative at 42/45 exact with zero false-ALLOWs. Fresh transfer, calibration, immutable adversarial banks, and production Fleet integration remain open.
+- Phase 14-17: shared-base/profile specialization/continuing neural education/Agoge model-trainer operator profile are explicit future roadmap tracks. The Hugging Face Base Model Auditor, local sequence-classification compatibility probe, base-independent Competency Contract, non-promotable candidate-Student benchmark path, Hermes API-runtime catalog/inference bridge, and mixed local/API Runtime Tournament are implemented. Live Nous discovery currently exposes 371 models with seven zero-priced models on the active catalog; the strongest three free API candidates were fully examined against Templar and all lost the foundation tournament to the locally trained specialist on hard safety/contract gates. Generic Hermes API-key providers using `chat_completions` are supported by the credential-isolated bridge; native/non-chat protocols, provider-hosted fine-tuning adapters, and the full local base-model adaptation tournament remain open.
 - Phase 18-27: capability intervention routing, automated training-strategy selection, distillation, agent-environment RL, adapter composition, artifact genealogy, tournaments, Fleet-backed training placement, the Academy-to-Agoge closed loop, and the autonomous capability-factory challenge are now explicit roadmap tracks. These extend Agoge without changing its existing security boundaries or making every capability request a gradient-training request.
 
 See `PROOFS.md` for bounded evidence. No current Templar model is production-ready.
@@ -50,8 +50,17 @@ mechanically verifiable interactive capability gap
 strong teacher already demonstrates desired capability
         -> distillation when training rights and provenance permit it
 
-underlying base cannot support required capability efficiently
-        -> select a better base model
+underlying local base cannot support required capability efficiently
+        -> audit/select a better trainable base model
+
+existing API-hosted model already satisfies the capability better
+        -> select that API model/runtime; no weight change required
+
+remote model is strongest as a teacher rather than final runtime
+        -> use it for curriculum/critique/distillation only when provenance and training-use rights permit
+
+provider exposes an approved hosted fine-tuning path
+        -> treat hosted training as a distinct versioned Training Strategy, not as ordinary inference
 
 already competent or evidence too weak
         -> no model change
@@ -73,7 +82,10 @@ Capability diagnosis
         +------> Agoge Askesis
         |           changes model artifacts
         |
-        +------> Base-model replacement
+        +------> Local/base-model replacement
+        |
+        +------> API-hosted model/runtime selection
+        |           may satisfy the goal with no weight change
         |
         v
 Evaluation / fresh transfer / regression proof
@@ -83,8 +95,10 @@ Graduated capability or explicit rejection
 ```
 
 - Academy teaches agents through normal Hermes conversation, goals, and skills.
-- Agoge changes model artifacts through reproducible Askesis runs.
-- Evaluation proves capability transfer and catches regressions.
+- Agoge changes model artifacts through reproducible Askesis runs when weight-level learning is justified.
+- API-hosted models are first-class runtime candidates and may satisfy a Competency Contract without any Askesis. Runtime-use rights, training-use rights, and hosted-fine-tuning rights are tracked separately.
+- The same remote/API model may occupy different roles at different times: final inference runtime, Teacher/critic, distillation source, or provider-hosted training target. Those roles are never conflated implicitly.
+- Evaluation proves capability transfer and catches regressions across local and API-hosted candidates using the same target/anchor evidence whenever the output/task contract permits a fair comparison.
 - Fleet may eventually provide placement, reservations, isolation, and distributed compute for Agoge jobs, but Fleet does not choose educational/training semantics.
 - Agoge core remains independent of Fleet, Keryx, Nodescale, and Academy runtime imports.
 - Academy remains fully useful without Agoge.
@@ -104,7 +118,9 @@ The desired long-term outcome is not merely a collection of fine-tuning scripts.
 - Academy is optional faculty, never a runtime dependency.
 - Agoge is generic; Templar is the first reference student, not a hard dependency.
 - No model output may grant authority merely because Agoge trained it.
-- Not every capability-acquisition request produces an Askesis. Agoge may route to Academy/native Hermes learning, select another base model, or conclude that no model change is justified.
+- Not every capability-acquisition request produces an Askesis. Agoge may route to Academy/native Hermes learning, select another local base model, select an API-hosted runtime model, or conclude that no model change is justified.
+- Model location is not a capability category. Local/downloadable weights, API-hosted inference, and provider-hosted training are execution/runtime modes that compete or cooperate under the same Competency Contract.
+- Inference-use permission does not imply training-use permission; training-use permission does not imply hosted fine-tuning support; all three are explicit provider/model capabilities.
 
 Acceptance: architecture contract and dependency direction are documented and tested by package structure.
 
@@ -539,7 +555,11 @@ run Capability Intervention Router
    +----> no model change when already competent
    |
    v
-choose/benchmark candidate base model(s)
+audit/benchmark candidate model runtimes
+   |
+   +----> API-hosted runtime wins -> no weight change required
+   |
+   +----> trainable/downloadable base wins -> continue below
    |
    v
 choose Training Strategy
@@ -579,14 +599,19 @@ Implement:
 - a Hermes profile with explicit SOUL/role/jobs and Agoge operating skills;
 - natural-language goal intake converted into a bounded Competency Contract and Student/Curriculum proposal;
 - automatic Intervention Plan before any training job is created;
-- a provider-neutral **Base Model Auditor** that treats Hugging Face Hub as a discovery/catalog source rather than assuming Qwen or any other family;
-- Hugging Face candidate discovery using task, library, parameter-count, architecture, model-card metadata, and repository/config evidence;
-- mandatory license/usage/training-compatibility review before a candidate may enter benchmarking; unknown or incompatible terms fail closed rather than being guessed;
-- hardware doctor and local-training feasibility scoring before choosing model size/backend, including VRAM/RAM/disk/context-length/quantization/architecture compatibility;
-- local smoke benchmarks of shortlisted base models on the target Student's baseline/Exam tasks before selection;
-- recorded base-model selection evidence: candidates considered, rejection reasons, benchmark results, exact Hub revision, artifact size/hash, and why the winner was selected;
-- no permanent preferred-family rule: Qwen, Llama, Gemma, Mistral, SmolLM, Phi, or any future family may win when evidence supports it, and an unfamiliar architecture is rejected until Agoge proves backend compatibility;
-- automatic preference for local compute when it satisfies the request, with GPU workers handling gradients and CPU workers handling corpus/review/orchestration jobs where appropriate;
+- a provider-neutral **Model Runtime Auditor** with distinct candidate lanes for downloadable/trainable bases, API-hosted inference models, and provider-hosted training targets;
+- a Hugging Face **Base Model Auditor** as the first downloadable/trainable discovery lane, using task, library, parameter-count, architecture, model-card metadata, repository/config evidence, exact revision, and artifact size;
+- an API Runtime Auditor that discovers live provider catalogs through Hermes/provider adapters, with Nous Portal as the first live integration and OpenAI-compatible/custom providers supported through the same normalized candidate contract;
+- live pricing/free-tier/quota/availability metadata where a provider exposes it; a currently free API model is a normal candidate rather than merely a Teacher;
+- mandatory role-specific terms review: inference/runtime use, training-data use, distillation use, and hosted fine-tuning capability are separate fields and unknown/incompatible terms fail closed for the affected role rather than being guessed;
+- hardware doctor and local-training feasibility scoring before choosing a local model size/backend, including VRAM/RAM/disk/context-length/quantization/architecture compatibility;
+- API-runtime feasibility scoring covering endpoint health, context limits, structured-output/tool compatibility when required, latency, rate/quota limits, privacy/offline constraints, and expected cost;
+- local compatibility probes plus bounded adaptation benchmarks for shortlisted trainable bases;
+- untouched API-model baselines on the exact target/anchor Exams before any training is justified; an API candidate that already satisfies the Competency Contract may win immediately;
+- recorded model/runtime selection evidence: every candidate considered, candidate role, rejection reason, exact Hub revision or provider/model identity, benchmark results, latency/resource/cost evidence, and why the winner was selected;
+- no permanent preferred-family or preferred-provider rule: Qwen, Llama, Gemma, Mistral, SmolLM, Phi, a future open family, a free Nous model, an OpenAI/Codex model, or another permitted API model may win when evidence and user constraints support it;
+- local-first is a preference only when it satisfies the Competency Contract and the user's privacy/offline/latency/cost constraints; it is never allowed to hide a materially better API-runtime option;
+- when local training is selected, GPU workers handle gradients and CPU workers handle corpus/review/orchestration jobs where appropriate;
 - optional Academy Dean/faculty routing for curriculum design without making Academy mandatory;
 - provider-neutral Teacher orchestration across locally available models, Nous Portal, OpenAI/other permitted inference, deterministic generators, and human review;
 - training-use/license/provenance checks before any generated material is allowed into weights;
@@ -602,13 +627,14 @@ The intended user experience is eventually as simple as:
 
 ```text
 User: Make this profile better at <goal>.
-Agoge Trainer: I will determine whether this needs teaching, a skill, a different
-base, an adapter, preference optimization, distillation, RL, or no model change;
-then I will prove the chosen intervention against fresh transfer and regression
-checks and return the best reproducible result with its evidence.
+Agoge Trainer: I will determine whether this needs teaching, a skill, a better
+local base, an existing API-hosted model, an adapter, hosted tuning, preference
+optimization, distillation, RL, or no model change; then I will prove the chosen
+intervention against fresh transfer and regression checks and return the best
+reproducible result with its evidence.
 ```
 
-Acceptance: from one bounded natural-language user goal, the profile can autonomously produce the correct Intervention Plan and, when weight training is justified, a reproducible local specialist artifact through Agoge's normal contracts and Exams, while surfacing only genuine blockers/decisions that require the user and never bypassing safety, provenance, or graduation policy.
+Acceptance: from one bounded natural-language user goal, the profile can autonomously produce the correct Intervention Plan and return the best evidence-backed runtime/intervention, including a no-training API-hosted model when it wins or a reproducible specialist artifact when weight training is justified, while surfacing only genuine blockers/decisions that require the user and never bypassing safety, provenance, privacy, or graduation policy.
 
 ## Phase 18 - Capability Intervention Router
 
@@ -618,12 +644,14 @@ Inputs:
 
 - user/profile capability goal;
 - current profile identity;
-- current model/base/adapter identity;
+- current model/runtime/base/adapter identity, including provider-hosted API runtime where applicable;
 - profile Competency Contract;
 - relevant existing skills/memory/retrieval capabilities;
 - baseline evaluation evidence;
 - hardware/resource constraints;
 - privacy/offline/latency/cost requirements;
+- available local bases and live API-provider/model catalogs, including free/quota-bearing options;
+- provider runtime capabilities and separate inference/training/distillation/hosted-tuning usage rights;
 - change-rate of required knowledge;
 - training-data availability and usage rights.
 
@@ -634,6 +662,7 @@ NO_CHANGE
 RETRIEVAL_OR_MEMORY
 HERMES_SKILL
 ACADEMY_EDUCATION
+API_RUNTIME_SELECTION
 BASE_MODEL_REPLACEMENT
 SUPERVISED_TUNING
 PREFERENCE_TUNING
@@ -650,13 +679,16 @@ Rules:
 - Academy should be preferred for agent-level education when durable native Hermes learning is sufficient;
 - adapter/tuning should require a stable measurable behavioral/domain gap;
 - RL should require an environment with bounded, reproducible, mechanically meaningful rewards;
-- distillation should require a demonstrably stronger teacher and acceptable training-use rights;
-- base-model replacement should be considered before attempting to force an unsuitable base through increasingly expensive tuning;
+- distillation should require a demonstrably stronger teacher and acceptable training-use/distillation rights;
+- an existing API-hosted model should be considered before weight training when it already satisfies the target/anchor contract within the user's privacy/offline/latency/cost constraints;
+- a free API model may win on quality/cost but must still satisfy availability, quota/rate-limit, privacy, and regression gates;
+- base-model replacement should be considered before attempting to force an unsuitable local base through increasingly expensive tuning;
+- API_RUNTIME_SELECTION is a successful intervention outcome, not a failure to train;
 - no intervention is a valid outcome when baseline evidence already satisfies the Competency Contract.
 
 Every disposition carries deterministic reason codes and evidence references.
 
-Acceptance: representative capability requests route to the correct layer, including cases where Agoge refuses to create an Askesis because a skill, Academy class, different base model, or no change is the better intervention.
+Acceptance: representative capability requests route to the correct layer, including cases where Agoge refuses to create an Askesis because a skill, Academy class, API-hosted runtime, different local base model, or no change is the better intervention.
 
 ## Phase 19 - Automated Training Strategy Planner
 

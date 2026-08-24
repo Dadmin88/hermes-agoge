@@ -319,3 +319,186 @@ This remains a templated foundation-family proof. It does not establish:
 - production Fleet integration or release readiness.
 
 Those remain subsequent Agoge gates.
+
+## 2026-08-24 - Combined Templar runtime and mixed local/API tournament proof
+
+### Purpose
+
+Prove two things together without conflating them:
+
+1. one bounded Templar model can learn both Fleet event families in a single runtime adapter; and
+2. Agoge can evaluate local/trainable and API-hosted runtimes under the same base-independent Competency Contract rather than assuming that the final runtime must be local or fine-tuned.
+
+This is a foundation runtime-selection proof, not graduation.
+
+### Stable capability target
+
+- Competency: `templar-runtime-judgment-v1`
+- Competency hash: `sha256:7e31cd7f923886008718a86b86d078574de230e04c44a973c7ea8d0c6d3936b8`
+- Student: `templar-v1`
+- Student hash: `sha256:eaabc2035dba64562530ccffcd938d53b4471997b7aceae92e656e84b2fcb8f1`
+- Fleet source revision: `591ea20bb1b7268254ddeaffaf16a5f853aa2db5`
+
+The Competency Contract is intentionally independent of model location/provider. It permits local weights or an authorized API runtime when the candidate satisfies privacy/offline/latency/quota/cost/availability constraints. Zero false-ALLOW remains a hard Templar graduation requirement.
+
+### Combined runtime foundation corpus
+
+Agoge combines the independently accepted Phase 19 and Phase 23 corpora without changing either source corpus:
+
+- Phase 19: 252 accepted `fleet.security-event.v1` examples, hash `sha256:74cc797f7b7e08fb59f8eb0205028e34802a27058cfc7ba869ae4be77e9203ce`;
+- Phase 23: 252 accepted `fleet.learning-promotion-event.v1` examples, hash `sha256:7525c8b27a14b4017cb103adf42ba6c4f2c33f6a5dfa2b2aa7f652ad0738358f`;
+- combined count: 504;
+- combined corpus hash: `sha256:80edc14c6dd44808706845273c3409e3cae8380fd8f0740ee71730f630af7d75`.
+
+The combined split is deterministic and stratified by event schema + competency + exact disposition so one event family cannot accidentally stand in for the other:
+
+- train: 414;
+- validation: 45;
+- test: 45;
+- exact disposition classes: 16;
+- registry hash: `sha256:9b5b7cdcd5c28518b7e8623169f1c06e0e8cd9a5f566b1eac3ed00d358ed5092`.
+
+### Competency-bound unified local candidate
+
+The current best bounded unified local recipe was rerun after Competency Contracts were implemented so the Askesis and Exam are bound to the exact capability target rather than only the base-specific Student.
+
+- base: `Qwen/Qwen3-0.6B`;
+- base revision: `c1899de289a04d12100db370d81485cdf75e47ca`;
+- backend: 4-bit NF4 QLoRA sequence classification;
+- LoRA rank/alpha: 16/32;
+- BF16;
+- class-balanced sampling;
+- batch size: 8;
+- gradient accumulation: 1;
+- learning rate: `5e-5`;
+- max steps: 150;
+- max length: 512;
+- training runtime: approximately 91.11 seconds;
+- peak CUDA allocation: approximately 1.43 GB;
+- adapter hash from the validation Exam: `sha256:e545318a956f809a07c94d5995c89b6707f98b68b4eb0fb13677bae2877fc0ab`.
+
+Validation result:
+
+- decision/exact disposition: 44/45 = 97.8%;
+- false-ALLOW: 0/29 non-ALLOW examples;
+- false-DENY: 1/16 ALLOW examples;
+- contract/reason disposition validity: 45/45;
+- `fleet.learning-promotion-event.v1`: 26/26 exact;
+- `fleet.security-event.v1`: 18/19 exact;
+- median warm runtime latency on Katana: approximately 48.35 ms;
+- p95 warm runtime latency: approximately 63.79 ms.
+
+The separately held-out test split remains safely conservative rather than perfect:
+
+- exact disposition: 42/45 = 93.3%;
+- false-ALLOW: 0;
+- false-DENY: 3;
+- median latency: approximately 48.66 ms;
+- p95 latency: approximately 60.24 ms.
+
+### API runtime lane
+
+Agoge now treats an API-hosted model as a first-class runtime candidate, not merely as a Teacher.
+
+The initial live implementation uses Hermes as the credential boundary:
+
+- Hermes/provider code performs live model discovery and pricing/free-tier lookup;
+- a short-lived Hermes subprocess resolves provider credentials internally;
+- Agoge supplies only model/messages/generation parameters;
+- the bridge emits only normalized response content, usage, latency, finish reason, and errors;
+- provider credentials are never returned to the Agoge process or written into Agoge reports/corpora/artifacts;
+- hidden API retries are disabled during runtime benchmarking;
+- per-request deadlines are explicit Exam parameters.
+
+Nous Portal is the first live OAuth-backed provider. Generic Hermes API-key providers declaring `api_mode=chat_completions` are also supported by the same credential-isolated bridge. Native/non-chat protocols require their own adapter and fail closed until implemented.
+
+At proof time the live Nous catalog contained 371 models, of which seven were currently zero-priced for the active catalog/account:
+
+- `upstage/solar-pro4:free`;
+- `meituan/longcat-2.0:free`;
+- `poolside/laguna-s-2.1:free`;
+- `poolside/laguna-xs-2.1:free`;
+- `stealth/ox-alpha`;
+- `stepfun/step-3.7-flash:free`;
+- `tencent/hy3:free`.
+
+All seven were screened on the same deterministic Templar validation slice. Models that repeatedly exhausted output budget, timed out, or failed contract output were not promoted merely because the API call itself succeeded. The strongest three 512-budget candidates advanced to a full 45-row validation Exam.
+
+### Full free-API finalist results
+
+`meituan/longcat-2.0:free`:
+
+- API success: 45/45;
+- contract valid: 45/45;
+- decision accuracy: 37/45 = 82.2%;
+- exact disposition: 21/45 = 46.7%;
+- false-ALLOW: 1;
+- false-DENY: 0;
+- median latency: approximately 3.31 s;
+- p95 latency: approximately 7.45 s;
+- catalog price at proof time: zero input/output price.
+
+`poolside/laguna-s-2.1:free`:
+
+- API success: 45/45;
+- contract valid: 44/45 = 97.8%;
+- decision accuracy: 34/45 = 75.6%;
+- exact disposition: 15/45 = 33.3%;
+- false-ALLOW: 0;
+- false-DENY: 3;
+- median latency: approximately 2.68 s;
+- p95 latency: approximately 5.12 s;
+- catalog price at proof time: zero input/output price.
+
+`upstage/solar-pro4:free`:
+
+- API success: 45/45;
+- contract valid: 40/45 = 88.9%;
+- decision accuracy: 32/45 = 71.1%;
+- exact disposition: 19/45 = 42.2%;
+- false-ALLOW: 1;
+- false-DENY: 3;
+- median latency: approximately 1.53 s;
+- p95 latency: approximately 4.02 s;
+- catalog price at proof time: zero input/output price.
+
+Other free models remained useful as possible Teacher/runtime candidates for other tasks, but their bounded Templar screen showed output-budget exhaustion, timeout/availability problems, or insufficient contract control at the tested settings. In particular, StepFun reached fully valid final answers when given a much larger reasoning/output budget on a tiny screen, demonstrating that API budget/latency policy is model-specific and must be measured rather than assumed.
+
+### Mixed Runtime Tournament
+
+Agoge's first mixed local/API Runtime Tournament consumed the exact Competency-bound validation Exams above plus live API pricing/free metadata.
+
+Tournament ID: `sha256:ff6c70c0f3673a63b777590bfc796335fedfc4eb5ed34e6a5c85693dd7f89cd0`.
+
+Hard gates applied at this foundation stage included:
+
+- exact Competency hash;
+- same corpus and split;
+- both Fleet event families represented;
+- zero false-ALLOW where required by the Competency Contract;
+- closed contract output;
+- full API request success for API candidates.
+
+Result:
+
+1. local Qwen3-0.6B adapter: **PASS**, recommended for next stage;
+2. LongCat 2.0 free: **REJECT hard gate**, false-ALLOW;
+3. Solar Pro4 free: **REJECT hard gate**, false-ALLOW + incomplete closed-contract compliance;
+4. Laguna S 2.1 free: **REJECT hard gate**, incomplete closed-contract compliance.
+
+Only one of four finalists passed every current hard gate. The winner was local because the evidence favored it for Templar, **not** because Agoge has a local-model preference. The same tournament architecture permits an API runtime to win another Competency Contract without any weight training when it is the better eligible intervention.
+
+### What this proof does not establish
+
+The tournament explicitly reports `graduated: false`. Remaining blockers include at least:
+
+- fresh semantic transfer outside the deterministic foundation generator families;
+- an immutable adversarial bank;
+- probability/confidence calibration and REVIEW threshold policy;
+- production Fleet adapter/sandbox integration;
+- a completed adaptation tournament among other locally compatible bases;
+- provider-native adapters for non-chat-completions APIs;
+- provider-hosted training/fine-tuning adapters where permitted;
+- release-level availability/privacy/offline/cost policy for any remote Templar deployment.
+
+This proof establishes that Agoge can now **discover, train, call, measure, hard-gate, and compare local and API-hosted model runtimes under one capability target**.

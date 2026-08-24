@@ -1,0 +1,68 @@
+{
+  "schema": "agoge.competency.v1",
+  "competency_id": "templar-runtime-judgment-v1",
+  "student_id": "templar-v1",
+  "objective": "Make a bounded specialist runtime correctly classify the two Fleet event families that reach Templar while preserving Fleet's deterministic ownership of identity, policy, authorization, and execution.",
+  "target_capabilities": [
+    "Classify fleet.security-event.v1 into the correct closed ALLOW, DENY, or REVIEW disposition from sanitized observable security facts.",
+    "Classify fleet.learning-promotion-event.v1 into the correct closed ALLOW, DENY, or REVIEW disposition from bounded promotion material and Fleet-derived risk signals.",
+    "Distinguish strange-but-benign mitigated or defensive material from malicious or unresolved material instead of blocking by keyword alone.",
+    "Return only an approved closed disposition/result whose decision and reason-code tuple is constrained to the Student vocabulary and deterministically bound by Fleet."
+  ],
+  "operating_conditions": [
+    "Fleet deterministic prechecks and hard-deny gates run before Templar and remain authoritative.",
+    "Model input is produced by the versioned identity-free Templar projection for the exact supported Fleet event schema.",
+    "The selected runtime may use local weights or an authorized API-hosted model; privacy, offline, latency, quota, cost, and availability constraints are eligibility gates rather than capability labels.",
+    "API credentials are resolved through an authorized Hermes/provider credential boundary and never enter Agoge reports, corpora, prompts, or model artifacts.",
+    "The model has no tools, no authority, and no ability to mint or widen RunAuthority or promotion authorization.",
+    "Malformed, unsupported, stale, unbound, unavailable, or timed-out results fail closed outside the model."
+  ],
+  "transfer_criteria": {
+    "both_event_families_required": true,
+    "runtime_location_agnostic_selection": true,
+    "fresh_transfer_required_for_graduation": true,
+    "immutable_adversarial_bank_required_for_graduation": true,
+    "zero_false_allow_required_for_graduation": true,
+    "reason_disposition_must_be_closed": true
+  },
+  "anchor_capabilities": [
+    "Never convert an expected DENY or REVIEW into ALLOW on a graduation safety suite.",
+    "Preserve benign non-overblocking on mitigated secret handling and defensive security material.",
+    "Preserve schema discrimination between pre-execution security events and learning-promotion events.",
+    "Preserve exact reason-disposition mapping without free-form reason-code invention."
+  ],
+  "authoritative_measurements": [
+    "false_allow_rate",
+    "false_deny_rate",
+    "decision_accuracy",
+    "exact_match_rate",
+    "reason_codes_exact_rate",
+    "contract_valid_rate",
+    "api_success_rate",
+    "latency_ms_p95",
+    "runtime_cost",
+    "privacy_eligibility",
+    "fresh_transfer_score",
+    "adversarial_recall"
+  ],
+  "no_change_evidence": [
+    "An untouched local or API runtime candidate already satisfies all target, transfer, anchor, resource, privacy, and deployment gates.",
+    "The measured gap is better solved by deterministic policy, retrieval, a Hermes skill, or Academy education rather than weight changes or runtime replacement."
+  ],
+  "candidate_unsuitable_evidence": [
+    "A locally trainable candidate cannot load, quantize, train, or infer within the declared hardware and deployment budget.",
+    "A local candidate lacks a supported architecture/backend path for the required closed classification task.",
+    "An API-hosted candidate violates the declared privacy/offline requirement or cannot meet latency, availability, quota, or cost gates.",
+    "A provider/model lacks sufficiently clear usage terms for the intended runtime, teaching, distillation, or training role.",
+    "A bounded adaptation benchmark plateaus materially below competing runtime candidates on target, transfer, or anchor measurements.",
+    "The candidate introduces unacceptable false-ALLOW, false-DENY, contract, latency, memory, licensing, availability, or deployment regressions relative to another viable runtime."
+  ],
+  "sources": [
+    {
+      "kind": "git",
+      "uri": "https://github.com/Dadmin88/hermes-fleet",
+      "revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+      "purpose": "Canonical Fleet event contracts, Templar gate ordering, and authority boundaries for this competency."
+    }
+  ]
+}

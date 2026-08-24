@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import statistics
 import time
 from pathlib import Path
 from typing import Any
@@ -16,6 +17,14 @@ from ..templar_projection import project_templar_event
 
 class SequenceExamDependencyError(RuntimeError):
     pass
+
+
+def _percentile(values: list[float], fraction: float) -> float | None:
+    if not values:
+        return None
+    ordered = sorted(values)
+    index = min(len(ordered) - 1, max(0, round((len(ordered) - 1) * fraction)))
+    return float(ordered[index])
 
 
 def _imports() -> dict[str, Any]:
@@ -139,8 +148,21 @@ def examine(
         model = lib["PeftModel"].from_pretrained(model, str(adapter_dir))
     model.eval()
 
+    # Warm the tokenizer/model path once so runtime latency excludes one-time CUDA
+    # graph/kernel initialization while still including normal per-request tokenization.
+    warmup = tokenizer(
+        texts[0], return_tensors="pt", add_special_tokens=True, truncation=False
+    )
+    warmup = {key: value.to(model.device) for key, value in warmup.items()}
+    with torch.inference_mode():
+        model(**warmup)
+    torch.cuda.synchronize()
+
     rows: list[dict[str, Any]] = []
+    latencies: list[float] = []
     for example, text in zip(examples, texts, strict=True):
+        torch.cuda.synchronize()
+        started = time.perf_counter()
         encoded = tokenizer(
             text,
             return_tensors="pt",
@@ -151,6 +173,9 @@ def examine(
         with torch.inference_mode():
             logits = model(**encoded).logits[0].float()
             probabilities = torch.softmax(logits, dim=-1)
+        torch.cuda.synchronize()
+        latency_ms = (time.perf_counter() - started) * 1000.0
+        latencies.append(latency_ms)
         class_index = int(torch.argmax(probabilities).item())
         disposition = disposition_for_class(registry, class_index)
         sorted_probs = torch.sort(probabilities, descending=True).values
@@ -165,6 +190,7 @@ def examine(
                 "example_id": example.example_id,
                 "example_hash": example.content_hash,
                 "competency": example.competency,
+                "event_schema": example.prompt.get("schema"),
                 "expected": example.completion,
                 "actual": {
                     "raw": disposition["label_id"],
@@ -177,6 +203,7 @@ def examine(
                     "label_id": disposition["label_id"],
                     "confidence": confidence,
                     "margin": margin,
+                    "latency_ms": latency_ms,
                     "probabilities": {
                         str(entries[index]["label_id"]): float(probabilities[index].item())
                         for index in range(num_labels)
@@ -200,12 +227,23 @@ def examine(
         "max_length": max_length,
         "seed": seed,
     }
+    if manifest.get("competency_id") is not None:
+        exam_spec["competency_id"] = manifest["competency_id"]
+        exam_spec["competency_hash"] = manifest["competency_hash"]
+    summary = summarize_exam(rows)
+    summary.update(
+        {
+            "latency_ms_median": statistics.median(latencies) if latencies else None,
+            "latency_ms_p95": _percentile(latencies, 0.95),
+            "runtime_device": torch.cuda.get_device_name(0),
+        }
+    )
     result = {
         "schema": "agoge.exam-result.v1",
         "exam_id": digest(exam_spec),
         "exam_spec": exam_spec,
         "performed_at_unix_ms": time.time_ns() // 1_000_000,
-        "summary": summarize_exam(rows),
+        "summary": summary,
         "rows": rows,
     }
     output_path = run_dir / f"exam-seqcls-{model_kind}-{split}.json"

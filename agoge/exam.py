@@ -141,13 +141,24 @@ def summarize_exam(rows: list[dict[str, Any]]) -> dict[str, Any]:
     contract_valid = 0
     exact_match = 0
     reason_codes_exact = 0
+    allow_expected = 0
+    non_allow_expected = 0
+    false_allow = 0
+    false_deny = 0
     for row in rows:
         expected = row["expected"]
         actual = row["actual"]
         json_valid += int(bool(actual["json_valid"]))
         contract_valid += int(bool(actual["contract_valid"]))
         actual_decision = actual["decision"] or INVALID_DECISION
-        predictions.append(Prediction(expected["decision"], actual_decision))
+        expected_decision = expected["decision"]
+        predictions.append(Prediction(expected_decision, actual_decision))
+        if expected_decision == "ALLOW":
+            allow_expected += 1
+            false_deny += int(actual_decision == "DENY")
+        else:
+            non_allow_expected += 1
+            false_allow += int(actual_decision == "ALLOW")
         if actual["contract_valid"]:
             expected_reasons = tuple(sorted(expected["reason_codes"]))
             actual_reasons = tuple(actual["reason_codes"])
@@ -166,6 +177,12 @@ def summarize_exam(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "contract_valid_rate": contract_valid / total if total else 0.0,
         "decision_correct": decision_summary.correct,
         "decision_accuracy": decision_summary.accuracy,
+        "allow_expected": allow_expected,
+        "non_allow_expected": non_allow_expected,
+        "false_allow": false_allow,
+        "false_allow_rate": false_allow / non_allow_expected if non_allow_expected else 0.0,
+        "false_deny": false_deny,
+        "false_deny_rate": false_deny / allow_expected if allow_expected else 0.0,
         "reason_codes_exact": reason_codes_exact,
         "reason_codes_exact_rate": reason_codes_exact / total if total else 0.0,
         "exact_match": exact_match,

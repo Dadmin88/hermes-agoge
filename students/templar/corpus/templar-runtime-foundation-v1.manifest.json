@@ -1,0 +1,29 @@
+{
+  "corpus_hash": "sha256:80edc14c6dd44808706845273c3409e3cae8380fd8f0740ee71730f630af7d75",
+  "count": 504,
+  "event_schema_counts": {
+    "fleet.learning-promotion-event.v1": 252,
+    "fleet.security-event.v1": 252
+  },
+  "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+  "schema": "agoge.templar-runtime-foundation-corpus-manifest.v1",
+  "source_corpora": [
+    {
+      "corpus_hash": "sha256:74cc797f7b7e08fb59f8eb0205028e34802a27058cfc7ba869ae4be77e9203ce",
+      "count": 252,
+      "event_family": "fleet.security-event.v1",
+      "manifest_path": "corpus/phase19-security-events-v1.manifest.json",
+      "path": "corpus/phase19-security-events-v1.jsonl"
+    },
+    {
+      "corpus_hash": "sha256:7525c8b27a14b4017cb103adf42ba6c4f2c33f6a5dfa2b2aa7f652ad0738358f",
+      "count": 252,
+      "event_family": "fleet.learning-promotion-event.v1",
+      "manifest_path": "corpus/phase23-learning-events-v1.manifest.json",
+      "path": "corpus/phase23-learning-events-v1.jsonl"
+    }
+  ],
+  "status": "accepted-combined-foundation-curriculum-not-graduation-exam",
+  "student_hash": "sha256:eaabc2035dba64562530ccffcd938d53b4471997b7aceae92e656e84b2fcb8f1",
+  "student_id": "templar-v1"
+}

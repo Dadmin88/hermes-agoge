@@ -76,29 +76,118 @@ def _rows(run_dir: Path, registry: dict[str, object]) -> list[dict[str, object]]
                 "text": user_content(project_templar_event(example.prompt)),
                 "labels": lookup[key],
                 "example_id": example.example_id,
+                "event_schema": example.prompt.get("schema"),
+                "competency": example.competency,
+                "decision": example.completion["decision"],
             }
         )
     return rows
 
 
-def _balance_rows(rows: list[dict[str, object]], *, seed: int) -> list[dict[str, object]]:
-    by_class: dict[int, list[dict[str, object]]] = {}
-    for row in rows:
-        label = row["labels"]
-        if type(label) is not int:
-            raise RuntimeError("sequence-classification row has an invalid label")
-        by_class.setdefault(label, []).append(row)
-    if not by_class:
+def _balance_key(row: dict[str, object], mode: str) -> tuple[object, ...]:
+    label = row.get("labels")
+    if type(label) is not int:
+        raise RuntimeError("sequence-classification row has an invalid label")
+    if mode == "class":
+        return ("class", label)
+    if mode in {"event-stratum", "hierarchical", "decision-hierarchical"}:
+        event_schema = row.get("event_schema")
+        competency = row.get("competency")
+        if type(event_schema) is not str or type(competency) is not str:
+            raise RuntimeError(f"{mode} balancing requires event schema and competency")
+        return (mode, event_schema, competency, label)
+    raise RuntimeError(f"unsupported sequence-classification balance mode: {mode}")
+
+
+def _resample_group(
+    source: list[dict[str, object]], *, target: int, rng: random.Random
+) -> list[dict[str, object]]:
+    if target < 1 or not source:
+        raise RuntimeError("sequence-classification balance group is empty or invalid")
+    ordered = sorted(source, key=lambda item: str(item["example_id"]))
+    if len(ordered) >= target:
+        shuffled = list(ordered)
+        rng.shuffle(shuffled)
+        return shuffled[:target]
+    result = list(ordered)
+    while len(result) < target:
+        result.append(dict(ordered[rng.randrange(len(ordered))]))
+    return result
+
+
+def _balance_rows(
+    rows: list[dict[str, object]], *, seed: int, mode: str
+) -> list[dict[str, object]]:
+    if mode == "none":
+        return list(rows)
+    if not rows:
         raise RuntimeError("sequence-classification dataset is empty")
-    target = max(len(items) for items in by_class.values())
     rng = random.Random(seed)
-    balanced: list[dict[str, object]] = []
-    for label in sorted(by_class):
-        source = sorted(by_class[label], key=lambda item: str(item["example_id"]))
-        class_rows = list(source)
-        while len(class_rows) < target:
-            class_rows.append(dict(source[rng.randrange(len(source))]))
-        balanced.extend(class_rows)
+
+    if mode == "decision-hierarchical":
+        by_decision: dict[
+            str,
+            dict[int, dict[tuple[object, ...], list[dict[str, object]]]],
+        ] = {}
+        decision_totals: Counter[str] = Counter()
+        for row in rows:
+            decision = row.get("decision")
+            label = row.get("labels")
+            if decision not in {"ALLOW", "DENY", "REVIEW"} or type(label) is not int:
+                raise RuntimeError("decision-hierarchical balancing requires closed decisions")
+            decision_totals[str(decision)] += 1
+            key = _balance_key(row, mode)
+            by_decision.setdefault(str(decision), {}).setdefault(label, {}).setdefault(
+                key, []
+            ).append(row)
+        decision_target = max(decision_totals.values())
+        balanced: list[dict[str, object]] = []
+        for decision in sorted(by_decision):
+            labels = by_decision[decision]
+            per_label_target = max(1, (decision_target + len(labels) - 1) // len(labels))
+            for label in sorted(labels):
+                strata = labels[label]
+                per_stratum_target = max(
+                    1, (per_label_target + len(strata) - 1) // len(strata)
+                )
+                for key in sorted(strata, key=repr):
+                    balanced.extend(
+                        _resample_group(
+                            strata[key], target=per_stratum_target, rng=rng
+                        )
+                    )
+        rng.shuffle(balanced)
+        return balanced
+
+    if mode == "hierarchical":
+        by_label: dict[int, dict[tuple[object, ...], list[dict[str, object]]]] = {}
+        class_totals: Counter[int] = Counter()
+        for row in rows:
+            label = row.get("labels")
+            if type(label) is not int:
+                raise RuntimeError("sequence-classification row has an invalid label")
+            class_totals[label] += 1
+            key = _balance_key(row, mode)
+            by_label.setdefault(label, {}).setdefault(key, []).append(row)
+        class_target = max(class_totals.values())
+        balanced: list[dict[str, object]] = []
+        for label in sorted(by_label):
+            strata = by_label[label]
+            per_stratum_target = max(1, (class_target + len(strata) - 1) // len(strata))
+            for key in sorted(strata, key=repr):
+                balanced.extend(
+                    _resample_group(strata[key], target=per_stratum_target, rng=rng)
+                )
+        rng.shuffle(balanced)
+        return balanced
+
+    groups: dict[tuple[object, ...], list[dict[str, object]]] = {}
+    for row in rows:
+        groups.setdefault(_balance_key(row, mode), []).append(row)
+    target = max(len(items) for items in groups.values())
+    balanced = []
+    for key in sorted(groups, key=repr):
+        balanced.extend(_resample_group(groups[key], target=target, rng=rng))
     rng.shuffle(balanced)
     return balanced
 
@@ -114,7 +203,7 @@ def train(
     lora_alpha: int = 32,
     per_device_train_batch_size: int = 1,
     gradient_accumulation_steps: int = 4,
-    balance_classes: bool = True,
+    balance_mode: str = "class",
     seed: int = 41,
 ) -> dict[str, object]:
     lib = _imports()
@@ -129,6 +218,14 @@ def train(
         raise RuntimeError("per_device_train_batch_size must be positive")
     if gradient_accumulation_steps < 1:
         raise RuntimeError("gradient_accumulation_steps must be positive")
+    if balance_mode not in {
+        "none",
+        "class",
+        "event-stratum",
+        "hierarchical",
+        "decision-hierarchical",
+    }:
+        raise RuntimeError(f"unsupported sequence-classification balance mode: {balance_mode}")
 
     manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
     registry = _load_registry(run_dir)
@@ -139,8 +236,10 @@ def train(
     num_labels = len(entries)
     rows = _rows(run_dir, registry)
     original_counts = Counter(int(row["labels"]) for row in rows)
-    training_rows = _balance_rows(rows, seed=seed) if balance_classes else rows
+    original_balance_counts = Counter(repr(_balance_key(row, balance_mode)) for row in rows) if balance_mode != "none" else Counter({"none": len(rows)})
+    training_rows = _balance_rows(rows, seed=seed, mode=balance_mode)
     balanced_counts = Counter(int(row["labels"]) for row in training_rows)
+    training_balance_counts = Counter(repr(_balance_key(row, balance_mode)) for row in training_rows) if balance_mode != "none" else Counter({"none": len(training_rows)})
 
     model_name = manifest["base_model"]
     model_revision = manifest["base_model_revision"]
@@ -173,7 +272,7 @@ def train(
     tokenized = dataset.map(
         tokenize,
         batched=True,
-        remove_columns=["text", "example_id"],
+        remove_columns=["text", "example_id", "event_schema", "competency", "decision"],
     )
 
     compute_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
@@ -263,13 +362,19 @@ def train(
             "gradient_accumulation_steps": gradient_accumulation_steps,
             "compute_dtype": str(compute_dtype),
             "observed_max_tokens": observed_max_tokens,
-            "balance_classes": balance_classes,
+            "balance_mode": balance_mode,
             "seed": seed,
             "original_class_counts": {
                 str(key): original_counts[key] for key in sorted(original_counts)
             },
             "training_class_counts": {
                 str(key): balanced_counts[key] for key in sorted(balanced_counts)
+            },
+            "original_balance_group_counts": {
+                key: original_balance_counts[key] for key in sorted(original_balance_counts)
+            },
+            "training_balance_group_counts": {
+                key: training_balance_counts[key] for key in sorted(training_balance_counts)
             },
         },
         "metrics": dict(train_output.metrics),

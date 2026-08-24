@@ -66,6 +66,43 @@ def test_parse_model_output_rejects_non_json_and_missing_reason() -> None:
     assert missing_reason.error == "missing-reason-code"
 
 
+def test_summarize_exam_tracks_false_allow_and_false_deny_separately() -> None:
+    rows = [
+        {
+            "expected": {"decision": "DENY", "reason_codes": ["x"]},
+            "actual": {
+                "json_valid": True,
+                "contract_valid": True,
+                "decision": "ALLOW",
+                "reason_codes": [],
+            },
+        },
+        {
+            "expected": {"decision": "ALLOW", "reason_codes": []},
+            "actual": {
+                "json_valid": True,
+                "contract_valid": True,
+                "decision": "DENY",
+                "reason_codes": ["x"],
+            },
+        },
+        {
+            "expected": {"decision": "REVIEW", "reason_codes": ["x"]},
+            "actual": {
+                "json_valid": True,
+                "contract_valid": True,
+                "decision": "REVIEW",
+                "reason_codes": ["x"],
+            },
+        },
+    ]
+    summary = summarize_exam(rows)
+    assert summary["false_allow"] == 1
+    assert summary["false_allow_rate"] == 0.5
+    assert summary["false_deny"] == 1
+    assert summary["false_deny_rate"] == 1.0
+
+
 def test_summarize_exam_counts_invalid_output_as_wrong_decision() -> None:
     rows = [
         {

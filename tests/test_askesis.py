@@ -19,6 +19,9 @@ def test_prepare_and_dry_run(tmp_path: Path) -> None:
     assert run.manifest["base_model_revision"] == "c1899de289a04d12100db370d81485cdf75e47ca"
     assert sum(run.manifest["counts"].values()) == 24
     assert (run.run_dir / "spec" / "student.json").exists()
+    assert (run.run_dir / "spec" / "competency.json").exists()
+    assert run.manifest["competency_id"] == "templar-runtime-judgment-v1"
+    assert run.manifest["competency_hash"].startswith("sha256:")
     assert (run.run_dir / "data" / "train.jsonl").exists()
     result = train(run.run_dir)
     assert result["status"] == "DRY_RUN_COMPLETE"

@@ -6,9 +6,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .corpus import read_jsonl, stable_split, stable_stratified_split, write_jsonl
+from .corpus import (
+    read_jsonl,
+    stable_event_stratified_split,
+    stable_split,
+    stable_stratified_split,
+    write_jsonl,
+)
 from .dispositions import build_disposition_registry
-from .spec import CurriculumSpec, SpecError, StudentSpec, canonical_json, digest
+from .spec import CompetencySpec, CurriculumSpec, SpecError, StudentSpec, canonical_json, digest
 
 
 @dataclass(frozen=True, slots=True)
@@ -29,6 +35,10 @@ def prepare_run(
     root = student_path.parent
     curriculum_path = (root / student.curriculum).resolve()
     curriculum = CurriculumSpec.load(curriculum_path)
+    competency_path = (root / "competency.json").resolve()
+    competency = CompetencySpec.load(competency_path) if competency_path.is_file() else None
+    if competency is not None and competency.student_id != student.student_id:
+        raise SpecError("Askesis competency belongs to another Student")
     selected_corpus = (corpus_path or (root / "seed_cases.jsonl")).resolve()
     try:
         corpus_source = selected_corpus.relative_to(root).as_posix()
@@ -42,6 +52,8 @@ def prepare_run(
         splits = stable_split(examples)
     elif split_strategy == "stratified":
         splits = stable_stratified_split(examples)
+    elif split_strategy == "event-stratified":
+        splits = stable_event_stratified_split(examples)
     else:
         raise SpecError(f"unsupported Askesis split strategy: {split_strategy}")
     if not splits["train"]:
@@ -53,6 +65,8 @@ def prepare_run(
     snapshot_dir.mkdir()
     shutil.copy2(student_path, snapshot_dir / "student.json")
     shutil.copy2(curriculum_path, snapshot_dir / "curriculum.json")
+    if competency is not None:
+        shutil.copy2(competency_path, snapshot_dir / "competency.json")
     disposition_registry = build_disposition_registry(examples, student_id=student.student_id)
     (snapshot_dir / "dispositions.json").write_bytes(
         canonical_json(disposition_registry) + b"\n"
@@ -75,5 +89,8 @@ def prepare_run(
         "sources": [item.to_dict() for item in student.sources],
         "state": "PREPARED",
     }
+    if competency is not None:
+        manifest["competency_id"] = competency.competency_id
+        manifest["competency_hash"] = competency.content_hash
     (out_dir / "manifest.json").write_bytes(canonical_json(manifest) + b"\n")
     return PreparedRun(out_dir, manifest)

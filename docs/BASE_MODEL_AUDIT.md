@@ -47,6 +47,32 @@ Only locally compatible candidates compete on the Student's actual untuned basel
 
 Popularity, vendor, and model family are never selection criteria by themselves.
 
+## Relationship to API/runtime selection
+
+A **Base Model Audit** answers a narrower question: which downloadable/trainable base deserves an adaptation benchmark? It is not the full runtime-selection problem.
+
+Agoge runtime selection is location/provider agnostic. A candidate runtime may be:
+
+- a local untouched model;
+- a local base plus Agoge adapter;
+- an API-hosted inference model such as a Nous Portal model;
+- a provider-hosted tuned artifact when an explicit training adapter and usage/provenance contract exist.
+
+API-hosted candidates therefore use a separate provider/runtime lane:
+
+```text
+Hermes provider catalog
+    -> availability / pricing / quota / protocol metadata
+    -> credential-isolated API smoke screen
+    -> same Competency Contract + target/anchor Exam
+    -> latency / availability / contract / cost evidence
+    -> mixed Runtime Tournament with local candidates
+```
+
+An API model is allowed to win without any weight training when it satisfies the user's privacy/offline/cost/latency constraints and beats the alternatives on the authoritative Competency measurements. Conversely, a local adapter is allowed to win even when a free API model is available. Agoge does not treat locality, vendor, price, or trainability as a proxy for competence.
+
+Hermes owns provider credentials. Agoge's API benchmark path uses a short-lived Hermes subprocess/adapter that resolves credentials internally and returns only normalized model output, usage, latency, and error metadata. Credentials must not enter Agoge corpora, Exam reports, prompts, or model artifacts.
+
 ## Current Templar status
 
-`Qwen/Qwen3-0.6B` is the currently pinned Templar research base because it was selected manually for the initial local proof. It is not an Agoge default and should eventually compete through the same Base Model Audit and Student-local benchmark process as other candidates.
+`Qwen/Qwen3-0.6B` remains the pinned Templar research base. It was originally selected manually, but its Competency-bound adapter has now also won the first mixed local/API foundation Runtime Tournament against the strongest three currently free Nous candidates. That does **not** complete the base-model audit: TinyLlama 1.1B, Phi-1.5, and SmolLM2 1.7B have already passed the exact local 4-bit/PEFT sequence-classification compatibility probe and still need equal-budget adaptation benchmarks before Qwen can be called the best trainable base for Templar. Microsoft BitNet passed Hub metadata policy but was rejected by the current backend because Transformers exposes no compatible sequence-classification mapping for that model type.

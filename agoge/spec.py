@@ -159,6 +159,103 @@ class StudentSpec:
 
 
 @dataclass(frozen=True, slots=True)
+class CompetencySpec:
+    schema: str
+    competency_id: str
+    student_id: str
+    objective: str
+    target_capabilities: tuple[str, ...]
+    operating_conditions: tuple[str, ...]
+    transfer_criteria: dict[str, Any]
+    anchor_capabilities: tuple[str, ...]
+    authoritative_measurements: tuple[str, ...]
+    no_change_evidence: tuple[str, ...]
+    candidate_unsuitable_evidence: tuple[str, ...]
+    sources: tuple[SourceRef, ...]
+
+    @staticmethod
+    def _strings(value: object, label: str, *, nonempty: bool = False) -> tuple[str, ...]:
+        if type(value) is not list or (nonempty and not value):
+            raise SpecError(f"{label} must be {'a non-empty ' if nonempty else 'a '}string array")
+        if not all(type(item) is str and item.strip() for item in value):
+            raise SpecError(f"{label} must contain only non-empty strings")
+        if len(value) != len(set(value)):
+            raise SpecError(f"{label} must not contain duplicates")
+        return tuple(value)
+
+    @classmethod
+    def load(cls, path: Path) -> CompetencySpec:
+        value = _load_json(path)
+        _require_exact_keys(
+            value,
+            {
+                "schema",
+                "competency_id",
+                "student_id",
+                "objective",
+                "target_capabilities",
+                "operating_conditions",
+                "transfer_criteria",
+                "anchor_capabilities",
+                "authoritative_measurements",
+                "no_change_evidence",
+                "candidate_unsuitable_evidence",
+                "sources",
+            },
+            "competency spec",
+        )
+        if value["schema"] != "agoge.competency.v1":
+            raise SpecError("unsupported competency schema")
+        for key in ("competency_id", "student_id", "objective"):
+            if type(value[key]) is not str or not value[key].strip():
+                raise SpecError(f"competency field {key!r} must be a non-empty string")
+        if type(value["transfer_criteria"]) is not dict or not value["transfer_criteria"]:
+            raise SpecError("transfer_criteria must be a non-empty object")
+        if type(value["sources"]) is not list or not value["sources"]:
+            raise SpecError("competency sources must be a non-empty array")
+        return cls(
+            value["schema"],
+            value["competency_id"],
+            value["student_id"],
+            value["objective"],
+            cls._strings(value["target_capabilities"], "target_capabilities", nonempty=True),
+            cls._strings(value["operating_conditions"], "operating_conditions", nonempty=True),
+            value["transfer_criteria"],
+            cls._strings(value["anchor_capabilities"], "anchor_capabilities", nonempty=True),
+            cls._strings(
+                value["authoritative_measurements"],
+                "authoritative_measurements",
+                nonempty=True,
+            ),
+            cls._strings(value["no_change_evidence"], "no_change_evidence"),
+            cls._strings(
+                value["candidate_unsuitable_evidence"], "candidate_unsuitable_evidence"
+            ),
+            tuple(SourceRef.from_dict(item) for item in value["sources"]),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema": self.schema,
+            "competency_id": self.competency_id,
+            "student_id": self.student_id,
+            "objective": self.objective,
+            "target_capabilities": list(self.target_capabilities),
+            "operating_conditions": list(self.operating_conditions),
+            "transfer_criteria": self.transfer_criteria,
+            "anchor_capabilities": list(self.anchor_capabilities),
+            "authoritative_measurements": list(self.authoritative_measurements),
+            "no_change_evidence": list(self.no_change_evidence),
+            "candidate_unsuitable_evidence": list(self.candidate_unsuitable_evidence),
+            "sources": [item.to_dict() for item in self.sources],
+        }
+
+    @property
+    def content_hash(self) -> str:
+        return digest(self.to_dict())
+
+
+@dataclass(frozen=True, slots=True)
 class CurriculumSpec:
     schema: str
     curriculum_id: str
