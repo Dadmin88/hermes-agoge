@@ -6,7 +6,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .corpus import read_jsonl, stable_split, write_jsonl
+from .corpus import read_jsonl, stable_split, stable_stratified_split, write_jsonl
+from .dispositions import build_disposition_registry
 from .spec import CurriculumSpec, SpecError, StudentSpec, canonical_json, digest
 
 
@@ -16,17 +17,33 @@ class PreparedRun:
     manifest: dict[str, Any]
 
 
-def prepare_run(student_path: Path, out_dir: Path) -> PreparedRun:
+def prepare_run(
+    student_path: Path,
+    out_dir: Path,
+    *,
+    corpus_path: Path | None = None,
+    split_strategy: str = "stable",
+) -> PreparedRun:
     student_path = student_path.resolve()
     student = StudentSpec.load(student_path)
     root = student_path.parent
     curriculum_path = (root / student.curriculum).resolve()
     curriculum = CurriculumSpec.load(curriculum_path)
-    examples = read_jsonl(root / "seed_cases.jsonl")
+    selected_corpus = (corpus_path or (root / "seed_cases.jsonl")).resolve()
+    try:
+        corpus_source = selected_corpus.relative_to(root).as_posix()
+    except ValueError as exc:
+        raise SpecError("Askesis corpus must be inside the Student directory") from exc
+    examples = read_jsonl(selected_corpus)
     unknown = sorted({item.competency for item in examples} - set(curriculum.competencies))
     if unknown:
         raise SpecError(f"corpus references unknown competencies: {unknown}")
-    splits = stable_split(examples)
+    if split_strategy == "stable":
+        splits = stable_split(examples)
+    elif split_strategy == "stratified":
+        splits = stable_stratified_split(examples)
+    else:
+        raise SpecError(f"unsupported Askesis split strategy: {split_strategy}")
     if not splits["train"]:
         raise SpecError("training split is empty")
     out_dir.mkdir(parents=True, exist_ok=False)
@@ -36,6 +53,10 @@ def prepare_run(student_path: Path, out_dir: Path) -> PreparedRun:
     snapshot_dir.mkdir()
     shutil.copy2(student_path, snapshot_dir / "student.json")
     shutil.copy2(curriculum_path, snapshot_dir / "curriculum.json")
+    disposition_registry = build_disposition_registry(examples, student_id=student.student_id)
+    (snapshot_dir / "dispositions.json").write_bytes(
+        canonical_json(disposition_registry) + b"\n"
+    )
     manifest = {
         "schema": "agoge.askesis-run.v1",
         "student_id": student.student_id,
@@ -45,7 +66,11 @@ def prepare_run(student_path: Path, out_dir: Path) -> PreparedRun:
         "base_model": student.base_model,
         "base_model_revision": student.base_model_revision,
         "prepared_at_unix_ms": time.time_ns() // 1_000_000,
+        "corpus_source": corpus_source,
         "corpus_hash": digest([item.to_dict() for item in examples]),
+        "disposition_registry_hash": disposition_registry["registry_hash"],
+        "disposition_count": len(disposition_registry["entries"]),
+        "split_strategy": split_strategy,
         "counts": {name: len(items) for name, items in splits.items()},
         "sources": [item.to_dict() for item in student.sources],
         "state": "PREPARED",

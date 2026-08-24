@@ -85,3 +85,48 @@ def stable_split(examples: Iterable[Example]) -> dict[str, list[Example]]:
         else:
             result["test"].append(example)
     return result
+
+
+def stable_stratified_split(examples: Iterable[Example]) -> dict[str, list[Example]]:
+    """Deterministically retain each learned disposition family in validation/test.
+
+    This is for foundation experiments, not the immutable graduation exam bank. A
+    stratum is competency + decision + exact reason-code family so small corpora do
+    not accidentally produce an all-ALLOW held-out split.
+    """
+
+    groups: dict[tuple[str, str, tuple[str, ...]], list[Example]] = {}
+    for example in examples:
+        decision = example.completion.get("decision")
+        reasons = example.completion.get("reason_codes")
+        if type(decision) is not str or type(reasons) is not list or not all(
+            type(item) is str for item in reasons
+        ):
+            raise SpecError("stratified split requires closed decision/reason labels")
+        key = (example.competency, decision, tuple(sorted(reasons)))
+        groups.setdefault(key, []).append(example)
+
+    result = {"train": [], "validation": [], "test": []}
+    for key in sorted(groups):
+        rows = sorted(
+            groups[key],
+            key=lambda item: hashlib.sha256(item.example_id.encode()).hexdigest(),
+        )
+        count = len(rows)
+        if count < 3:
+            raise SpecError(
+                "stratified split requires at least three examples per disposition family: "
+                f"{key!r} has {count}"
+            )
+        holdout_each = max(1, count // 10)
+        if holdout_each * 2 >= count:
+            holdout_each = 1
+        result["test"].extend(rows[:holdout_each])
+        result["validation"].extend(rows[holdout_each : holdout_each * 2])
+        result["train"].extend(rows[holdout_each * 2 :])
+
+    for split in result.values():
+        split.sort(key=lambda item: item.example_id)
+    if not result["train"]:
+        raise SpecError("stratified training split is empty")
+    return result

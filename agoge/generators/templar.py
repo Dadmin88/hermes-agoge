@@ -49,6 +49,43 @@ _BASIS_OWNERSHIP = (
     "Keryx connectivity and Nodescale trust do not themselves grant Fleet execution authority; system ownership boundaries remain distinct.",
 )
 
+_REASON_CODE_NORMALIZATION = {
+    "authority-manipulation": "authority-manipulation",
+    "authority-scope-uncertain": "insufficient-evidence",
+    "authority-widening": "authority-manipulation",
+    "behavioral-risk-uncertain": "insufficient-evidence",
+    "capability-combination-uncertain": "dangerous-combination-uncertain",
+    "cross-principal-access": "cross-principal-risk",
+    "dangerous-capability-combination": "dangerous-combination",
+    "host-effect-uncertain": "insufficient-evidence",
+    "membership-invalid": "cross-principal-risk",
+    "membership-state-uncertain": "cross-principal-risk",
+    "memory-poisoning": "memory-poisoning",
+    "memory-risk-uncertain": "insufficient-evidence",
+    "novel-capability-uncertain": "insufficient-evidence",
+    "ownership-boundary-uncertain": "insufficient-evidence",
+    "ownership-boundary-violation": "authority-manipulation",
+    "principal-scope-uncertain": "cross-principal-risk",
+    "prompt-injection": "prompt-injection",
+    "prompt-injection-uncertain": "prompt-injection-uncertain",
+    "provenance-insufficient": "insufficient-evidence",
+    "secret-classification-uncertain": "insufficient-evidence",
+    "secret-exfiltration": "exfiltration-intent",
+    "secret-persistence": "suspicious-secret-handling",
+    "security-context-insufficient": "insufficient-evidence",
+    "skill-poisoning": "hidden-instructions",
+    "skill-risk-uncertain": "skill-risk-needs-review",
+    "unverified-artifact-effect": "dangerous-combination",
+}
+
+
+def _canonical_reason_codes(reason_codes: tuple[str, ...]) -> tuple[str, ...]:
+    try:
+        normalized = {_REASON_CODE_NORMALIZATION[code] for code in reason_codes}
+    except KeyError as exc:
+        raise SpecError(f"prototype Templar reason code is unmapped: {exc.args[0]}") from exc
+    return tuple(sorted(normalized))
+
 
 def _allow(facts: dict[str, Any], rationale: str, basis: tuple[str, ...]) -> RuleCase:
     return RuleCase(facts, "ALLOW", (), rationale, basis)
@@ -684,7 +721,7 @@ def generate_response(request: TeacherRequest) -> TeacherResponse:
             completion={
                 "schema": "agoge.templar-model-output.v1",
                 "decision": case.decision,
-                "reason_codes": list(case.reason_codes),
+                "reason_codes": list(_canonical_reason_codes(case.reason_codes)),
             },
             rationale=case.rationale,
             basis=case.basis,

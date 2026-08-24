@@ -21,6 +21,7 @@ train = [
   "bitsandbytes>=0.45",
   "trl>=0.20",
 ]
+hub = ["huggingface_hub>=1.0"]
 dev = ["pytest>=8.0", "ruff>=0.9"]
 
 [project.scripts]

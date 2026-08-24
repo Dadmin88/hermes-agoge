@@ -1,0 +1,52 @@
+{
+  "competencies": [
+    {
+      "candidate_count": 36,
+      "competency": "authority-boundaries",
+      "request_id": "sha256:31b173d9413bc24ff8b996d6fb9da580f428f0b6859c7ce024e1ebdd9b52d87d",
+      "response_hash": "sha256:276a4c779160382e3f59d78df7cd4c87c9c331d20825742fc9017a41328d7d8e"
+    },
+    {
+      "candidate_count": 36,
+      "competency": "prompt-injection",
+      "request_id": "sha256:f3eb866abd2c94316c3a63e876a631ad1d58b190c78993d8c84df014586b25df",
+      "response_hash": "sha256:23de2c04af63f2898bba97755cbd900efb929c81ad1145ba0f6e3e3c1507342d"
+    },
+    {
+      "candidate_count": 36,
+      "competency": "secret-handling",
+      "request_id": "sha256:00a1edc105d96fa032d061dcead9aa22dc82b6e41e6ab27c5fc478b943f8d1d2",
+      "response_hash": "sha256:dfdc2870afa4961059860e9417015696a3e8f5f7a7b8651ad30ab24dd9c54388"
+    },
+    {
+      "candidate_count": 36,
+      "competency": "skill-memory-poisoning",
+      "request_id": "sha256:ec68090d9ca038c433ff9876ccffee280946c63f7c9c1d82483e478ab8778718",
+      "response_hash": "sha256:3d9767b18b0302eed1ef4637077f1ee361e6122ac34c4126b6d61f351ab3d223"
+    },
+    {
+      "candidate_count": 36,
+      "competency": "capability-combinations",
+      "request_id": "sha256:4af5ea7ca64af284eb6cfc9143fa4df7f3037b829a356fa1d460918163b3784c",
+      "response_hash": "sha256:01abc8dd8f6e773e81b76a7bea5880d7576a98796b7fd38b8a2f294bf8511fca"
+    },
+    {
+      "candidate_count": 36,
+      "competency": "benign-nonoverblocking",
+      "request_id": "sha256:a52401623f55521998e8e045034b9a68e7857fb66c9fcc4076949da6ebcb7b73",
+      "response_hash": "sha256:389ce897c9a1096d5c206297a25a710241d69704204fbf6c2b5b110748ee68cf"
+    },
+    {
+      "candidate_count": 36,
+      "competency": "uncertainty-review",
+      "request_id": "sha256:3861769e237e64551ece08f350b2be6555d2ad7a8d1681d3adea7695f0bd13f6",
+      "response_hash": "sha256:1cef4024314d8859a3d1cae88e37b15490978e67597deb516f44443f456041cc"
+    }
+  ],
+  "count": 252,
+  "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+  "review_state": "generated-unreviewed",
+  "schema": "agoge.templar-phase19-candidate-batch.v1",
+  "student": "templar-v1",
+  "teacher_id": "fleet-runtime-oracle@591ea20bb1b7268254ddeaffaf16a5f853aa2db5"
+}

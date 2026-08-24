@@ -56,11 +56,12 @@ def _generate(
     model: Any,
     tokenizer: Any,
     prompt: dict[str, Any],
+    contract: dict[str, Any],
     max_new_tokens: int,
     torch: Any,
 ) -> str:
     encoded = tokenizer.apply_chat_template(
-        inference_messages(prompt),
+        inference_messages(prompt, contract),
         tokenize=True,
         add_generation_prompt=True,
         enable_thinking=False,
@@ -142,6 +143,7 @@ def examine(
             model=model,
             tokenizer=tokenizer,
             prompt=example.prompt,
+            contract=student.output_contract,
             max_new_tokens=max_new_tokens,
             torch=torch,
         )

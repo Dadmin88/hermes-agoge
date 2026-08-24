@@ -34,7 +34,17 @@ def cmd_validate(args: argparse.Namespace) -> int:
 
 
 def cmd_prepare(args: argparse.Namespace) -> int:
-    run = prepare_run(Path(args.student), Path(args.out))
+    student_path = Path(args.student)
+    corpus_path = None
+    if args.corpus:
+        candidate = Path(args.corpus)
+        corpus_path = candidate if candidate.is_absolute() else student_path.parent / candidate
+    run = prepare_run(
+        student_path,
+        Path(args.out),
+        corpus_path=corpus_path,
+        split_strategy=args.split_strategy,
+    )
     _json(run.manifest)
     return 0
 
@@ -174,6 +184,14 @@ def cmd_teacher_import(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_review_templar_phase19(args: argparse.Namespace) -> int:
+    from .reviewers.templar_phase19 import review_file
+
+    counts = review_file(Path(args.candidates), Path(args.out))
+    _json({**counts, "out": args.out})
+    return 0
+
+
 def cmd_candidate_promote(args: argparse.Namespace) -> int:
     from .corpus import read_jsonl, write_jsonl
     from .review import load_reviews, promote_candidates
@@ -200,14 +218,52 @@ def cmd_candidate_promote(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_model_audit(args: argparse.Namespace) -> int:
+    from .model_audit import ModelAuditCriteria, audit_huggingface
+
+    criteria = ModelAuditCriteria(
+        pipeline_tag=args.pipeline_tag,
+        min_parameters=args.min_parameters,
+        max_parameters=args.max_parameters,
+        limit=args.limit,
+        search=args.search,
+        require_library=args.require_library,
+        allow_gated=args.allow_gated,
+        allowed_licenses=tuple(sorted(set(args.allow_license or []))),
+        sort=args.sort,
+    )
+    result = audit_huggingface(criteria)
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    _json(
+        {
+            "audit_id": result["audit_id"],
+            "criteria_id": result["criteria_id"],
+            "status_counts": result["status_counts"],
+            "out": str(out),
+        }
+    )
+    return 0
+
+
 def cmd_train(args: argparse.Namespace) -> int:
     run_dir = Path(args.run)
     if args.backend == "dry-run":
         from .backends.dryrun import train
 
         result = train(run_dir)
-    else:
+    elif args.backend == "qlora":
         from .backends.qlora import train
+
+        result = train(
+            run_dir,
+            max_steps=args.max_steps,
+            max_length=args.max_length,
+            gradient_accumulation_steps=args.gradient_accumulation_steps,
+        )
+    else:
+        from .backends.qlora_seqcls import train
 
         result = train(
             run_dir,
@@ -245,6 +301,37 @@ def cmd_examine(args: argparse.Namespace) -> int:
         model_kind=args.model,
         split=args.split,
         max_new_tokens=args.max_new_tokens,
+    )
+    _json(result["summary"])
+    return 0
+
+
+def cmd_compare_seqcls(args: argparse.Namespace) -> int:
+    from .exam import compare_exam_results
+
+    run_dir = Path(args.run)
+    base = json.loads(
+        (run_dir / f"exam-seqcls-base-{args.split}.json").read_text(encoding="utf-8")
+    )
+    candidate = json.loads(
+        (run_dir / f"exam-seqcls-adapter-{args.split}.json").read_text(encoding="utf-8")
+    )
+    result = compare_exam_results(base, candidate)
+    (run_dir / f"exam-seqcls-comparison-{args.split}.json").write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    _json(result)
+    return 0
+
+
+def cmd_examine_seqcls(args: argparse.Namespace) -> int:
+    from .backends.hf_seqcls_exam import examine
+
+    result = examine(
+        Path(args.run),
+        model_kind=args.model,
+        split=args.split,
+        max_length=args.max_length,
     )
     _json(result["summary"])
     return 0
@@ -298,11 +385,37 @@ def parser() -> argparse.ArgumentParser:
     subs = root.add_subparsers(dest="command", required=True)
     doctor = subs.add_parser("doctor", help="inspect local training readiness")
     doctor.set_defaults(func=cmd_doctor)
+    model_audit = subs.add_parser(
+        "model-audit",
+        help="audit Hugging Face Hub for base-model candidates without selecting a preferred family",
+    )
+    model_audit.add_argument("--pipeline-tag", default="text-generation")
+    model_audit.add_argument("--min-parameters", type=int, required=True)
+    model_audit.add_argument("--max-parameters", type=int, required=True)
+    model_audit.add_argument("--limit", type=int, default=20)
+    model_audit.add_argument("--search", default=None)
+    model_audit.add_argument("--require-library", default="transformers")
+    model_audit.add_argument("--allow-gated", action="store_true")
+    model_audit.add_argument("--allow-license", action="append", default=[])
+    model_audit.add_argument("--sort", default="likes")
+    model_audit.add_argument("--out", required=True)
+    model_audit.set_defaults(func=cmd_model_audit)
     validate = subs.add_parser("validate", help="validate one student and curriculum contract")
     validate.add_argument("--student", required=True)
     validate.set_defaults(func=cmd_validate)
     prepare = subs.add_parser("prepare", help="prepare an immutable Askesis run snapshot")
     prepare.add_argument("--student", required=True)
+    prepare.add_argument(
+        "--corpus",
+        default=None,
+        help="Student-relative accepted corpus JSONL; defaults to seed_cases.jsonl",
+    )
+    prepare.add_argument(
+        "--split-strategy",
+        choices=("stable", "stratified"),
+        default="stable",
+        help="deterministic split policy; stratified preserves disposition families in held-out sets",
+    )
     prepare.add_argument("--out", required=True)
     prepare.set_defaults(func=cmd_prepare)
     fleet_snapshot = subs.add_parser(
@@ -352,6 +465,13 @@ def parser() -> argparse.ArgumentParser:
     teacher_import.add_argument("--response", required=True)
     teacher_import.add_argument("--out", required=True)
     teacher_import.set_defaults(func=cmd_teacher_import)
+    phase19_review = subs.add_parser(
+        "review-templar-phase19",
+        help="independently review Fleet Phase 19 Templar candidates from event facts",
+    )
+    phase19_review.add_argument("--candidates", required=True)
+    phase19_review.add_argument("--out", required=True)
+    phase19_review.set_defaults(func=cmd_review_templar_phase19)
     candidate_promote = subs.add_parser(
         "candidate-promote",
         help="apply independent reviews and partition candidates into accepted/rejected/quarantined sets",
@@ -378,9 +498,33 @@ def parser() -> argparse.ArgumentParser:
     )
     examine.add_argument("--max-new-tokens", type=int, default=128)
     examine.set_defaults(func=cmd_examine)
+    compare_seqcls = subs.add_parser(
+        "compare-seqcls",
+        help="compare untrained and adapted sequence-classification Exam results",
+    )
+    compare_seqcls.add_argument("--run", required=True)
+    compare_seqcls.add_argument(
+        "--split", choices=("train", "validation", "test"), default="test"
+    )
+    compare_seqcls.set_defaults(func=cmd_compare_seqcls)
+    examine_seqcls = subs.add_parser(
+        "examine-seqcls",
+        help="evaluate the closed disposition sequence classifier on an Askesis split",
+    )
+    examine_seqcls.add_argument("--run", required=True)
+    examine_seqcls.add_argument("--model", choices=("base", "adapter"), required=True)
+    examine_seqcls.add_argument(
+        "--split", choices=("train", "validation", "test"), default="test"
+    )
+    examine_seqcls.add_argument("--max-length", type=int, default=2048)
+    examine_seqcls.set_defaults(func=cmd_examine_seqcls)
     train = subs.add_parser("train", help="execute a prepared Askesis training run")
     train.add_argument("--run", required=True)
-    train.add_argument("--backend", choices=("dry-run", "qlora"), default="dry-run")
+    train.add_argument(
+        "--backend",
+        choices=("dry-run", "qlora", "qlora-seqcls"),
+        default="dry-run",
+    )
     train.add_argument(
         "--max-steps",
         type=int,

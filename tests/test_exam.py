@@ -34,6 +34,20 @@ def test_parse_model_output_accepts_closed_templar_output() -> None:
     assert parsed.reason_codes == ("prompt-injection",)
 
 
+def test_parse_model_output_rejects_reason_code_outside_student_vocabulary() -> None:
+    raw = json.dumps(
+        {
+            "schema": "agoge.templar-model-output.v1",
+            "decision": "DENY",
+            "reason_codes": ["invented-security-synonym"],
+        }
+    )
+    parsed = parse_model_output(raw, _contract())
+    assert parsed.json_valid is True
+    assert parsed.contract_valid is False
+    assert parsed.error == "unsupported-reason-code"
+
+
 def test_parse_model_output_rejects_non_json_and_missing_reason() -> None:
     invalid = parse_model_output("DENY because it is bad", _contract())
     assert invalid.json_valid is False

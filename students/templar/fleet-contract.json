@@ -930,7 +930,7 @@
     }
   },
   "schema": "agoge.fleet-contract-snapshot.v1",
-  "snapshot_hash": "sha256:14b1bc98ce7ad9844a209dec43dff556c48a7b1a065663727d669616f9a342b5",
-  "student_hash": "sha256:de6e1ca544aa883f34864d42a9532a100e26be0c9f50f39aa618a5b92e3ad6d2",
+  "snapshot_hash": "sha256:0238eb6dae6f6b0b7c9e54f6359e0cf18093cfa09b34092156aa39964c8b2abb",
+  "student_hash": "sha256:eaabc2035dba64562530ccffcd938d53b4471997b7aceae92e656e84b2fcb8f1",
   "student_id": "templar-v1"
 }

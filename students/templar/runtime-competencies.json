@@ -2,7 +2,7 @@
   "schema": "agoge.templar-runtime-competency-map.v1",
   "student_id": "templar-v1",
   "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-  "fleet_contract_snapshot_hash": "sha256:14b1bc98ce7ad9844a209dec43dff556c48a7b1a065663727d669616f9a342b5",
+  "fleet_contract_snapshot_hash": "sha256:0238eb6dae6f6b0b7c9e54f6359e0cf18093cfa09b34092156aa39964c8b2abb",
   "model_input": {
     "kind": "fleet-event-document",
     "supported_schemas": [

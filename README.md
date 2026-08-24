@@ -22,6 +22,8 @@ The first reference student is **Templar**, Fleet's low-authority security evalu
 
 The repository already implements:
 
+- a provider-neutral Hugging Face **Base Model Auditor** that discovers and records candidate models by task, parameter range, architecture/config metadata, exact Hub revision, license/gating policy, and artifact metadata without assuming Qwen or any other model family; Hub audit produces a shortlist only, while local Student benchmarks choose the eventual base;
+
 1. closed student and curriculum specs;
 2. provenance-bearing JSONL examples;
 3. deterministic 80/10/10 corpus splitting;
@@ -69,7 +71,7 @@ agoge compare --run runs/templar-smoke --split test
 
 Agoge roles may be split across machines. The initial layout uses Katana as Trainer/Examiner and Psalmbox as an always-on Faculty/corpus worker for CPU/network-oriented generation, teacher orchestration, provenance, and validation jobs.
 
-The initial Templar base candidate is `Qwen/Qwen3-0.6B`, pinned by exact Hub revision in the student spec. Model selection is an experiment, not an architectural commitment.
+The current Templar research base is `Qwen/Qwen3-0.6B`, pinned by exact Hub revision because it was selected manually for the first local proof. It is **not** an Agoge default. Future Students, including future Templar revisions, should use the Base Model Auditor plus local Student benchmarks to choose among viable Hugging Face candidates.
 
 ## Safety boundary
 

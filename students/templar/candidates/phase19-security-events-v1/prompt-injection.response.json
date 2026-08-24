@@ -1,0 +1,3184 @@
+{
+  "items": [
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:ea7d3c752558d608f73648409e5e6bddce52e5e184fa48980d50160e33f052c6",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:f89bab976deb1b1474a5e05fb228c6ef20aa8420725b6bab0a0e155aa9512133",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:fd39649a0ce4ac1486277d4d1c8db8573327a1a76f5cb800c62f02e9395f6ef8",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:16f76effb40dffc10ea92e06405137feaeab9424e46f5c2f3d2fc6873fcc0e87"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:cf3b3807fa5002ee4533db1cc9580d77e5fa3c536cd83dc24b85317d71b9af3c",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:ef7f6c11853d188dd16897c988a3801c39fc20caa7c6501ab93c3e39df6ae74e"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1000,
+            "deadline_ms": 20000,
+            "max_iterations": 4,
+            "memory_bytes": 268435456,
+            "pids_limit": 64
+          },
+          "run_authority_hash": "sha256:b93577283b352e4ec55e88fc35d8e7efdb375195e355318adac99ab9309c3bde",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 1,
+              "node_id": "agoge-node-0",
+              "source": "local"
+            },
+            "target_digest": "sha256:c7225dc1dc619bbadb67abfda30758efae4294e9de43c88ba1afeeea746fbcd3"
+          }
+        },
+        "request_hash": "sha256:0bf4611b5df870cb78c546caf9e27367a984ccaa91ab0bd9d63dc83f2738a49f",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:cb5d13a2221b59606cde835c64923d05831176ef30bcf376b1968a5c442a0c22",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:db371fd09ef5ffcbaf3d87c22fd872aaa4ebc6839a68052601695cb64313e1e5",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:d17cdfa11e59e8d6107c93b05798ec85f016ee52706f687850c23dea07c686f0",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:b8d08f73d8cfa848c08e46c9d96e6d14131d4532b41dd3725c46891cf3f314c2"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:67edf9741928d1c99688e32c3936491a364583b86237a9b4c11522e1bb11b22d",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:16dbcf268c8e076cfda109199e1fecd8fe06d77c5b7bc8636f044a728918b12b"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1500,
+            "deadline_ms": 20010,
+            "max_iterations": 5,
+            "memory_bytes": 402653184,
+            "pids_limit": 80
+          },
+          "run_authority_hash": "sha256:0484bf692518491822514f58a7f94d62cf445233547377f0fc00de97a49cde3c",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 2,
+              "node_id": "agoge-node-1",
+              "source": "local"
+            },
+            "target_digest": "sha256:12ef4a8d35bf0c5df9c03bcac7425c4b9f7690e161bb900d03e4499f464f6e15"
+          }
+        },
+        "request_hash": "sha256:dfffdd79e67038a6d7ce380440a58e969d6157c615482796d68b3e224d737065",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:ef94d4e7c3203585d21633a67583778699081a577b32c4eddf783fdec1521693",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:c03ea5d8eac76615aaf6874c414111059a4a5571e8cb8e12a52dc64422c9f6b6"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:8d8bea2a81f2f58f1791e9f3404d935dfa941936422c45fdd12f9cf5732cf136",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:d435ae6397c7a302c8c0be2708af7b8047fc88090e17ec701348361eb478bc8c"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2000,
+            "deadline_ms": 20020,
+            "max_iterations": 6,
+            "memory_bytes": 536870912,
+            "pids_limit": 96
+          },
+          "run_authority_hash": "sha256:8c111403790342993b5613027b27aa9ea4e82abf80368b9fe2c6da1a05501e7a",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 3,
+              "node_id": "agoge-node-2",
+              "source": "local"
+            },
+            "target_digest": "sha256:6cb85b941ec288630892dc6c0cffdc220d27476ff7a106931fd28798fd4a075b"
+          }
+        },
+        "request_hash": "sha256:897498c1b23e60649d56434288de9d84117d1c0d9b8c20bb93b754bc22a05abd",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:584da39c8ee0e02eccc42efef0bf1e0e3eb2900d33d4c3f8cbaaf6266b49925a",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:dad00f590874a099110eada69f0a254b770c4a563607582d331520d93c6120f9",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:630ff2de205740243b5381a1f9885498f1288c87cf82fa089979ace8c0a99f6d",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:53e5e01ea859a31722340187d6d5f9cc516fe095295cca1b423a5031ae9cc718"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:537269107102d083949da7dc1f55e6d0f7a4009c21c18a2e3abad0d68b622ff9",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:ddc19ea1722fd50e42f735c0993f51dfc8af703db193ddcc4152039a1ebcdfb1"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2500,
+            "deadline_ms": 20030,
+            "max_iterations": 7,
+            "memory_bytes": 671088640,
+            "pids_limit": 112
+          },
+          "run_authority_hash": "sha256:2bea4af2edc282858ffa749cf0af406261bf13c792957df254a970c0f597d837",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 4,
+              "node_id": "agoge-node-3",
+              "source": "local"
+            },
+            "target_digest": "sha256:b71cdc4ae3851ccd39cf7762219fb115913569cbc88529764a3dd6c1c26feb36"
+          }
+        },
+        "request_hash": "sha256:9c59953dc96f517c3ab9ccecaf84d4454cebbb6a74bae65bc885994e38d903a8",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:00e4032eb3d5ac261adc7ccfa8c14f412ca7ac2a4b2192786e80e63c324fbc32",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:86f03b86a85306ebe61369ccfbb3d61262cc6fa3e6b1aba59810de2498cffc18",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:a1ef097afaf9a4bd552b80bac593671018b33d94816a94b8db730f752150cd37",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:9f9edf155855482a4a8e269254cf9b6fc5c856d48fbfba181027504695726331"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:f28617133f9dd308c3309b5c24a438b753359d5e13fe35d9cc3aa493577a74d5",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:e8dd99608060356b65ab60b48d621c5c9f71ff38ed703fb99fcad3c16d1abaa4"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1000,
+            "deadline_ms": 20040,
+            "max_iterations": 4,
+            "memory_bytes": 268435456,
+            "pids_limit": 64
+          },
+          "run_authority_hash": "sha256:5bef97ab69a6d17bc404ac81cc24e5ad7f4b8213988859ad2529a4e56ea0237f",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 5,
+              "node_id": "agoge-node-4",
+              "source": "local"
+            },
+            "target_digest": "sha256:0d4abf85adb6d596b7c20b167955c0706e9fdaf0d24d3cb6ba387e0742c83f63"
+          }
+        },
+        "request_hash": "sha256:0bf883c159ed42ca468dd8698014a4f91c212ac82965b4982f3324e8ed59c79c",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:841102d24ff5332287ce2823677537141eb1e336ea65dd7e8a7f7cd438861908",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:9c4bbc17ab698255d6f7f7196c4005d20c48623898a5e2c04831093296671e23"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:8c96275953dcb004ab248d4dcd70e6f766012314eac66412ad72acbcedfbdf7e",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:d6d48200413784889b739072ec1c234168ff212d7974a7fb51a21d4b83f40d1d"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1500,
+            "deadline_ms": 20050,
+            "max_iterations": 5,
+            "memory_bytes": 402653184,
+            "pids_limit": 80
+          },
+          "run_authority_hash": "sha256:df6e89d974ca8fab56c2f24c028eeae287737f5c09e580d982455105ed549550",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 6,
+              "node_id": "agoge-node-0",
+              "source": "local"
+            },
+            "target_digest": "sha256:c6d69509000857fbb669f609206e3fd0325288795f7cbf38455e50af1f3ee8e3"
+          }
+        },
+        "request_hash": "sha256:1f86946045493a8933047cab79c593b08d73630a0d7b9b3a35c36226a75963ff",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:bc1555434d8b64a3d5b6c44b7e6dc7b313d6e0a4d039a6aebfe25036079a8482",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:052669904c8fd5dd5d6a1866d2ed7abdd8eb2fe81fd3e10cb1dba435eedcba1f",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:815358f5b164c6c8f0a02424eece1a474f2844d6977498eea020741545bd521d",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:c31f9d994bf6345557ff045f2df125c9cbfd795527abc46340daa91cbab9eeec"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:30f1ad37cb8115f952816efbbde729fced629a5b88e7e4778507c1da76b87c3d",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:00bc737ddb88154a2f783b77fba4ec88c142a4a0af3fc48d7cc59bbdac9341fc"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2000,
+            "deadline_ms": 20060,
+            "max_iterations": 6,
+            "memory_bytes": 536870912,
+            "pids_limit": 96
+          },
+          "run_authority_hash": "sha256:f934399d0fe4b0f98c3488905d12bf366855731732e4790714f70a365dc20ff9",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 7,
+              "node_id": "agoge-node-1",
+              "source": "local"
+            },
+            "target_digest": "sha256:3b04ccc80cc0deb225b24b63ee85eb4afd0157cedbf0070c3f7d0e73967f8c56"
+          }
+        },
+        "request_hash": "sha256:4e96624fe76c4da5d2b89af8ac64cc04799ded69e90262bc2561cce60b086a40",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:5f4c5a22787764ea1fd4fa36ea3fbf113452e2c250052e926b703299b9ff506d",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:45bba6eaa9495a9a257a49999c0dc0a6b1104d818226bd919cf87850368609a5",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:857e11d18bd04e80a10d5e43193adb4af405e7d65030aa569f6cae51c7ce1bfb",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:7992150cffd4a0f7e3498cd34adb3b826a582c3ae306e384de315e5b33b77aa5"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:9a4137394838a69c4a9dfffe6be745e39104352c42bff855273392f04cd0bc36",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:e9fb159309882070455053e6abfb496877b2932f67770e354f469779ae6d51d6"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2500,
+            "deadline_ms": 20070,
+            "max_iterations": 7,
+            "memory_bytes": 671088640,
+            "pids_limit": 112
+          },
+          "run_authority_hash": "sha256:1fc525cc4ff083b825bc58ca31586fb923a7d1f4da0e43d88d8b36c585a86af6",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 1,
+              "node_id": "agoge-node-2",
+              "source": "local"
+            },
+            "target_digest": "sha256:04b5cd8dcc5bb808bf90c34d45f093fb2d240bc1da0216b862b726c2e035078c"
+          }
+        },
+        "request_hash": "sha256:d2a8e747d488e9143f4e8711219acecbf26fa4cb23d01df382e2360e0033af46",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:319b373c22869cf92fad7f939226bccc8f4e29bd029d7169473caf230ff69612",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:83cfba8143938512fd49283f12a96a51f686ea5e252c6f8b3d2a891a7e18b382"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:349b8a7fd4e43aef2b93fc86392a4d2553fcaffc0577250496ab52e2639998d4",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:f520b9a57cc21ebb05c8fed20d4febe9b28e786694a23a52fefa00d723118e0d"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1000,
+            "deadline_ms": 20080,
+            "max_iterations": 4,
+            "memory_bytes": 268435456,
+            "pids_limit": 64
+          },
+          "run_authority_hash": "sha256:da9dc54241a05c032d2c92d1f1d382819549ca814d36167f18d2f3e37979bb9d",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 2,
+              "node_id": "agoge-node-3",
+              "source": "local"
+            },
+            "target_digest": "sha256:df0d923c878a2f14b3a7e5d759ead022417adf70240b40c5b37dfd1399bd26d9"
+          }
+        },
+        "request_hash": "sha256:ca63eaeb6613ec516f1c73667ed868e66d0b97f1c1a2bbbfd6e1abdbb6fd5608",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:2ca2a42fa8b8250d0ac849ff7504e5e2b299cda025c34aa1b5083bbb184baf95",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:c8b191e729cdff39f01d11fb234b3f62c638bfdb422efe9f3a6a6277ca4047b8",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:d6e79a5e4892dd9501d8c8c922024984d6d255544dee57e5dc06c78663d1e6ed",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:edb4b383b98768c6b47f693855816a7c3539630ef7507b4af93b7b6d9ccc0239"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:faaa0db6823398400e177f977f64853068f2c5b8b0dd4e2fbbee6b9ba84deb84",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:c56542395d7c9080539656513619cbdaed2bee17353af88053c8cd85b406cb08"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1500,
+            "deadline_ms": 20090,
+            "max_iterations": 5,
+            "memory_bytes": 402653184,
+            "pids_limit": 80
+          },
+          "run_authority_hash": "sha256:9cb85b00eeda5263c8be4dd4166cbdc3cc3dc38729675e7cb398ec1f62b6bfad",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 3,
+              "node_id": "agoge-node-4",
+              "source": "local"
+            },
+            "target_digest": "sha256:be2310fc131c4093176b7687cacae7e26f103c2d5913a5e81cc606c16e2a78ab"
+          }
+        },
+        "request_hash": "sha256:454f2d2216f633a226ca29fec870d587ae4412103c9445afe59a0e51b67516f9",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:57868406086877d91bf17b20758bec015998d8b4ad5d139ae15bbb50f4a12af1",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:7edda2411dfb262ac0a8a28083e2aba343e0253c8866373e938ce8a62706019e",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:4f6474a57cb06f6623f10b1c61a62f2db99268fefd17fa633939b11c59886bb7",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:80bbd62e0e122623c7dc84e7c09d0e37a34aef174dfd047636dc7812530282c2"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:e8c47a96b955387f53be1113307af24e5c29044ac45ec422342762d02faaa849",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:07c91b391c5ff7231605dccc4e5adcbb925ee48065f17e74fc49992fe66e38f5"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2000,
+            "deadline_ms": 20100,
+            "max_iterations": 6,
+            "memory_bytes": 536870912,
+            "pids_limit": 96
+          },
+          "run_authority_hash": "sha256:d1be68f6b0555ba2245ff6ca08f3b35822fec2a597db86010aac02f262e31db7",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 4,
+              "node_id": "agoge-node-0",
+              "source": "local"
+            },
+            "target_digest": "sha256:b3b40c87ca5fc593d4e275bddaddf3700470549538823f4cede4a9601dc52723"
+          }
+        },
+        "request_hash": "sha256:c3edb231ba5d00ea9400cbe18faaad137b4bddc760e0b9cf7f9fe773a14c9e6a",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:3424330f8c32bea664775bcff222d9d04d1f55d2c87f120d2db15526dee3ab57",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:8c69d1dc1a55956925dfdca9559a784191a7be80bdf4eea76795c45792116933"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:af7fa58f944337db0d3a0b139bcc4795f692c5af0bd3a9290bfb1c7488823aed",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:9833b61fb099a4571b57af8c261106603778565d7832afee413317c217f1b3c2"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2500,
+            "deadline_ms": 20110,
+            "max_iterations": 7,
+            "memory_bytes": 671088640,
+            "pids_limit": 112
+          },
+          "run_authority_hash": "sha256:23532f62d950408c4789e1344d598b67f04464a48b6a990dea998c433f66d2d7",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 5,
+              "node_id": "agoge-node-1",
+              "source": "local"
+            },
+            "target_digest": "sha256:7fdf554a176ba998838a4daaf6a835bdd25e5831c188b05ae47bc6e508424d98"
+          }
+        },
+        "request_hash": "sha256:2845257ffaeecc6f61248fbc00e8395c28888b1f8720cac8c496d2ab692b6533",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:93c241fd3bbd8a5bb39bdb847ff6f691e26d43c2f1b70c7ea9116bda829d8287",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:4fad004fca431969b6e0f9fd00368eb09e88242cc583d95c944690ac2ca8ae94",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:6ff04ee4f942e11e6302e42ba3e75c36e88da99e9327093d0005efb619646ca5",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:a71d411ff7016efed41d2fc8a21b68cf2ac18a3257a1ac3e9e5ee46f5817f7aa"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:736ffd83e942693345773fce73845ca3f08a112073c6bc63e3b9127d21d93ac8",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:e58f2586cce9ffa2c985ac8826fe0708000c18b894b8267c1b743ea1658c4e8f"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1000,
+            "deadline_ms": 20120,
+            "max_iterations": 4,
+            "memory_bytes": 268435456,
+            "pids_limit": 64
+          },
+          "run_authority_hash": "sha256:aa6dd9ea5006dbd1c583f35206e464cee7d083bc53e2aa9c7b2a852a2f48f005",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 6,
+              "node_id": "agoge-node-2",
+              "source": "local"
+            },
+            "target_digest": "sha256:ca3006b31ef791226fecd939bc4243314f133951c50ecaa80522d45e88297c58"
+          }
+        },
+        "request_hash": "sha256:354d1fd11fce007c0e24b1a446a9e168883370244e9b7601a71df3ec9d79664a",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:03ccc1dc0904fbd8e4ca6e5bb5f312b5c53a674bac1db73a3a81782b921abadd",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:3674a35797c9c4b8bf9d190572fbe17aa5ed0b73aa300263a12e334292d42af5",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:d5c95ed7bdb5f98a125deeea055af09555a28b6d43710aa70b8dcf7422789780",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:9291e2ae1cfe4444603b61b9abb8f673ab90694b4c5d722ef18acec6bce48fcb"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:d89e5f89391af8091238ba00fd32c1e7a9b2b226a3a7e08f4256bd93457bfa27",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:3e8e46a59ef1ec40d5ef379931b4ccc6ed63b50b32aa5dc34835ed40ff68838d"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1500,
+            "deadline_ms": 20130,
+            "max_iterations": 5,
+            "memory_bytes": 402653184,
+            "pids_limit": 80
+          },
+          "run_authority_hash": "sha256:8c7023f94a22d1c02c8a3765f60ed6641df8192ed14357318c6442f74b17d05f",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 7,
+              "node_id": "agoge-node-3",
+              "source": "local"
+            },
+            "target_digest": "sha256:92462f2936bbbea2385b9fe5ab9517288008448e247cc30fd0d075071c9acba0"
+          }
+        },
+        "request_hash": "sha256:accd55332d1c0f9aa0518d0f7eced024a280cab8dda79e56f53ae29f5b776c8b",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:3b242cf33dea9133d498ca8e8e3f3eefd10df94b9150e8403dbdb68fd3ff9894",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:66b17614703bd74ffd5a72787c6afa2210d74efef3d08df590ed1acc90c1a924"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:010460b01cba5175fc86e0a2f54a6df13fbc360ee5f2b9f5e608d798a242bf9e",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:986079e18d7d38ba3dbe84bf42e723f7641b825aa688988c3631d2d67383d63d"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2000,
+            "deadline_ms": 20140,
+            "max_iterations": 6,
+            "memory_bytes": 536870912,
+            "pids_limit": 96
+          },
+          "run_authority_hash": "sha256:00f0a71b2b7c338f64dc0f34c71c3033019542a5b6ee88532bc2f276632eb824",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 1,
+              "node_id": "agoge-node-4",
+              "source": "local"
+            },
+            "target_digest": "sha256:fadaaa914b18eadf5cb76cc6c378d13a7adcfbdf82061735faa374454ee6acbd"
+          }
+        },
+        "request_hash": "sha256:67815d8c4c83a5ae15803d0594c9b6356771fe64c7f47e9b419f2654df44c438",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:107072fbd6df64ed0dae44d805195f642208583eef1305f1ae7b8f8d62387000",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:863573965544293a95da07053213bbf0ba130aef98057dd91450d8f4589e26ef",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:abddae81b1da3ffcdd2c39dd3c3364143f9a337d5178a1cc1695cb8bd3c71f24",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:2e06b3e2169ed02c182cc3ee4fe25fc3cd6198b3a5e0a2992fd0ac44a4a0d76a"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:121d02b538a6f3e975210c7dfd97beb7d20552b51b008db6fd5c7853a212d516",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:00c6256eac32fdffcf64505d5b8201f24a780dbc3e443e507e0cf90a324487f3"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2500,
+            "deadline_ms": 20150,
+            "max_iterations": 7,
+            "memory_bytes": 671088640,
+            "pids_limit": 112
+          },
+          "run_authority_hash": "sha256:c31e78c418bfd23929e531fce5c036bebbe2e6d74544dedf0449daf98d7cf13f",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 2,
+              "node_id": "agoge-node-0",
+              "source": "local"
+            },
+            "target_digest": "sha256:51e16e9f110874d291e58849115a6fbf972ef972ed24c11797faba93a417bd09"
+          }
+        },
+        "request_hash": "sha256:64a0014624239160a5efcfe89eea232a478691bb66af1e4565a2cc157f8e8a81",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:d0c3c2abdd484a72a829d933f6d2da9a7d5e491baaa514f4cf07498358b4504c",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:c5f10859cbc221cf607e9608f7c30151ac4624429822bcadb8e608dec84aba62",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:9e2ada3f1a6fb3efba77c426cd749089f86a1db589ba14d7acfb427d0cc93158",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:929e6d327e520ce78eb8f7005420f4bc5bb25bf6adb2c045acaab8c15508cb3f"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:8586952eaeba3c56bc63f39d1311f0daee35017bd8f4583a9c2ab9ca2fc434ae",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:3dbe281c1a94c36622dbb2a68eb1cd2633580cd8c32562ad7e038e92e14338db"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1000,
+            "deadline_ms": 20160,
+            "max_iterations": 4,
+            "memory_bytes": 268435456,
+            "pids_limit": 64
+          },
+          "run_authority_hash": "sha256:aeeaf9aefacb61514cea5e8c8b3988f18eef247b4dbc1c6c70ae7fb659810d73",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 3,
+              "node_id": "agoge-node-1",
+              "source": "local"
+            },
+            "target_digest": "sha256:ea3b859573ee31311c0d9143e15b320a9ea5632378c53ecbdf871dc3f8dbea0d"
+          }
+        },
+        "request_hash": "sha256:1ab39c11145d1653e251a3c4a684b0237c70e0e2115f2238288908766e74eba3",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:fa3e2fb4c99f43e752aa5dd1e22891792e3ed752e22b86defe408d7f69659186",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:f008b96dafefba39081390af491cf7faf693eb86d348840df4ee7de3ab0322cc"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:293c6a9e92dcf0f4af3bb2c232bde5f201494ba11a6d3491a09521b23917c11e",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:ac822edb4aa0ed38fcaa1a18deeeffd4d6e70883c96810e46fb2921869027175"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1500,
+            "deadline_ms": 20170,
+            "max_iterations": 5,
+            "memory_bytes": 402653184,
+            "pids_limit": 80
+          },
+          "run_authority_hash": "sha256:eae384a22c2f71d8d45bec5c96e28dac9876a7bcf087cbe1efa509ecef4a26cc",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 4,
+              "node_id": "agoge-node-2",
+              "source": "local"
+            },
+            "target_digest": "sha256:ecc8e668f77ca482ef62f8687315001666154c0c08c44480829ab5d5efb32920"
+          }
+        },
+        "request_hash": "sha256:7ca79d9002e9ee669247e680123ec49599f804e66278e62db056a14747fd8b62",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:70c1e95c6a9dd264b253667631d0e74547f6d118fb67aa6d25852b2798ae4ae6",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:4f2adde98904bc8457bafb844dc99b4730406e95c46b657320151add4e3d1ebe",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:49c85940893b1aa290bcc921bedf42aa50c65de5fedaf4e52cd97ab0186a1262",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:65e54d7047670e830107a08b87e65a357f904df29f329324b25382bf6be816d2"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:d4dc624e820489f0c2b75bef582877621d688ed1eecf61c4ad0058f0e2615548",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:633d0449ccaf3638df39f5f7d2954a3244b42000ce698bb7d73b0548f42b9f8e"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2000,
+            "deadline_ms": 20180,
+            "max_iterations": 6,
+            "memory_bytes": 536870912,
+            "pids_limit": 96
+          },
+          "run_authority_hash": "sha256:a0a51d982143a7bc2256f9eb5639a34f1ef01e3b738b11435d8f92216ecfdc04",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 5,
+              "node_id": "agoge-node-3",
+              "source": "local"
+            },
+            "target_digest": "sha256:dc7637135e7de7d6dbe09501b9fdb1b347802811ff37cc87a06925cfcd05f7b1"
+          }
+        },
+        "request_hash": "sha256:8d477f12996d0d1c2ac060f3e52c5d7a21994ba305cb1646aa76e2328ee35825",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:d8e37a2a598bb26105d1f15fbbe6d9c0db237b5a9f5fe41e0f4d68a5eca357dd",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:47d4419f0d8ec546d8f2465be59282a5ff3ef1942858f3e3bffd145d771d6f5a",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:66e8e1887bedefe6d3519573e90c3fd2c4512a09b5547aa1bb52d1021479463a",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:ef802edf5c56b15b1a91b50e872dbb893080c8740a47b02b2bf79b8eb967a001"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:cb8e7623d7c1099d7adb481c49a40ac4440e8c7f2a8fd3ed7138b03331e45c62",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:0ab8e28ad2e04222f8be19301cb9b565ac02b320585ce8b7a89e376fd0e158b5"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2500,
+            "deadline_ms": 20190,
+            "max_iterations": 7,
+            "memory_bytes": 671088640,
+            "pids_limit": 112
+          },
+          "run_authority_hash": "sha256:c4084e05e3c9bc8364d90cf052fe216d5f5045f1d29be88c73f30e91d1019963",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 6,
+              "node_id": "agoge-node-4",
+              "source": "local"
+            },
+            "target_digest": "sha256:69aa138b6690de15ca40ca1dc53dbbf33d04dfd090578c112d4b38771d271ef9"
+          }
+        },
+        "request_hash": "sha256:123a3706924809bc7c85f4ad04deda6cb34affdb6b60addba3fafdc5e5b0f259",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:7550d3f7bff1cc57c5224541dc5305a653b3efe9e176b6fe552880b34117ebc1",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:64eca0a1c4131a80216256d5ac31ac8008a6fd74e1a76acd292d1b18c15db6b2"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:ed8a96d03a88479c08e381dae041c4fdffec88d7bbedb9a8de358fc3adf50b00",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:b2ebaf3c87421f8819fcb6ff93c8317638e1c59b58705c6c710f8c835dc543c9"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1000,
+            "deadline_ms": 20200,
+            "max_iterations": 4,
+            "memory_bytes": 268435456,
+            "pids_limit": 64
+          },
+          "run_authority_hash": "sha256:3fd8306809c06ffe23a30750810ceda663b66cf5ad9e700da38af36da5b6b8bc",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 7,
+              "node_id": "agoge-node-0",
+              "source": "local"
+            },
+            "target_digest": "sha256:1245eded1319abf2e8970063f7e6f1fdb48c644397513cda1274c0f7a5038a98"
+          }
+        },
+        "request_hash": "sha256:e8d9419f78dc9fa59987b7b51a4380ae88b76ac6c49ef9e7c20a19b438bf221b",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:d5034756fa9169017bcee104d3db33aca4556bd5f241f27d5170d66d35e18ff6",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:34dfcbef2b69e5313dd1ab881dd0b067bf3fd8387fb71e088fe8e44666e5a382",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:f91394482b25d5004aa68e19e0d92761c7c3d39a4eefb5511d3fba291157aa4f",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:8b6a5300cb3810a02232019e7e90c7b8c079b11bd1a320120366aff72f135612"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:e18b8b390c2ba9f189c70184b700d74013526a264e2fc9358fb71b6e5c28bfa6",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:58b80c74955688db90b5ab2f886bdca4e50ba0207097c112c2d6a3cb3e78df24"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1500,
+            "deadline_ms": 20210,
+            "max_iterations": 5,
+            "memory_bytes": 402653184,
+            "pids_limit": 80
+          },
+          "run_authority_hash": "sha256:aeb90ee94e31a617af9310351b7f0ae6cee54b82170602d787a5bbe4d7541399",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 1,
+              "node_id": "agoge-node-1",
+              "source": "local"
+            },
+            "target_digest": "sha256:1723fa4b14e57e24aaf2de8ab45cf25fe9673f07c0202ced516126d6e56ef7ec"
+          }
+        },
+        "request_hash": "sha256:0baaac17cdc09870cf7d1f6f311c03933c8be177790b378bb4e7f38925a543cd",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:bfe894ea000bf516433489b620c04d34d52ac3d460dc2dbdc3c3b2ef2e6d43e6",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:70d1ef1e8430031a5b00e93406f14fb79d6e1931ddc3917825987cd4978b9f12",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:2394f3dc29de385ea5b26959488fc6648eae380c13aab2f35d030da0f5ed683b",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:c35e7f232a2a1837eec70d22e6ddea6be18018dcd69e78328fde17f252bb5861"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:c31ee3c03d38fbf8a59662f0be6e84275e193fe0b9198209dc88cc59c728cac0",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:0c2b4a507f21a09a527a025e9d99788c76ff77efcb897df0978df4b8ceeef2d0"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2000,
+            "deadline_ms": 20220,
+            "max_iterations": 6,
+            "memory_bytes": 536870912,
+            "pids_limit": 96
+          },
+          "run_authority_hash": "sha256:983d899a8035f473fcf47bbe1a9219303d090d773a1df3001f26094da56a4454",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 2,
+              "node_id": "agoge-node-2",
+              "source": "local"
+            },
+            "target_digest": "sha256:0587622a1739466c0d908d873d697f6de62a4e8b661077a39dff1691dcbdf1d9"
+          }
+        },
+        "request_hash": "sha256:a1cf41bee1898a5e8d09cf001cf959aaa4376a882bb34175d545adc6b91a73ea",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:fcd601b009a77829d85174e3f4b4167b38a24dc186121f7213f3472bd3d48996",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:bfeff9f1836a50c33a09fc7fb9f66287bf6c1e2144f461f6361d488a1c595b52"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:1b862f998af8c0505e0d5b682d213e53ad70ba1d584a8162731de22b2a6990ea",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:c910fd89ec9a70a5a4b21c9f3d40eaa0d0e2c0214bed91761e9657de2e2e1c8a"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2500,
+            "deadline_ms": 20230,
+            "max_iterations": 7,
+            "memory_bytes": 671088640,
+            "pids_limit": 112
+          },
+          "run_authority_hash": "sha256:bc70d0819f9e6abdefaa4a81a6984fe3744242c395aba384fbef17ffb169586e",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 3,
+              "node_id": "agoge-node-3",
+              "source": "local"
+            },
+            "target_digest": "sha256:4262a29e08396124b13be639a8158dbd45d30f703f171ad7e6285c1df3a20b83"
+          }
+        },
+        "request_hash": "sha256:a8e978afe8704a363a5400fc5f2cae4227c688ef299e99761ccfa809119046ff",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:58ed5af95270517ab4ac0bb5e9bdde7797b0073283c886ab2e103d4d51a5a325",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:8f872092ea6642f424caaf7e961aaff0a9d9d2e86d7d55d37bf5bf2d3f5668ad",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:827d8739b5dbf464321ce9a8a8324f5d1805ed058deff1763fdee6492bb69968",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:0dc92d551face4ccf575f80169a7dfce8488db04d2ba3ea9158a8530a61f0408"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:029bfdacff15accf5fe23d539eb744f6d00630b14e8fbbb162cdf0e757a30877",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:08b12531718fa7aba5cb58f4ccb3fd657442cf85d649ca127c3235b4e5eb58d6"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1000,
+            "deadline_ms": 20240,
+            "max_iterations": 4,
+            "memory_bytes": 268435456,
+            "pids_limit": 64
+          },
+          "run_authority_hash": "sha256:007c4c632397c50d15e72cf3b05247c001ea31cd5e36fdc8c0b57412929df641",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 4,
+              "node_id": "agoge-node-4",
+              "source": "local"
+            },
+            "target_digest": "sha256:b0e2c52ecd5964c080c7d724c11008f9b62dc3e4836c7558c1c3cf19543dc277"
+          }
+        },
+        "request_hash": "sha256:73ebb384ae30447fbd31f624010a887446a7c840d92001f8a1afbe2c43fdd6de",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:be8fa34c3473bbd55cb7d25ab5b9ebcf5afc3f583b6ab734cf7c0e40da3ea564",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:1795c3b436582418d103d110479aab41be270521eece7b4ba1494052df2f104c",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:0c845f7d828052aa3b381a0ae787788649ac33ac138bc6a657d40a7ce20a1cfc",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:082913c4358ec8fcfc6f4486ad70c2df4e09790f37536c5d6cbe7cdac35f1598"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:8a5ca8456cbab6d81e3b718c08692583176f524ff7c0afb6b02c1af301d2a863",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:3fe5b35a9ac03f2436073f9b6a229bd475ed37774d1fa9f7daf65c628eceda0b"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1500,
+            "deadline_ms": 20250,
+            "max_iterations": 5,
+            "memory_bytes": 402653184,
+            "pids_limit": 80
+          },
+          "run_authority_hash": "sha256:61d306c0b2ca5318765ca153472e15c097610ba0b5dca663c694a468975802e4",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 5,
+              "node_id": "agoge-node-0",
+              "source": "local"
+            },
+            "target_digest": "sha256:71527982de7ba8f3eb91673f4bf4869894aaed17110d1ed3ec8bc61c4f01a756"
+          }
+        },
+        "request_hash": "sha256:a45d6082580a7eae50252c63d8979ffbb21c23086c4e6f81d8a1c3f425472d32",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:7afa918f8aa0119f8e8ebc9e9764a1a643ddb445d1b5eebef6822951ca7764ca",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:ee15a05b53639e286cc1cbff1ed19d73a45b3841eb06967ad07dc7d1a78724a9"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:ebc3a6af4dfa617914270ca1c1a659293bb039dbd673ad5a6fa1f4b047229fe2",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:8746410b1de7a27e911b0f94921705ed729254b192d0a333cde2ea753803dd36"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2000,
+            "deadline_ms": 20260,
+            "max_iterations": 6,
+            "memory_bytes": 536870912,
+            "pids_limit": 96
+          },
+          "run_authority_hash": "sha256:b5f388b480732655083d162c2ad00721614478bd661056233c66dc35b94961f1",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 6,
+              "node_id": "agoge-node-1",
+              "source": "local"
+            },
+            "target_digest": "sha256:3e35832fecb94a34d8f8f78d0951dd8d3c0d659788ffc0ba5f52aff84bde2717"
+          }
+        },
+        "request_hash": "sha256:4593f9386f1465c148168c0753f9a455650da4da3d956d2303b4a47da4de3dee",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:7e61c33b03467b6963ea905b517aa6150552ab3bc6534eb9da85f4ce32e7bfa6",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:3d1ef25e1f3d8fd9e82c88f87ed3d5a5d8cd71b49e4050eecb9c2fea634549a3",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:1d5993bc20e7a4737c44d4cc483365aa97fd806ab86711a7633975c61be7a43c",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:3dd2bb85fd170a8ecaf291693d9d0e92f31072cb5fbc6daac67d4588b2f4a2ff"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:8324319de66fa33006a7cc68b842b7c24c8b59f0da325ba5181019cd4b3be17f",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:ad5671c5a628f1f3b8d392080479215656af81c284edbec8e4753db469c734a7"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2500,
+            "deadline_ms": 20270,
+            "max_iterations": 7,
+            "memory_bytes": 671088640,
+            "pids_limit": 112
+          },
+          "run_authority_hash": "sha256:f5349b7720ce0e098820d79bc6872b31019d291a8a1a99573644a4779f6ef191",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 7,
+              "node_id": "agoge-node-2",
+              "source": "local"
+            },
+            "target_digest": "sha256:04e02d6df708d7cd07b11ef2263c3c4c83257a75411370390b3dc86142fe17ed"
+          }
+        },
+        "request_hash": "sha256:caae5b74c04f9b4db011ce9b287b44c51a3b7dc6c63bfe4d7c853d4d83d66e71",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:4c1a4807dc3048b18cab32d898547f062c8830dc083be1ce86de4767d90ae980",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:1201fb8049aefdf999d64672d25a91a51558f818981dab4ea7ce80b96dddd174",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:3fe21c14ab5d5d1d043f7cad30dd9b403483a96518208bb72ace2bc17e946fa8",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:664d8b898c1b9834e85aaa7a246039dd630e6ac856a85e9c1c8c3575261cfe13"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:1a9c8a0fab6164415bd7b97297b0e9cb796197dd1ddf14d0ce26124373b188ec",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:a58187e9dfad61f3837fedc98870ab36c92c87795685273ac602e978740d40ba"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1000,
+            "deadline_ms": 20280,
+            "max_iterations": 4,
+            "memory_bytes": 268435456,
+            "pids_limit": 64
+          },
+          "run_authority_hash": "sha256:a2f1770d09a0d4a359fd2152e244658f8f8a735890066b5da4433553514e95c4",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 1,
+              "node_id": "agoge-node-3",
+              "source": "local"
+            },
+            "target_digest": "sha256:a3f6aaf6a235e8c36ba692554ad155dfe74ff45bfce513b5f4b15b09f08e55f0"
+          }
+        },
+        "request_hash": "sha256:cdfb3b1277c280225e1b4b34029d8c83400dba5d4697c8ed1aa2174fa420689b",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:2cb6cf94a5673aa6aff24036652b05e451f4fc56b881a984a5ab3762ce54fc36",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:46dcb7ae665b6609e2bcbed9f9050f0ba34988e14d551d08bc367a2a405be145"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:2b91c834891d34f628d119b7fe269efe4256d8fb41729a547324d408c742a5e4",
+            "generation": 1,
+            "kind": "owner",
+            "principal_id": "sha256:3b0a35aa8a97f8bcd6c7d85e69bf176754613ab1cc17112d08d461b5a160e160"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1500,
+            "deadline_ms": 20290,
+            "max_iterations": 5,
+            "memory_bytes": 402653184,
+            "pids_limit": 80
+          },
+          "run_authority_hash": "sha256:09fdab0466478b1de3ab75c644fe87af066cb935ad7c96fcab2e89271977d883",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 2,
+              "node_id": "agoge-node-4",
+              "source": "local"
+            },
+            "target_digest": "sha256:9a602d257a9eb2621f04dc8360f1d84a91b248269f48b2d713cb4dfeeea17a4f"
+          }
+        },
+        "request_hash": "sha256:2c7dd54f3cf74ceccfb42dfb3a0e0bdfc81dae50be8dcc7708ef04087ad54b39",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:c8a88ee309d2552cd4f93f75e5585586e563e84b1d5e8ce5372ebbfa697e4937",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:f52d45fc60b738c07a5a16866cdfe51915e5af47e411dac201cbce83c0c94b4f",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:a8dcf0e28b27a4f84628cfec0f15d727751a3a1529c4dda9ce01498f54b3c0e1",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:62418301cf58824586c91eb3bc106580068e410b22702f66e977a055b9a43dc9"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:3a35f48f20e282d22e469a06af4ac93c16306dceba69611ddbe4ee50c3af277d",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:f596c3eaa991262058a304bf75d7aef3bdfb311cf9148ca883682590cac541ec"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2000,
+            "deadline_ms": 20300,
+            "max_iterations": 6,
+            "memory_bytes": 536870912,
+            "pids_limit": 96
+          },
+          "run_authority_hash": "sha256:8d361b19ef2d8b0bad5fff1e4cc7804a31844544098f5bffec18701d5f3fa59a",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 3,
+              "node_id": "agoge-node-0",
+              "source": "local"
+            },
+            "target_digest": "sha256:9baeb26090ba10ef325855672a8c32a51549454aab62c45a62b513a82324ae21"
+          }
+        },
+        "request_hash": "sha256:9744383097ff7fa3a468f773fe9827363306070accbea020d2cb566182481989",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:c9d3c1438dd65f4ddbd48ec25bf6f9d07521b1d1411070060cc7a927ecc0c401",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:479a1282b07a553537cd41d35316c7f89586c0d93e2ac8da11647673c73d4134",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:f08e0117040c5055a340d77540ae231b74e5bd148d66520525e2db4d45bbcbb9",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:68e431169ce810de450eb442576d6c7982fc0ae79234f227214851e0d31f54d6"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:2ea6981816f9560d670b93168dcca231b86f318c57130997ce4d607781bce8fc",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:0722f723f75602ca59c0bafaafc379d93c4b8c7bf033fd735cc6d51fcc6cf0f3"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2500,
+            "deadline_ms": 20310,
+            "max_iterations": 7,
+            "memory_bytes": 671088640,
+            "pids_limit": 112
+          },
+          "run_authority_hash": "sha256:0bfcdb9edefed8b450b68a9e8dc8dca34f504f4dd9ad844f579acdd53a35feed",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 4,
+              "node_id": "agoge-node-1",
+              "source": "local"
+            },
+            "target_digest": "sha256:320460bebd9ed8098e33bcfda30503c8e2c8cf17f80bfa9953a1b4030fc833f0"
+          }
+        },
+        "request_hash": "sha256:0fb7e4a5ddac46a5752bd92a5080608934012461e1086f133a73e623d1bc042d",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:6c5896d21f88b351d1644904e4b945a4af958dcb0096296c974d2ba14787cd4d",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:04170c9066506f4d7d2d53fafe9a8b09b14620aa2031bf500941cf58818c7ed3"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:62df0e49c03239872e7b8d3d08942d036e7a73e9b7eab96eeab788e07cabae80",
+            "generation": 2,
+            "kind": "owner",
+            "principal_id": "sha256:4111e06be44d0fb2087e3eddc8faa82df17e54d541a73dc5302612a886917637"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1000,
+            "deadline_ms": 20320,
+            "max_iterations": 4,
+            "memory_bytes": 268435456,
+            "pids_limit": 64
+          },
+          "run_authority_hash": "sha256:e8d7d719f13afb32b71ec8eca142c8ec017df631fb1051eb65e10f8eb4baf17f",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 5,
+              "node_id": "agoge-node-2",
+              "source": "local"
+            },
+            "target_digest": "sha256:24c669f50172bef7061dce0964d4a84cfbc139ab707a2aef2b3f03404e80c266"
+          }
+        },
+        "request_hash": "sha256:069b3412e30a7bfc2e691cee287fb572b45da66e6bd262a96b9b93bb3d24e15e",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:37be86f4b5a36f4c0b1b1b86d492a967b4c3891c525e6ad4599642cb1c46a6f5",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "DENY",
+        "reason_codes": [
+          "authority-manipulation"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:e7283ad1ae9cc6d9027a4444f4a76051471311ad02547530db980e7d67424a0d",
+            "risk_level": "high",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "authority-manipulation",
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:5589648f13b6a9f70cf99f35c90d48562cde29292b32c1577f825c4b90717428",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-0.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:9d02fed1b735f9014ea80d63a3169702642c5abccd1bab4e80ebc9ff776e759e"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:7bf42c6d565a1caaf40c465768174362858244aaf003c5eac127ae23dd5b83fa",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:0064430e52aa23e42094ff55cebc9b85cfa9d79eb1abd9cdad4daf130c9bc693"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:707e0971f34fc5f697bcf13c90a8cf0d61b5cf208484432ef6a090210149c1ef",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 1500,
+            "deadline_ms": 20330,
+            "max_iterations": 5,
+            "memory_bytes": 402653184,
+            "pids_limit": 80
+          },
+          "run_authority_hash": "sha256:0e719184b89ee9113b5d4eca14b43c9dc6087871de4f10083582f95fe571388a",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 6,
+              "node_id": "agoge-node-3",
+              "source": "local"
+            },
+            "target_digest": "sha256:ade0d1223fbecb12b863b70c76a5ea101b3692b9ce48b0246fa494c2f50084b5"
+          }
+        },
+        "request_hash": "sha256:f8e83d9239cb39c9d226b879e42f7d7e711fac595f815e4cdfff0a1db9318702",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A high-risk stored instruction is paired with an authority-manipulation signal; the canonical disposition is derived from the authority-manipulation fact."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:a69c4766c0bec603d55f9b27fa334e9dc57a05ace499e1fde53c64b3043ee7ba",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "REVIEW",
+        "reason_codes": [
+          "prompt-injection-uncertain"
+        ],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [
+          {
+            "evidence_hash": "sha256:1def4c1aa52ec467d2d36dcc834a7bfe81f905c12e96b03f3a7168c9c18eb4df",
+            "risk_level": "medium",
+            "scope_kind": "principal",
+            "signal_codes": [
+              "stored-instruction"
+            ],
+            "subject_hash": "sha256:f9d674db28cd53e289e15dc582d5307dff36bb92cf003950aa564e06f4588202",
+            "subject_kind": "memory"
+          }
+        ],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-1.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:e0e94621cbb1b19cb77259474cafc06ed5216e4812b3784295346c4d62815742"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:670b12ceee7c847580d6d6a5b85c1d5f285262ad637eab4fa501b955e41d6d00",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:5223066795082a50312b2904fa92ec9028691668c5c45ed4a58a21cb7cb7efc3"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:3171c249f531c3199e49b04592a906029e5c8778957f1bfc696f3e51dc1b1827",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2000,
+            "deadline_ms": 20340,
+            "max_iterations": 6,
+            "memory_bytes": 536870912,
+            "pids_limit": 96
+          },
+          "run_authority_hash": "sha256:9f79c247250027e9ef5c0deaf12f433d93aca1bdab78d8f66ec9c164188c8c6c",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 7,
+              "node_id": "agoge-node-4",
+              "source": "local"
+            },
+            "target_digest": "sha256:dd6bb780f30395fcd7cc40de68e626f9afe52ef8df7199601c1e9c797e70ec47"
+          }
+        },
+        "request_hash": "sha256:a85b7624038db6bb998d0aeb5d1d4e0611d04563a403ca200baf78eca3bc2788",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "A medium-risk stored-instruction signal is present without the stronger authority-manipulation evidence."
+    },
+    {
+      "basis": [
+        "Hermes Fleet revision 591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+        "Fleet-validated fleet.security-event.v1 sha256:a57de827b489709cf61eaa021853001cdda0488f7197fbf67530dfeecc2f0811",
+        "Runtime competency prompt-injection"
+      ],
+      "completion": {
+        "decision": "ALLOW",
+        "reason_codes": [],
+        "schema": "agoge.templar-model-output.v1"
+      },
+      "prompt": {
+        "memory_skill_risks": [],
+        "policy_mismatches": [],
+        "quarantine_signals": [],
+        "request": {
+          "authorized_toolsets": [
+            "fleet-terminal"
+          ],
+          "capabilities_hash": "sha256:bc0929f77eface31a7f664d3816515c9bc99dc257a99f275cfe95c398129822b",
+          "network": {
+            "approval_ref": null,
+            "destinations": [
+              {
+                "host": "service-2.example.com",
+                "ports": [
+                  443
+                ],
+                "resolved_ips": [
+                  "1.1.1.1"
+                ]
+              }
+            ],
+            "mode": "project-allowlist",
+            "policy_hash": "sha256:e862fb8a67efa23c9f3261f32bbf245e35572c988a828df4e41c04667aabe172"
+          },
+          "policy_digest": "sha256:b32d3d50eb32aa898d29bbb4167fa221fbb7945b88d5e6cd9b73f00d28bb6e6d",
+          "principal": {
+            "binding_hash": "sha256:1a64059f06358f2b416933899378c362c1189b4d32585ed28f25f67762f3ed96",
+            "generation": 3,
+            "kind": "owner",
+            "principal_id": "sha256:a33da1e6b6dae2e0b77c0b905a378fc1e74c6b52fd1bc4e09fada27de2539575"
+          },
+          "recipe": {
+            "compiler_version": "fleet.workflow-recipe-compiler.v1",
+            "provenance_digest": "sha256:2de5f89d85f3286d66994692002bd1a3a2abaec35bdd1a4a7ade63b035f236b0",
+            "recipe_hash": "sha256:c0ab91ec617b0da056dab767e98359eb722cfb72ae162ca1f133c433b97b925f",
+            "resolved_recipe_hash": "sha256:9c1adb67df244bf618684197ae6a079f40dded101c9b910bfe025decc26e6cf1",
+            "workflow_hash": "sha256:9a990536cf4348780ada51d64aa3303c7ca970d4c8a8eb7ef337ed6abcd64f97",
+            "workflow_step_id": "templar-evaluation"
+          },
+          "requested_tools": [
+            "artifact.write",
+            "terminal.exec"
+          ],
+          "resources": {
+            "cpu_millis": 2500,
+            "deadline_ms": 20350,
+            "max_iterations": 7,
+            "memory_bytes": 671088640,
+            "pids_limit": 112
+          },
+          "run_authority_hash": "sha256:b811be1cb62e009d6051a2e65935b705730a70665704a73fb5b8461caa6f1d1b",
+          "schema": "fleet.security-request.v1",
+          "target": {
+            "target": {
+              "generation": 1,
+              "node_id": "agoge-node-0",
+              "source": "local"
+            },
+            "target_digest": "sha256:c7225dc1dc619bbadb67abfda30758efae4294e9de43c88ba1afeeea746fbcd3"
+          }
+        },
+        "request_hash": "sha256:0d7588bacc52f03892fd130604dddd7b3459a0f467ae36ead562c16fd1f214a4",
+        "schema": "fleet.security-event.v1",
+        "secret_interceptions": []
+      },
+      "rationale": "No derived prompt-injection or authority-manipulation signal is present in the sanitized event."
+    }
+  ],
+  "request_id": "sha256:f3eb866abd2c94316c3a63e876a631ad1d58b190c78993d8c84df014586b25df",
+  "schema": "agoge.teacher-response.v1",
+  "teacher": {
+    "kind": "deterministic",
+    "model": "phase19-security-event-runtime",
+    "model_version": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+    "provider": "hermes-fleet",
+    "role": "pinned-fleet-runtime-event-candidate-generator",
+    "schema": "agoge.teacher-identity.v1",
+    "teacher_id": "fleet-runtime-oracle@591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+    "training_use": "allowed"
+  }
+}

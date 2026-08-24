@@ -42,6 +42,14 @@ def parse_model_output(raw: str, contract: dict[str, Any]) -> ParsedModelOutput:
         or len(reason_codes) != len(set(reason_codes))
     ):
         return ParsedModelOutput(raw, True, False, None, (), "invalid-reason-codes")
+    vocabulary = contract.get("reason_code_vocabulary")
+    if vocabulary is not None:
+        if type(vocabulary) is not list or not all(
+            type(item) is str and item for item in vocabulary
+        ):
+            return ParsedModelOutput(raw, True, False, None, (), "invalid-contract-vocabulary")
+        if any(item not in vocabulary for item in reason_codes):
+            return ParsedModelOutput(raw, True, False, None, (), "unsupported-reason-code")
     required_for = contract.get("reason_codes_required_for", [])
     if decision in required_for and not reason_codes:
         return ParsedModelOutput(raw, True, False, None, (), "missing-reason-code")
