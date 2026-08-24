@@ -212,6 +212,7 @@ def _build_items(
     *,
     fleet_revision: str,
     worktree: Path,
+    variant_salt: str = "",
 ) -> tuple[Any, ...]:
     sys.path.insert(0, str(worktree))
     try:
@@ -255,7 +256,11 @@ def _build_items(
         )
         target = {
             "source": "local",
-            "node_id": f"agoge-node-{index % 5}",
+            "node_id": (
+                f"agoge-node-{index % 5}"
+                if not variant_salt
+                else f"agoge-node-{variant_salt}-{index % 5}"
+            ),
             "generation": 1 + (index % 7),
         }
         target_digest = "sha256:" + hashlib.sha256(_canonical(target)).hexdigest()

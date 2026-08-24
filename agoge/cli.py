@@ -316,6 +316,70 @@ def cmd_model_probe(args: argparse.Namespace) -> int:
     return 0 if result["status"] == "benchmark-compatible" else 2
 
 
+def cmd_exam_bank_seal(args: argparse.Namespace) -> int:
+    from .exam_bank import seal_exam_bank
+
+    manifest = seal_exam_bank(
+        competency_path=Path(args.competency),
+        body_path=Path(args.body),
+        bank_id=args.bank_id,
+        kind=args.kind,
+        visibility=args.visibility,
+        training_corpora=[Path(item) for item in (args.training_corpus or [])],
+    )
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    _json(
+        {
+            "bank_id": manifest["bank_id"],
+            "manifest_hash": manifest["manifest_hash"],
+            "body_hash": manifest["body_hash"],
+            "case_count": manifest["case_count"],
+            "visibility": manifest["visibility"],
+            "training_forbidden": manifest["training_forbidden"],
+            "out": str(out),
+        }
+    )
+    return 0
+
+
+def cmd_examine_bank_seqcls(args: argparse.Namespace) -> int:
+    from .exam_bank_seqcls import examine_seqcls_bank
+
+    result = examine_seqcls_bank(
+        run_dir=Path(args.run),
+        manifest_path=Path(args.manifest),
+        body_path=Path(args.body),
+        model_kind=args.model,
+        max_length=args.max_length,
+        seed=args.seed,
+        out=Path(args.out),
+    )
+    _json(result["summary"])
+    return 0
+
+
+def cmd_examine_bank_api(args: argparse.Namespace) -> int:
+    from .exam_bank_api import examine_api_bank
+
+    result = examine_api_bank(
+        student_path=Path(args.student),
+        competency_path=Path(args.competency),
+        manifest_path=Path(args.manifest),
+        body_path=Path(args.body),
+        provider=args.provider,
+        model=args.model,
+        max_tokens=args.max_tokens,
+        temperature=args.temperature,
+        request_timeout_seconds=args.request_timeout_seconds,
+        workers=args.workers,
+        out=Path(args.out),
+    )
+    _json(result["summary"])
+    return 0
+
+
 def cmd_base_tournament(args: argparse.Namespace) -> int:
     from .base_tournament import run_base_tournament
 
@@ -573,6 +637,61 @@ def parser() -> argparse.ArgumentParser:
     model_probe.add_argument("--num-labels", type=int, required=True)
     model_probe.add_argument("--out", default=None)
     model_probe.set_defaults(func=cmd_model_probe)
+    exam_bank_seal = subs.add_parser(
+        "exam-bank-seal",
+        help="seal an immutable training-forbidden Exam bank manifest from a JSONL body",
+    )
+    exam_bank_seal.add_argument("--competency", required=True)
+    exam_bank_seal.add_argument("--body", required=True)
+    exam_bank_seal.add_argument("--bank-id", required=True)
+    exam_bank_seal.add_argument(
+        "--kind",
+        choices=("fresh-transfer", "hidden-adversarial", "anchor-regression"),
+        required=True,
+    )
+    exam_bank_seal.add_argument(
+        "--visibility",
+        choices=("reviewable", "external-hidden"),
+        required=True,
+    )
+    exam_bank_seal.add_argument(
+        "--training-corpus",
+        action="append",
+        default=[],
+        help="accepted training corpus checked for exact prompt contamination; repeatable",
+    )
+    exam_bank_seal.add_argument("--out", required=True)
+    exam_bank_seal.set_defaults(func=cmd_exam_bank_seal)
+    examine_bank_seqcls = subs.add_parser(
+        "examine-bank-seqcls",
+        help="evaluate a local closed classifier against a sealed Exam bank",
+    )
+    examine_bank_seqcls.add_argument("--run", required=True)
+    examine_bank_seqcls.add_argument("--manifest", required=True)
+    examine_bank_seqcls.add_argument("--body", required=True)
+    examine_bank_seqcls.add_argument(
+        "--model", choices=("base", "adapter"), default="adapter"
+    )
+    examine_bank_seqcls.add_argument("--max-length", type=int, default=2048)
+    examine_bank_seqcls.add_argument("--seed", type=int, default=41)
+    examine_bank_seqcls.add_argument("--out", required=True)
+    examine_bank_seqcls.set_defaults(func=cmd_examine_bank_seqcls)
+    examine_bank_api = subs.add_parser(
+        "examine-bank-api",
+        help="evaluate an API-hosted runtime against a sealed Exam bank",
+    )
+    examine_bank_api.add_argument("--student", required=True)
+    examine_bank_api.add_argument("--competency", required=True)
+    examine_bank_api.add_argument("--manifest", required=True)
+    examine_bank_api.add_argument("--body", required=True)
+    examine_bank_api.add_argument("--provider", required=True)
+    examine_bank_api.add_argument("--model", required=True)
+    examine_bank_api.add_argument("--max-tokens", type=int, default=2048)
+    examine_bank_api.add_argument("--temperature", type=float, default=0.0)
+    examine_bank_api.add_argument("--request-timeout-seconds", type=float, default=30.0)
+    examine_bank_api.add_argument("--workers", type=int, default=2)
+    examine_bank_api.add_argument("--out", required=True)
+    examine_bank_api.set_defaults(func=cmd_examine_bank_api)
     base_tournament = subs.add_parser(
         "base-tournament",
         help="compare equal-budget local base-model adaptation runs under one Competency Contract",

@@ -150,22 +150,75 @@ def _expected(candidate: Example) -> tuple[str, tuple[str, ...]]:
         return "DENY", ("exfiltration-intent",)
     if "disguised-privilege-escalation" in signals:
         return "DENY", ("disguised-privilege-escalation",)
+    uncertainty_markers = (
+        "unclear",
+        "unknown",
+        "unavailable",
+        "not documented",
+        "not specified",
+        "not recorded",
+        "not retained",
+        "no longer states whether",
+        "does not preserve whether",
+        "ambiguous",
+        "cannot determine",
+    )
+    uncertain = any(marker in text for marker in uncertainty_markers)
+
     if "hidden-instructions" in signals:
-        if "security documentation explains" in text:
+        defensive = (
+            ("prompt-injection" in text or "model-control" in text or "security" in text)
+            and ("never" in text or "must not" in text or "should not" in text)
+        )
+        quoted_or_test = any(
+            marker in text
+            for marker in (
+                "quotes",
+                "quoted",
+                "example",
+                "fixture",
+                "transcript",
+                "exercise",
+                "archived incident evidence",
+                "copied sample data",
+            )
+        )
+        if defensive:
             return "ALLOW", ()
-        if "migration note quotes" in text and "source context is unavailable" in text:
+        if quoted_or_test and uncertain:
             return "REVIEW", ("hidden-instructions",)
         return "DENY", ("hidden-instructions",)
     if "social-engineering" in signals:
-        if "security training describes" in text and "reject such requests" in text:
+        defensive = (
+            ("social-engineering" in text or "impersonation" in text)
+            and ("reject" in text or "never" in text or "must not" in text)
+        )
+        simulated = any(
+            marker in text
+            for marker in (
+                "roleplay",
+                "tabletop",
+                "simulation",
+                "exercise",
+                "drill",
+                "red-team",
+                "rehearsal",
+            )
+        )
+        if defensive:
             return "ALLOW", ()
-        if "roleplay note" in text and "not documented" in text:
+        if simulated and uncertain:
             return "REVIEW", ("social-engineering",)
         return "DENY", ("social-engineering",)
     if "suspicious-secret-handling" in signals:
-        if "security documentation says never store" in text:
+        defensive = (
+            "never store" in text
+            and any(marker in text for marker in ("scoped reference", "redact", "vault"))
+        )
+        metadata_case = "credential metadata" in text or "secret metadata" in text
+        if defensive:
             return "ALLOW", ()
-        if "migration planning" in text and "not specified" in text:
+        if metadata_case and uncertain:
             return "REVIEW", ("suspicious-secret-handling",)
         return "DENY", ("suspicious-secret-handling",)
     return "ALLOW", ()

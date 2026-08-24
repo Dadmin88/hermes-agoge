@@ -2,51 +2,59 @@
   "competencies": [
     {
       "candidate_count": 36,
+      "candidate_hash": "sha256:05fc55b2b1c9af137b8857768542ec628d2d51cf7d8bbc3da13d5dd2a591fbf0",
       "competency": "authority-boundaries",
-      "request_id": "sha256:31b173d9413bc24ff8b996d6fb9da580f428f0b6859c7ce024e1ebdd9b52d87d",
-      "response_hash": "sha256:5bcd4390d74cf82b1116ed80344cbfa8e75cb8672eacba150e74df0d2708a5ec"
+      "request_hash": "sha256:bae4d39e909021490a4679634d530d98b94dad5957b1d9c5cf0253955fbbf3ee",
+      "response_hash": "sha256:583fd9d2dfdd2ab69d8bc596e50ff0a3e850f5c3555476fa359c5613bbe531ef"
     },
     {
       "candidate_count": 36,
-      "competency": "prompt-injection",
-      "request_id": "sha256:f3eb866abd2c94316c3a63e876a631ad1d58b190c78993d8c84df014586b25df",
-      "response_hash": "sha256:821b58affcdeb90e9e06c4509022c06606a796526866909facd72388bd845893"
-    },
-    {
-      "candidate_count": 36,
-      "competency": "secret-handling",
-      "request_id": "sha256:00a1edc105d96fa032d061dcead9aa22dc82b6e41e6ab27c5fc478b943f8d1d2",
-      "response_hash": "sha256:47d7bc204b78d371ec507f9862dd803c5be332e514a5745d9424320784b06950"
-    },
-    {
-      "candidate_count": 36,
-      "competency": "skill-memory-poisoning",
-      "request_id": "sha256:ec68090d9ca038c433ff9876ccffee280946c63f7c9c1d82483e478ab8778718",
-      "response_hash": "sha256:85fcbd193ef847733cecbc07ed1fec6eb4152731e9ce8ffddbe4e93b4cec4a56"
-    },
-    {
-      "candidate_count": 36,
-      "competency": "capability-combinations",
-      "request_id": "sha256:4af5ea7ca64af284eb6cfc9143fa4df7f3037b829a356fa1d460918163b3784c",
-      "response_hash": "sha256:c3e6dc23209a403c0ee8dd347fcb450bd1575b4034208192eb5fbc9632edc4dc"
-    },
-    {
-      "candidate_count": 36,
+      "candidate_hash": "sha256:6f585843d95ff64ae5920ecefbd4db7ddac15fea0411540ff4ddc51ec616a40b",
       "competency": "benign-nonoverblocking",
-      "request_id": "sha256:a52401623f55521998e8e045034b9a68e7857fb66c9fcc4076949da6ebcb7b73",
-      "response_hash": "sha256:ae3e83722428809b984fc21b651eb877b3449f3a6b7a4f29360b77a86358345d"
+      "request_hash": "sha256:f69508877134ea349980469c2d5ee7f46b3789962e89393077808504f512e0ae",
+      "response_hash": "sha256:5269607504f5850da130aad7941ff2d37b840ac3420e408f08b0b1beab6edf47"
     },
     {
       "candidate_count": 36,
+      "candidate_hash": "sha256:317dba0ff904238f8423a4c96e4061f69ee5cba8f3e727cd57e2b49c03e98ce7",
+      "competency": "capability-combinations",
+      "request_hash": "sha256:3f9f9d06d14df68562e05921b4dd6a28eea419621fc50cf50442bd8626dfc26e",
+      "response_hash": "sha256:79710ecf31638163a8f806716aecdddeb47d600b22863e8a90ef35ca0cc05b01"
+    },
+    {
+      "candidate_count": 36,
+      "candidate_hash": "sha256:1a65617251dd05a896ff049573371719bb9f5d0abb9aae001b44eb56746b53c8",
+      "competency": "prompt-injection",
+      "request_hash": "sha256:af4aa8b6ee321b76d0de7ff4198bde82c0352d05325633116a0af96cd97cc781",
+      "response_hash": "sha256:8d4332655a213552b7b88fb0a6adf0e7bf4488a0add8786b3e696cd9cf9e6a70"
+    },
+    {
+      "candidate_count": 36,
+      "candidate_hash": "sha256:a9ada81193a88ab826930253768c648e19ef477204dab77d4bd7998f1afd1b3c",
+      "competency": "secret-handling",
+      "request_hash": "sha256:45a4e9a8abced06c69fa26c2cd07f4a9a3ff675634a9e1fc418228bcfda35e45",
+      "response_hash": "sha256:497460ae15fcf88069945c4047aa1ad27386238823da59e57b66daef5205e280"
+    },
+    {
+      "candidate_count": 36,
+      "candidate_hash": "sha256:5fb323e68f9a6f737fc40dad1b2107899b80ba383e6d49601fef0739f975cce5",
+      "competency": "skill-memory-poisoning",
+      "request_hash": "sha256:981b7495084bb80314e115c89b871af10292c55253a86d8eba02b04dcb1b7339",
+      "response_hash": "sha256:9e6655959a183f5269be73096dcdf2e1ef37a93da357c4606c47943842ebdf4e"
+    },
+    {
+      "candidate_count": 36,
+      "candidate_hash": "sha256:2417b49541e7094d16453683eb6f2896c1c363db42ff9839c11e17dd91411263",
       "competency": "uncertainty-review",
-      "request_id": "sha256:3861769e237e64551ece08f350b2be6555d2ad7a8d1681d3adea7695f0bd13f6",
-      "response_hash": "sha256:1be6140da4995c72e4494f8b9eee7cfe9d0a9923de721e9f012aba2a0b7df677"
+      "request_hash": "sha256:639340744fc96e12d8aa67669c8a200663da276cf5c198bc5f0edccc1c0bc6fb",
+      "response_hash": "sha256:f5a2544e6718b60c0b1cb422755a73a17e276b9efe490a1c32f98e07789153c5"
     }
   ],
   "count": 252,
+  "event_family": "fleet.learning-promotion-event.v1",
   "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
-  "review_state": "generated-unreviewed",
-  "schema": "agoge.templar-phase23-candidate-batch.v1",
-  "student": "templar-v1",
-  "teacher_id": "fleet-learning-runtime-oracle@591ea20bb1b7268254ddeaffaf16a5f853aa2db5"
+  "schema": "agoge.templar-candidate-batch-manifest.v1",
+  "status": "generated-unreviewed-candidates",
+  "student_hash": "sha256:eaabc2035dba64562530ccffcd938d53b4471997b7aceae92e656e84b2fcb8f1",
+  "student_id": "templar-v1"
 }

@@ -35,7 +35,7 @@ def test_base_candidate_run_preserves_capability_and_marks_artifact_non_promotab
     assert manifest["competency_hash"] == competency.content_hash
     assert manifest["purpose"] == "base-model-benchmark-only-not-promotable"
     assert manifest["corpus_rebind_required_before_promotion"] is True
-    assert manifest["counts"] == {"train": 414, "validation": 45, "test": 45}
+    assert manifest["counts"] == {"train": 412, "validation": 46, "test": 46}
     assert manifest["disposition_count"] == 16
     assert json.loads((run_dir / "spec" / "competency.json").read_text())["competency_id"] == competency.competency_id
 

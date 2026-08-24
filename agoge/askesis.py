@@ -14,6 +14,7 @@ from .corpus import (
     write_jsonl,
 )
 from .dispositions import build_disposition_registry
+from .exam_bank import assert_no_registered_exam_overlap
 from .spec import CompetencySpec, CurriculumSpec, SpecError, StudentSpec, canonical_json, digest
 
 
@@ -45,6 +46,7 @@ def prepare_run(
     except ValueError as exc:
         raise SpecError("Askesis corpus must be inside the Student directory") from exc
     examples = read_jsonl(selected_corpus)
+    assert_no_registered_exam_overlap(student_root=root, examples=examples)
     unknown = sorted({item.competency for item in examples} - set(curriculum.competencies))
     if unknown:
         raise SpecError(f"corpus references unknown competencies: {unknown}")

@@ -44,12 +44,12 @@ def test_api_exam_uses_same_event_split_and_strict_templar_contract(tmp_path: Pa
         invoke_batch=fake_invoke,
     )
     summary = result["summary"]
-    assert summary["total"] == 45
+    assert summary["total"] == 46
     assert summary["exact_match_rate"] == 1.0
     assert summary["false_allow_rate"] == 0.0
     assert summary["false_deny_rate"] == 0.0
     assert summary["api_success_rate"] == 1.0
-    assert summary["total_tokens"] == 45 * 15
+    assert summary["total_tokens"] == 46 * 15
     assert result["exam_spec"]["provider"] == "nous"
     assert result["exam_spec"]["model"] == "example/free-model:free"
 

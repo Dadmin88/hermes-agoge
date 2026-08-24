@@ -47,8 +47,9 @@ def _event_integrity(candidate: Example) -> tuple[bool, str]:
         for item in basis_refs
     ):
         return False, "fleet-oracle-binding-missing"
-    if prompt.get("policy_mismatches") != []:
-        return False, "phase19-policy-mismatch-out-of-scope"
+    mismatches = prompt.get("policy_mismatches")
+    if type(mismatches) is not list:
+        return False, "phase19-policy-mismatch-shape-invalid"
     return True, "event-integrity-valid"
 
 

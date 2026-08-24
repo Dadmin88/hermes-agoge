@@ -13,6 +13,7 @@ from .corpus import (
     write_jsonl,
 )
 from .dispositions import build_disposition_registry
+from .exam_bank import assert_no_registered_exam_overlap
 from .spec import (
     CompetencySpec,
     CurriculumSpec,
@@ -52,6 +53,10 @@ def prepare_base_candidate_run(
     curriculum_path = (reference_student_path.parent / reference_student.curriculum).resolve()
     curriculum = CurriculumSpec.load(curriculum_path)
     examples = read_jsonl(corpus_path)
+    assert_no_registered_exam_overlap(
+        student_root=reference_student_path.parent,
+        examples=examples,
+    )
     unknown = sorted({row.competency for row in examples} - set(curriculum.competencies))
     if unknown:
         raise SpecError(f"benchmark corpus references unknown competencies: {unknown}")
