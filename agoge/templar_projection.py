@@ -238,8 +238,14 @@ def _project_learning_promotion_event(event: dict[str, Any]) -> dict[str, object
         "expected_current_promotion_id",
         "authority",
     }
-    if set(request) != request_required or request.get("authority") != "none":
+    request_keys = set(request)
+    current_request_required = request_required | {"source_execution_id"}
+    if request_keys not in (request_required, current_request_required) or request.get("authority") != "none":
         raise SpecError("Templar promotion projection request has an invalid closed schema")
+    if "source_execution_id" in request:
+        source_execution_id = request.get("source_execution_id")
+        if type(source_execution_id) is not str or not source_execution_id:
+            raise SpecError("Templar promotion projection source execution id is invalid")
     sanitized = request.get("sanitized")
     if type(sanitized) is not bool:
         raise SpecError("Templar promotion projection sanitized flag is invalid")

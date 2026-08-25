@@ -11,6 +11,49 @@ from .templar_runtime import TemplarRuntime
 _MAX_REQUEST_BYTES = 768 * 1024
 
 
+def _handle_connection(conn: socket.socket, runtime: TemplarRuntime) -> None:
+    """Handle one bounded client without allowing peer I/O failure to kill the daemon."""
+
+    try:
+        chunks: list[bytes] = []
+        total = 0
+        while True:
+            chunk = conn.recv(65536)
+            if not chunk:
+                break
+            total += len(chunk)
+            if total > _MAX_REQUEST_BYTES:
+                chunks = []
+                break
+            chunks.append(chunk)
+            if b"\n" in chunk:
+                break
+        if not chunks:
+            return
+        payload = b"".join(chunks).split(b"\n", 1)[0]
+        try:
+            request = json.loads(payload.decode("utf-8"))
+            response = runtime.evaluate(request)
+        except (
+            UnicodeDecodeError,
+            json.JSONDecodeError,
+            OSError,
+            RuntimeError,
+            TypeError,
+            ValueError,
+        ):
+            return
+        encoded = (
+            json.dumps(response, sort_keys=True, separators=(",", ":")) + "\n"
+        ).encode("utf-8")
+        conn.sendall(encoded)
+    except OSError:
+        # A caller may time out or disconnect after the request was accepted but
+        # before inference completes. That client-local failure must never stop
+        # the persistent evaluator from serving subsequent Fleet requests.
+        return
+
+
 def serve_unix(
     *,
     socket_path: Path,
@@ -32,39 +75,7 @@ def serve_unix(
             except TimeoutError:
                 continue
             with conn:
-                chunks: list[bytes] = []
-                total = 0
-                while True:
-                    chunk = conn.recv(65536)
-                    if not chunk:
-                        break
-                    total += len(chunk)
-                    if total > _MAX_REQUEST_BYTES:
-                        chunks = []
-                        break
-                    chunks.append(chunk)
-                    if b"\n" in chunk:
-                        break
-                if not chunks:
-                    continue
-                payload = b"".join(chunks).split(b"\n", 1)[0]
-                try:
-                    request = json.loads(payload.decode("utf-8"))
-                    response = runtime.evaluate(request)
-                except (
-                    UnicodeDecodeError,
-                    json.JSONDecodeError,
-                    OSError,
-                    RuntimeError,
-                    TypeError,
-                    ValueError,
-                ):
-                    continue
-                encoded = (
-                    json.dumps(response, sort_keys=True, separators=(",", ":"))
-                    + "\n"
-                ).encode("utf-8")
-                conn.sendall(encoded)
+                _handle_connection(conn, runtime)
     finally:
         server.close()
         if socket_path.exists():

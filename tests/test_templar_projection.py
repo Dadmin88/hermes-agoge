@@ -59,6 +59,28 @@ def test_learning_projection_is_identity_free_and_preserves_bounded_material() -
     assert projected["risk_signals"] == sorted(projected["risk_signals"])
 
 
+def test_learning_projection_accepts_current_fleet_source_execution_id_without_changing_model_input() -> None:
+    corpus = ROOT / "students" / "templar" / "corpus" / "phase23-learning-events-v1.jsonl"
+    row = json.loads(corpus.read_text(encoding="utf-8").splitlines()[0])
+    legacy = row["prompt"]
+    current = json.loads(json.dumps(legacy))
+    current["request"]["source_execution_id"] = "execution-current-fleet"
+
+    assert canonical_json(project_templar_event(current)) == canonical_json(
+        project_templar_event(legacy)
+    )
+
+
+def test_learning_projection_rejects_invalid_source_execution_id() -> None:
+    corpus = ROOT / "students" / "templar" / "corpus" / "phase23-learning-events-v1.jsonl"
+    row = json.loads(corpus.read_text(encoding="utf-8").splitlines()[0])
+    current = json.loads(json.dumps(row["prompt"]))
+    current["request"]["source_execution_id"] = ""
+
+    with pytest.raises(SpecError, match="source execution id"):
+        project_templar_event(current)
+
+
 def test_security_projection_fails_closed_on_non_event() -> None:
     with pytest.raises(SpecError, match="does not support event schema"):
         project_templar_event({"schema": "not-fleet"})
