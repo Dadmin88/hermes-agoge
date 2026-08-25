@@ -23,31 +23,31 @@
     },
     {
       "candidate_count": 36,
-      "candidate_hash": "sha256:1a65617251dd05a896ff049573371719bb9f5d0abb9aae001b44eb56746b53c8",
+      "candidate_hash": "sha256:19c6565bf911ef1438b47f7a06f1dd6f0b732fb1c4c379a722a8bf957bdc0a06",
       "competency": "prompt-injection",
       "request_hash": "sha256:af4aa8b6ee321b76d0de7ff4198bde82c0352d05325633116a0af96cd97cc781",
-      "response_hash": "sha256:8d4332655a213552b7b88fb0a6adf0e7bf4488a0add8786b3e696cd9cf9e6a70"
+      "response_hash": "sha256:1ea6c408edd4e2193d2472f88d5b9eda3cb57d1e2f3014af9478f62c6b0af461"
     },
     {
       "candidate_count": 36,
-      "candidate_hash": "sha256:a9ada81193a88ab826930253768c648e19ef477204dab77d4bd7998f1afd1b3c",
+      "candidate_hash": "sha256:ea6250c3b2a67399d3627b41773a43b56a955a98460ab4aa405667737f1aff22",
       "competency": "secret-handling",
       "request_hash": "sha256:45a4e9a8abced06c69fa26c2cd07f4a9a3ff675634a9e1fc418228bcfda35e45",
-      "response_hash": "sha256:497460ae15fcf88069945c4047aa1ad27386238823da59e57b66daef5205e280"
+      "response_hash": "sha256:035af907782da06638d1b79749ecd14dddcaed954d4a8f2061507ee8f154bae5"
     },
     {
       "candidate_count": 36,
-      "candidate_hash": "sha256:5fb323e68f9a6f737fc40dad1b2107899b80ba383e6d49601fef0739f975cce5",
+      "candidate_hash": "sha256:70d0a2d4c67491be7784c8f5fff63b8dfff28ab72764760604a780983d8757a8",
       "competency": "skill-memory-poisoning",
       "request_hash": "sha256:981b7495084bb80314e115c89b871af10292c55253a86d8eba02b04dcb1b7339",
-      "response_hash": "sha256:9e6655959a183f5269be73096dcdf2e1ef37a93da357c4606c47943842ebdf4e"
+      "response_hash": "sha256:459b73b015f6a27f3e796dbad09dc531161d813ccac14cfa2a68dd39d4c2fc72"
     },
     {
       "candidate_count": 36,
-      "candidate_hash": "sha256:2417b49541e7094d16453683eb6f2896c1c363db42ff9839c11e17dd91411263",
+      "candidate_hash": "sha256:4356b65b734e236d8ece980a450a92575fb34b8447eb6fc49adc1a428c318ff5",
       "competency": "uncertainty-review",
       "request_hash": "sha256:639340744fc96e12d8aa67669c8a200663da276cf5c198bc5f0edccc1c0bc6fb",
-      "response_hash": "sha256:f5a2544e6718b60c0b1cb422755a73a17e276b9efe490a1c32f98e07789153c5"
+      "response_hash": "sha256:ea6086219fa45ae8d1ac22109f9bd0eb21f892cdcaf9fad6d4c8853475104892"
     }
   ],
   "count": 252,

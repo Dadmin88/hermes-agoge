@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .backends.hf_seqcls_exam import _imports, _tree_digest
+from .calibration import apply_calibration, load_calibration_policy
 from .dispositions import disposition_for_class, registry_lookup, validate_disposition_registry
 from .exam import summarize_exam
 from .exam_bank import load_exam_manifest, read_exam_cases, verify_exam_body
@@ -22,6 +23,7 @@ def examine_seqcls_bank(
     model_kind: str = "adapter",
     max_length: int = 2048,
     seed: int = 41,
+    calibration_path: Path | None = None,
     out: Path | None = None,
 ) -> dict[str, Any]:
     if model_kind not in {"base", "adapter"}:
@@ -46,6 +48,7 @@ def examine_seqcls_bank(
     )
     if registry["registry_hash"] != run_manifest.get("disposition_registry_hash"):
         raise SpecError("Askesis disposition registry does not match its manifest")
+    calibration = load_calibration_policy(calibration_path) if calibration_path is not None else None
     lookup = registry_lookup(registry)
     for case in cases:
         decision = case.expected.get("decision")
@@ -145,6 +148,24 @@ def examine_seqcls_bank(
             if len(sorted_probs) > 1
             else sorted_probs[0].item()
         )
+        actual = {
+            "raw": disposition["label_id"],
+            "json_valid": True,
+            "contract_valid": True,
+            "decision": disposition["decision"],
+            "reason_codes": list(disposition["reason_codes"]),
+            "error": None,
+            "class_index": class_index,
+            "label_id": disposition["label_id"],
+            "confidence": confidence,
+            "margin": margin,
+        }
+        actual = apply_calibration(
+            prompt=case.prompt,
+            actual=actual,
+            registry=registry,
+            policy=calibration,
+        )
         rows.append(
             {
                 "example_id": case.case_id,
@@ -152,18 +173,7 @@ def examine_seqcls_bank(
                 "competency": case.competency,
                 "event_schema": case.prompt.get("schema"),
                 "expected": case.expected,
-                "actual": {
-                    "raw": disposition["label_id"],
-                    "json_valid": True,
-                    "contract_valid": True,
-                    "decision": disposition["decision"],
-                    "reason_codes": list(disposition["reason_codes"]),
-                    "error": None,
-                    "class_index": class_index,
-                    "label_id": disposition["label_id"],
-                    "confidence": confidence,
-                    "margin": margin,
-                },
+                "actual": actual,
             }
         )
 
@@ -199,6 +209,7 @@ def examine_seqcls_bank(
         "max_length": max_length,
         "observed_max_tokens": observed_max_tokens,
         "seed": seed,
+        "calibration_policy_hash": calibration["policy_hash"] if calibration is not None else None,
         "training_forbidden": True,
     }
     result = {

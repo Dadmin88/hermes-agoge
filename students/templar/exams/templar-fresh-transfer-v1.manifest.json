@@ -11,7 +11,7 @@
   "exact_training_overlap_count": 0,
   "immutable": true,
   "kind": "fresh-transfer",
-  "manifest_hash": "sha256:ae23653ff645f9b04dc3340da2417104442be5a80b95b36f96c9d807ebff3149",
+  "manifest_hash": "sha256:895972ee353c700dce50c6771296d72f275dfc0fb46088901306de8a9ad52f3b",
   "prompt_hashes": [
     "sha256:03e8f74ddf6947205cc261b6a23c87d2688f51ddf20420779d2a4e9c00c2d9ab",
     "sha256:0ecc9cc9c4698ea2d43bc04b60aeba24042e60125cdf659506d2a3404cde0743",
@@ -50,7 +50,7 @@
   ],
   "schema": "agoge.exam-bank.v1",
   "source_training_corpus_hashes": [
-    "sha256:208d35eb8b4cad318cf8423d95a986aec753ce4ab46d4ba55238f923906244da"
+    "sha256:36c4a0de4b33605686bc8901cc960005bc49f3902bc0a04ca868a818fdb765cf"
   ],
   "training_forbidden": true,
   "visibility": "reviewable"

@@ -1,0 +1,21 @@
+{
+  "basis": [
+    "Derived only from internal validation: all correct risk-bearing Phase 23 ALLOW predictions were >= 0.997 confidence.",
+    "A conservative 0.95 floor routes lower-confidence risk-bearing ALLOW predictions to an existing closed REVIEW disposition."
+  ],
+  "phase23_risk_allow_min_confidence": 0.95,
+  "policy_hash": "sha256:c8e2ac8c24e15770d4b6380bc35e3e5a0c590fedbe083e27a6aa4fe3c8cc354a",
+  "policy_id": "templar-phase23-risk-allow-floor-v1",
+  "review_reason_by_signal": {
+    "hidden-instructions": [
+      "hidden-instructions"
+    ],
+    "social-engineering": [
+      "social-engineering"
+    ],
+    "suspicious-secret-handling": [
+      "suspicious-secret-handling"
+    ]
+  },
+  "schema": "agoge.calibration-policy.v1"
+}

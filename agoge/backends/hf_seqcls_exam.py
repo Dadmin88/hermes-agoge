@@ -7,6 +7,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from ..calibration import apply_calibration, load_calibration_policy
 from ..corpus import read_jsonl
 from ..dispositions import disposition_for_class, validate_disposition_registry
 from ..exam import summarize_exam
@@ -74,6 +75,7 @@ def examine(
     split: str = "test",
     max_length: int = 2048,
     seed: int = 41,
+    calibration_path: Path | None = None,
 ) -> dict[str, Any]:
     if model_kind not in {"base", "adapter"}:
         raise RuntimeError("model_kind must be 'base' or 'adapter'")
@@ -93,6 +95,7 @@ def examine(
     )
     if registry["registry_hash"] != manifest.get("disposition_registry_hash"):
         raise RuntimeError("Askesis disposition registry does not match its manifest")
+    calibration = load_calibration_policy(calibration_path) if calibration_path is not None else None
     entries = registry["entries"]
     assert type(entries) is list
     num_labels = len(entries)
@@ -185,6 +188,29 @@ def examine(
             if len(sorted_probs) > 1
             else sorted_probs[0].item()
         )
+        actual = {
+            "raw": disposition["label_id"],
+            "json_valid": True,
+            "contract_valid": True,
+            "decision": disposition["decision"],
+            "reason_codes": list(disposition["reason_codes"]),
+            "error": None,
+            "class_index": class_index,
+            "label_id": disposition["label_id"],
+            "confidence": confidence,
+            "margin": margin,
+            "latency_ms": latency_ms,
+            "probabilities": {
+                str(entries[index]["label_id"]): float(probabilities[index].item())
+                for index in range(num_labels)
+            },
+        }
+        actual = apply_calibration(
+            prompt=example.prompt,
+            actual=actual,
+            registry=registry,
+            policy=calibration,
+        )
         rows.append(
             {
                 "example_id": example.example_id,
@@ -192,23 +218,7 @@ def examine(
                 "competency": example.competency,
                 "event_schema": example.prompt.get("schema"),
                 "expected": example.completion,
-                "actual": {
-                    "raw": disposition["label_id"],
-                    "json_valid": True,
-                    "contract_valid": True,
-                    "decision": disposition["decision"],
-                    "reason_codes": list(disposition["reason_codes"]),
-                    "error": None,
-                    "class_index": class_index,
-                    "label_id": disposition["label_id"],
-                    "confidence": confidence,
-                    "margin": margin,
-                    "latency_ms": latency_ms,
-                    "probabilities": {
-                        str(entries[index]["label_id"]): float(probabilities[index].item())
-                        for index in range(num_labels)
-                    },
-                },
+                "actual": actual,
             }
         )
 
@@ -226,6 +236,7 @@ def examine(
         "split": split,
         "max_length": max_length,
         "seed": seed,
+        "calibration_policy_hash": calibration["policy_hash"] if calibration is not None else None,
     }
     if manifest.get("competency_id") is not None:
         exam_spec["competency_id"] = manifest["competency_id"]

@@ -354,6 +354,7 @@ def cmd_examine_bank_seqcls(args: argparse.Namespace) -> int:
         model_kind=args.model,
         max_length=args.max_length,
         seed=args.seed,
+        calibration_path=Path(args.calibration) if args.calibration is not None else None,
         out=Path(args.out),
     )
     _json(result["summary"])
@@ -538,6 +539,7 @@ def cmd_examine_seqcls(args: argparse.Namespace) -> int:
         model_kind=args.model,
         split=args.split,
         max_length=args.max_length,
+        calibration_path=Path(args.calibration) if args.calibration is not None else None,
     )
     _json(result["summary"])
     return 0
@@ -674,6 +676,7 @@ def parser() -> argparse.ArgumentParser:
     )
     examine_bank_seqcls.add_argument("--max-length", type=int, default=2048)
     examine_bank_seqcls.add_argument("--seed", type=int, default=41)
+    examine_bank_seqcls.add_argument("--calibration", default=None)
     examine_bank_seqcls.add_argument("--out", required=True)
     examine_bank_seqcls.set_defaults(func=cmd_examine_bank_seqcls)
     examine_bank_api = subs.add_parser(
@@ -882,6 +885,7 @@ def parser() -> argparse.ArgumentParser:
         "--split", choices=("train", "validation", "test"), default="test"
     )
     examine_seqcls.add_argument("--max-length", type=int, default=2048)
+    examine_seqcls.add_argument("--calibration", default=None)
     examine_seqcls.set_defaults(func=cmd_examine_seqcls)
     train = subs.add_parser("train", help="execute a prepared Askesis training run")
     train.add_argument("--run", required=True)

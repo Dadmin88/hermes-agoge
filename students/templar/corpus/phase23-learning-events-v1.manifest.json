@@ -72,7 +72,7 @@
       "review_reject": 0
     }
   ],
-  "corpus_hash": "sha256:648f6d71c79b5d52b39260e3eefcac2dac7923a0dfc5cbb8e43b5d4d49dcf983",
+  "corpus_hash": "sha256:a7736144c3a71a429d6b233e6718c9a45a579eae414199a27599cc35680ce0a9",
   "count": 252,
   "event_family": "fleet.learning-promotion-event.v1",
   "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
