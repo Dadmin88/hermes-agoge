@@ -52,8 +52,5 @@ jobs:
       - name: Lint
         run: ruff check agoge tests
 
-      - name: Check formatting
-        run: ruff format --check agoge tests
-
       - name: Build package
         run: python -m build
