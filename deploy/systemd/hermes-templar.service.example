@@ -1,0 +1,22 @@
+[Unit]
+Description=Hermes Agoge Templar local evaluator
+After=network.target
+
+[Service]
+Type=simple
+User=hermes
+Group=hermes
+WorkingDirectory=/srv/hermes-agoge
+ExecStart=/srv/hermes-agoge/.venv/bin/python -m agoge templar-serve --run /srv/hermes-agoge/runs/templar-runtime-transfer-corrective-v2 --calibration /srv/hermes-agoge/students/templar/calibration.json --socket /run/hermes/templar.sock
+RuntimeDirectory=hermes
+RuntimeDirectoryMode=0700
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/run/hermes
+
+[Install]
+WantedBy=multi-user.target
