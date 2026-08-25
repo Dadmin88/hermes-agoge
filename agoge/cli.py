@@ -15,6 +15,38 @@ def _json(value: object) -> None:
     print(json.dumps(value, indent=2, sort_keys=True))
 
 
+def cmd_templar_serve(args: argparse.Namespace) -> int:
+    from .templar_runtime import TemplarRuntime
+    from .templar_server import serve_unix
+
+    runtime = TemplarRuntime(
+        run_dir=Path(args.run),
+        calibration_path=None if args.calibration is None else Path(args.calibration),
+        max_length=args.max_length,
+        seed=args.seed,
+    )
+    serve_unix(socket_path=Path(args.socket), runtime=runtime)
+    return 0
+
+
+def cmd_templar_evaluate(args: argparse.Namespace) -> int:
+    from .templar_runtime import evaluate_request_once
+
+    try:
+        request = json.load(sys.stdin)
+    except json.JSONDecodeError as exc:
+        raise SpecError("Templar runtime request on stdin is not valid JSON") from exc
+    response = evaluate_request_once(
+        run_dir=Path(args.run),
+        request=request,
+        calibration_path=None if args.calibration is None else Path(args.calibration),
+        max_length=args.max_length,
+        seed=args.seed,
+    )
+    print(json.dumps(response, sort_keys=True, separators=(",", ":")))
+    return 0
+
+
 def cmd_validate(args: argparse.Namespace) -> int:
     student_path = Path(args.student)
     student = StudentSpec.load(student_path)
@@ -593,6 +625,25 @@ def parser() -> argparse.ArgumentParser:
     subs = root.add_subparsers(dest="command", required=True)
     doctor = subs.add_parser("doctor", help="inspect local training readiness")
     doctor.set_defaults(func=cmd_doctor)
+    templar_serve = subs.add_parser(
+        "templar-serve",
+        help="keep one prepared local Templar adapter loaded behind a Unix socket",
+    )
+    templar_serve.add_argument("--run", required=True)
+    templar_serve.add_argument("--calibration", default=None)
+    templar_serve.add_argument("--socket", required=True)
+    templar_serve.add_argument("--max-length", type=int, default=512)
+    templar_serve.add_argument("--seed", type=int, default=41)
+    templar_serve.set_defaults(func=cmd_templar_serve)
+    templar_evaluate = subs.add_parser(
+        "templar-evaluate",
+        help="evaluate one bound Fleet Templar request from stdin with a prepared local adapter",
+    )
+    templar_evaluate.add_argument("--run", required=True)
+    templar_evaluate.add_argument("--calibration", default=None)
+    templar_evaluate.add_argument("--max-length", type=int, default=512)
+    templar_evaluate.add_argument("--seed", type=int, default=41)
+    templar_evaluate.set_defaults(func=cmd_templar_evaluate)
     model_audit = subs.add_parser(
         "model-audit",
         help="audit Hugging Face Hub for base-model candidates without selecting a preferred family",

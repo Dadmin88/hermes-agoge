@@ -1,22 +1,14 @@
 
-## Proof: calibrated corrective Templar survives an external-hidden adversarial exam
+## Proof: Fleet can call a persistent local Agoge Templar without granting model authority
 
-A second surgical corrective Askesis targeted only the two remaining fresh-transfer REVIEW boundaries using new training language that did not copy the sealed bank. The regenerated Phase 23 corpus again passed independent admission 252/252 with zero rejects and zero quarantines. The resulting combined two-family corpus remains 504 events and is content-addressed as `sha256:36c4a0de4b33605686bc8901cc960005bc49f3902bc0a04ca868a818fdb765cf`. The unchanged 34-case fresh-transfer body remained `sha256:1e3808d7018deec7ffbfd23494bf6004ecd2c371e25f631ef76e5ea5da9c3850` and resealed against the new corpus with zero exact contamination.
+Agoge now exposes the prepared calibrated Templar adapter through two local runtime modes. `templar-evaluate` is a one-shot stdin evaluator used to prove the exact Fleet request/response binding. `templar-serve` keeps the exact prepared adapter loaded and listens on a mode-0600 Unix-domain socket for bound Fleet requests.
 
-A fresh Qwen3-0.6B adapter was trained from base weights for the same 150-step, batch-8, 5e-5 class-balanced recipe. Training completed in ~676.5 seconds with ~1.47 GB peak CUDA allocation. Internal validation remained 46/46 exact. Raw fresh transfer improved to 33/34 exact (97.1%) but retained one dangerous low-confidence hidden-instruction DENY -> ALLOW error.
+The Agoge runtime independently verifies the closed `fleet.templar-evaluation-request.v1` schema, supported event schema, request/event/policy bindings, canonical event hash, evaluation ID, and deadline before inference. It projects the event through the same identity-free Templar projection used by training and Exams, predicts one closed disposition, applies the content-addressed calibration policy, and returns only `fleet.templar-backend-response.v1` with the original evaluation/request/event bindings.
 
-Agoge then introduced a content-addressed calibration policy derived only from internal validation evidence. All correct validation-time Phase 23 ALLOW predictions carrying risk signals had confidence >= 0.997, so the policy conservatively routes a risk-bearing Phase 23 ALLOW below 0.95 to an existing closed REVIEW disposition matching the Fleet risk signal. Calibration never invents a new reason code or class and preserves the original neural prediction for audit.
+Fleet integration was exercised through `TemplarCore` using generic no-shell subprocess and Unix-socket backend transports. Fleet continued to own response validation, verdict construction, timeout handling, and authority. A cold one-shot model invocation exceeded a 10-second Fleet evaluator deadline and Fleet produced an authority-free `DENY / evaluator-timeout / origin=core-fail-closed`, proving that slow model startup cannot authorize execution. With a 30-second integration deadline, the cold path completed successfully in ~6.66 seconds and returned an evaluator-origin REVIEW.
 
-With calibration enabled, internal validation remains 46/46 exact with zero false-ALLOWs. The unchanged fresh-transfer bank becomes 32/34 exact (94.1%) with zero false-ALLOWs and zero false-DENYs; the two differences are safe REVIEW abstentions.
+Keeping the model loaded behind the local Unix socket removed the cold-start penalty. The first request after service startup completed end to end in ~559 ms; the next warmed Fleet -> Unix socket -> Agoge -> calibrated Qwen3 classifier -> Fleet round trip completed in ~47 ms under a 1-second Fleet deadline. The returned verdict remained `authority=none` and `origin=evaluator`.
 
-A separate 20-case Phase 23 hidden-adversarial bank was then created and retained outside the Agoge repository on Psalmbox. Every body case was constructed by the Student-pinned Fleet runtime. The body hash is `sha256:63a1e674274fc8abe1781a127691c843e92e212e75cddb7e0936884ee0def3f6`. Psalmbox resealed that unchanged body against the exact current 504-event corpus with zero contamination and `visibility=external-hidden`. Katana received the body only transiently under `/tmp` for the authorized Exam and deleted it immediately afterward.
+Agoge request-binding tests and Fleet transport tests additionally cover event/evaluation substitution rejection, unsupported/expired requests, shell-free subprocess invocation, malformed/oversized output, missing sockets, evaluator process failure, and timeout fail-closed behavior.
 
-Calibrated hidden-adversarial result:
-
-| Exam | Exact | Decision | False ALLOW | False DENY | Median latency |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| External-hidden adversarial (20) | **90% (18/20)** | **90%** | **0** | **0** | ~43.5 ms |
-
-Both hidden misses routed to REVIEW rather than an unsafe permissive or hard-denial decision. Contract validity was 20/20 and exact reason-family accuracy was 19/20.
-
-This is evidence that the current Templar runtime can combine learned classification with a separately derived uncertainty policy and survive a genuinely external-hidden adversarial exam without a false-ALLOW. It is **not graduation**: the hidden bank is still small, calibration needs broader evidence, and production Fleet integration/regression gates remain open.
+This is an integration proof, not production graduation. Fleet still needs an explicit deployment/configuration factory for the local runtime, service lifecycle supervision, full repository CI with optional dependencies, and end-to-end execution/learning-gate regression evidence before the persistent evaluator becomes a supported production path.
