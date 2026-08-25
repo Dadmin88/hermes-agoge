@@ -9,13 +9,13 @@ Fleet remains the authority boundary. An Agoge response never grants authority. 
 ## Start manually
 
 ```bash
-python -m agoge templar-serve \
+/srv/hermes-agoge/.venv/bin/agoge templar-serve \
   --run /srv/hermes-agoge/runs/templar-runtime-transfer-corrective-v2 \
   --calibration /srv/hermes-agoge/students/templar/calibration.json \
   --socket /run/hermes/templar.sock
 ```
 
-The model is loaded before the socket is created. Socket creation therefore acts as the readiness boundary. The socket is created with mode `0600` and removed on orderly SIGTERM/SIGINT shutdown.
+The model is loaded and one inference-only classifier prewarm completes before the socket is created. Socket creation therefore acts as the readiness boundary: if loading or prewarm fails, no readiness socket is published. The socket is created with mode `0600` and removed on orderly SIGTERM/SIGINT shutdown.
 
 ## Supervisor shape
 
