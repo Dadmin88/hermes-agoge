@@ -4,6 +4,7 @@ import json
 import os
 import socket
 from pathlib import Path
+from threading import Event
 
 from .templar_runtime import TemplarRuntime
 
@@ -15,6 +16,7 @@ def serve_unix(
     socket_path: Path,
     runtime: TemplarRuntime,
     backlog: int = 16,
+    stop_event: Event | None = None,
 ) -> None:
     if socket_path.exists():
         socket_path.unlink()
@@ -23,8 +25,12 @@ def serve_unix(
         server.bind(str(socket_path))
         os.chmod(socket_path, 0o600)
         server.listen(backlog)
-        while True:
-            conn, _ = server.accept()
+        server.settimeout(0.25)
+        while stop_event is None or not stop_event.is_set():
+            try:
+                conn, _ = server.accept()
+            except TimeoutError:
+                continue
             with conn:
                 chunks: list[bytes] = []
                 total = 0

@@ -16,6 +16,9 @@ def _json(value: object) -> None:
 
 
 def cmd_templar_serve(args: argparse.Namespace) -> int:
+    import signal
+    from threading import Event
+
     from .templar_runtime import TemplarRuntime
     from .templar_server import serve_unix
 
@@ -25,7 +28,22 @@ def cmd_templar_serve(args: argparse.Namespace) -> int:
         max_length=args.max_length,
         seed=args.seed,
     )
-    serve_unix(socket_path=Path(args.socket), runtime=runtime)
+    stop_event = Event()
+
+    def stop(_signum: int, _frame: object) -> None:
+        stop_event.set()
+
+    previous_term = signal.signal(signal.SIGTERM, stop)
+    previous_int = signal.signal(signal.SIGINT, stop)
+    try:
+        serve_unix(
+            socket_path=Path(args.socket),
+            runtime=runtime,
+            stop_event=stop_event,
+        )
+    finally:
+        signal.signal(signal.SIGTERM, previous_term)
+        signal.signal(signal.SIGINT, previous_int)
     return 0
 
 
