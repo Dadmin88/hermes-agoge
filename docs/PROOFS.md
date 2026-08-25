@@ -19,6 +19,8 @@ Katana now runs the evaluator as an enabled supervised user service with a priva
 
 A deliberate SIGKILL fault proved the unplanned-crash path. Both Fleet gates immediately failed closed as `DENY / evaluator-failure / authority=none` in about 1 ms. The stale socket disappeared in ~382 ms; systemd restarted Agoge, reloaded and prewarmed the model, and published a fresh readiness socket in ~8.2 seconds. The first recovered Phase 22 and Phase 23 evaluations then completed in ~68 ms and ~48 ms respectively without any Fleet configuration change or stale-verdict reuse.
 
+The Phase 22 deterministic-deny ordering was also exercised independently. A request carrying a deterministic Fleet hard-deny completed in ~0.27 ms with `DENY / deterministic-policy-failure` and no Templar verdict/origin at all, proving that an already-hard-denied request does not depend on or wait for the model gate.
+
 A separate Phase 22 ordering proof stopped Templar entirely and supplied a deterministic Fleet hard deny. Pre-execution returned `DENY` from Fleet's deterministic policy layer in ~0.25 ms with no evaluator verdict, proving that an already-hard-denied request never consults Templar. In the same offline state, a Phase 23 learning-promotion request that did require Templar correctly failed closed as `DENY / evaluator-failure / authority=none`.
 
 This remains an integration proof, not production graduation. The Fleet Templar branch has passed the self-hosted Gitea Rust, real Nodescale/readiness, Python 3.11, and Python 3.13 gates; the remaining broader release/security, adversarial, and fault-injection gates still have to pass before the persistent evaluator is considered a released production component.
