@@ -61,6 +61,7 @@ def serve_unix(
     backlog: int = 16,
     stop_event: Event | None = None,
 ) -> None:
+    runtime.warmup()
     if socket_path.exists():
         socket_path.unlink()
     server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)

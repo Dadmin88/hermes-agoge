@@ -11,7 +11,14 @@ from agoge.templar_server import serve_unix
 
 
 class FakeRuntime:
+    def __init__(self) -> None:
+        self.warmed = False
+
+    def warmup(self) -> None:
+        self.warmed = True
+
     def evaluate(self, request: object) -> dict[str, object]:
+        assert self.warmed
         assert isinstance(request, dict)
         return {"ok": True, "request_id": request["request_id"]}
 
@@ -20,13 +27,37 @@ class DisconnectRuntime:
     def __init__(self) -> None:
         self.started = threading.Event()
         self.release = threading.Event()
+        self.warmed = False
+
+    def warmup(self) -> None:
+        self.warmed = True
 
     def evaluate(self, request: object) -> dict[str, object]:
+        assert self.warmed
         assert isinstance(request, dict)
         if request["request_id"] == "disconnect":
             self.started.set()
             assert self.release.wait(timeout=1.0)
         return {"ok": True, "request_id": request["request_id"]}
+
+
+class FailingWarmupRuntime:
+    def warmup(self) -> None:
+        raise RuntimeError("warmup failed")
+
+
+def test_warmup_failure_never_publishes_readiness_socket(tmp_path: Path) -> None:
+    socket_path = tmp_path / "templar.sock"
+    try:
+        serve_unix(
+            socket_path=socket_path,
+            runtime=FailingWarmupRuntime(),  # type: ignore[arg-type]
+        )
+    except RuntimeError as exc:
+        assert str(exc) == "warmup failed"
+    else:  # pragma: no cover - defensive
+        raise AssertionError("Templar server unexpectedly survived failed warmup")
+    assert not socket_path.exists()
 
 
 def test_unix_server_is_private_responds_and_cleans_up(tmp_path: Path) -> None:

@@ -151,6 +151,20 @@ class TemplarRuntime:
         self.model = lib["PeftModel"].from_pretrained(model, str(adapter_dir))
         self.model.eval()
 
+    def warmup(self) -> None:
+        """Prime the loaded classifier before the readiness socket is published."""
+
+        encoded = self.tokenizer(
+            "Templar local evaluator readiness warmup",
+            return_tensors="pt",
+            add_special_tokens=True,
+            truncation=False,
+        )
+        encoded = {key: value.to(self.model.device) for key, value in encoded.items()}
+        with self.torch.inference_mode():
+            self.model(**encoded)
+        self.torch.cuda.synchronize()
+
     def evaluate(self, request: object) -> dict[str, object]:
         request_doc = _validate_request(request)
         event = request_doc["event"]
