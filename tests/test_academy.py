@@ -30,9 +30,7 @@ def _binding(*, training_use: str = "unknown") -> AcademyFacultyBinding:
 
 
 def _request() -> TeacherRequest:
-    return TeacherRequest.from_student(
-        STUDENT, competency="prompt-injection", count=2
-    )
+    return TeacherRequest.from_student(STUDENT, competency="prompt-injection", count=2)
 
 
 def test_academy_prompt_declares_separate_model_learner_mode() -> None:

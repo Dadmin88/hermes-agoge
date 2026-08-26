@@ -51,7 +51,11 @@ class ModelAuditCriteria:
             raise SpecError("max_parameters must be an integer")
         if not 1 <= self.min_parameters <= self.max_parameters:
             raise SpecError("parameter bounds are invalid")
-        if isinstance(self.limit, bool) or type(self.limit) is not int or not 1 <= self.limit <= 100:
+        if (
+            isinstance(self.limit, bool)
+            or type(self.limit) is not int
+            or not 1 <= self.limit <= 100
+        ):
             raise SpecError("model audit limit must be between 1 and 100")
         if self.search is not None and (type(self.search) is not str or not self.search.strip()):
             raise SpecError("search must be null or a non-empty string")
@@ -208,7 +212,11 @@ def audit_model_info(info: Any, criteria: ModelAuditCriteria) -> AuditedModel:
     tensor_bytes = _safetensors_bytes(info)
     architectures, model_type = _config_architecture(info)
     tags_value = getattr(info, "tags", None)
-    tags = tuple(sorted(item for item in tags_value if type(item) is str)) if type(tags_value) is list else ()
+    tags = (
+        tuple(sorted(item for item in tags_value if type(item) is str))
+        if type(tags_value) is list
+        else ()
+    )
 
     rejection: list[str] = []
     review: list[str] = []

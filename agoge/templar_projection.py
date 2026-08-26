@@ -103,9 +103,7 @@ def _project_security_event(event: dict[str, Any]) -> dict[str, object]:
         quarantine_rows.append(
             {
                 "state": row.get("state"),
-                "reason_codes": _sorted_strings(
-                    row.get("reason_codes"), "quarantine reason codes"
-                ),
+                "reason_codes": _sorted_strings(row.get("reason_codes"), "quarantine reason codes"),
                 "verification_state": row.get("verification_state"),
                 "verification_present": row.get("verification_digest") is not None,
             }
@@ -116,9 +114,7 @@ def _project_security_event(event: dict[str, Any]) -> dict[str, object]:
         "source_schema": "fleet.security-event.v1",
         "request": {
             "principal_kind": principal.get("kind"),
-            "requested_tools": _sorted_strings(
-                request.get("requested_tools"), "requested tools"
-            ),
+            "requested_tools": _sorted_strings(request.get("requested_tools"), "requested tools"),
             "authorized_toolsets": _sorted_strings(
                 request.get("authorized_toolsets"), "authorized toolsets"
             ),
@@ -240,7 +236,10 @@ def _project_learning_promotion_event(event: dict[str, Any]) -> dict[str, object
     }
     request_keys = set(request)
     current_request_required = request_required | {"source_execution_id"}
-    if request_keys not in (request_required, current_request_required) or request.get("authority") != "none":
+    if (
+        request_keys not in (request_required, current_request_required)
+        or request.get("authority") != "none"
+    ):
         raise SpecError("Templar promotion projection request has an invalid closed schema")
     if "source_execution_id" in request:
         source_execution_id = request.get("source_execution_id")
@@ -269,7 +268,8 @@ def _project_learning_promotion_event(event: dict[str, Any]) -> dict[str, object
         "administrator_kind": administrator_kind,
         "sanitized": sanitized,
         "verification_present": request.get("verification_digest") is not None,
-        "expected_current_promotion_present": request.get("expected_current_promotion_id") is not None,
+        "expected_current_promotion_present": request.get("expected_current_promotion_id")
+        is not None,
         "evaluation_categories": categories,
         "risk_signals": signals,
         "evaluation_material": _project_promotion_material(request.get("evaluation_material")),

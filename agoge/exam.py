@@ -89,9 +89,7 @@ def compare_exam_results(base: dict[str, Any], candidate: dict[str, Any]) -> dic
         "reason_codes_exact_rate",
         "exact_match_rate",
     )
-    deltas = {
-        key: float(candidate_summary[key]) - float(base_summary[key]) for key in rate_keys
-    }
+    deltas = {key: float(candidate_summary[key]) - float(base_summary[key]) for key in rate_keys}
     base_rows = {row["example_id"]: row for row in base.get("rows", [])}
     candidate_rows = {row["example_id"]: row for row in candidate.get("rows", [])}
     if set(base_rows) != set(candidate_rows):
@@ -164,8 +162,7 @@ def summarize_exam(rows: list[dict[str, Any]]) -> dict[str, Any]:
             actual_reasons = tuple(actual["reason_codes"])
             reason_codes_exact += int(expected_reasons == actual_reasons)
             exact_match += int(
-                expected["decision"] == actual["decision"]
-                and expected_reasons == actual_reasons
+                expected["decision"] == actual["decision"] and expected_reasons == actual_reasons
             )
     decision_summary = summarize(predictions)
     total = len(rows)

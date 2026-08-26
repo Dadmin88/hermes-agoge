@@ -35,9 +35,7 @@ def _load_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def _require_exact_keys(
-    value: dict[str, Any], required: set[str], label: str
-) -> None:
+def _require_exact_keys(value: dict[str, Any], required: set[str], label: str) -> None:
     actual = set(value)
     if actual != required:
         missing = sorted(required - actual)
@@ -56,15 +54,11 @@ class SourceRef:
     def from_dict(cls, value: object) -> SourceRef:
         if type(value) is not dict:
             raise SpecError("source must be an object")
-        _require_exact_keys(
-            value, {"kind", "uri", "revision", "purpose"}, "source"
-        )
+        _require_exact_keys(value, {"kind", "uri", "revision", "purpose"}, "source")
         fields = [value[k] for k in ("kind", "uri", "revision", "purpose")]
         if not all(type(item) is str and item.strip() for item in fields):
             raise SpecError("source fields must be non-empty strings")
-        return cls(
-            value["kind"], value["uri"], value["revision"], value["purpose"]
-        )
+        return cls(value["kind"], value["uri"], value["revision"], value["purpose"])
 
     def to_dict(self) -> dict[str, str]:
         return {
@@ -119,9 +113,7 @@ class StudentSpec:
             "curriculum",
         ):
             if type(value[key]) is not str or not value[key].strip():
-                raise SpecError(
-                    f"student field {key!r} must be a non-empty string"
-                )
+                raise SpecError(f"student field {key!r} must be a non-empty string")
         if type(value["output_contract"]) is not dict:
             raise SpecError("output_contract must be an object")
         if type(value["sources"]) is not list or not value["sources"]:
@@ -228,9 +220,7 @@ class CompetencySpec:
                 nonempty=True,
             ),
             cls._strings(value["no_change_evidence"], "no_change_evidence"),
-            cls._strings(
-                value["candidate_unsuitable_evidence"], "candidate_unsuitable_evidence"
-            ),
+            cls._strings(value["candidate_unsuitable_evidence"], "candidate_unsuitable_evidence"),
             tuple(SourceRef.from_dict(item) for item in value["sources"]),
         )
 
@@ -281,18 +271,14 @@ class CurriculumSpec:
         )
         if value["schema"] != "agoge.curriculum.v1":
             raise SpecError("unsupported curriculum schema")
-        if type(value["curriculum_id"]) is not str or not value[
-            "curriculum_id"
-        ].strip():
+        if type(value["curriculum_id"]) is not str or not value["curriculum_id"].strip():
             raise SpecError("curriculum_id must be non-empty")
         if type(value["objective"]) is not str or not value["objective"].strip():
             raise SpecError("objective must be non-empty")
         if (
             type(value["competencies"]) is not list
             or not value["competencies"]
-            or not all(
-                type(item) is str and item.strip() for item in value["competencies"]
-            )
+            or not all(type(item) is str and item.strip() for item in value["competencies"])
         ):
             raise SpecError("competencies must be a non-empty string array")
         if type(value["decisions"]) is not list or not value["decisions"]:

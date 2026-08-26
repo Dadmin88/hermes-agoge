@@ -28,4 +28,11 @@ def summarize(predictions: Iterable[Prediction]) -> EvaluationSummary:
         matrix[row.expected][row.actual] += 1
         correct += int(row.expected == row.actual)
     total = len(rows)
-    return EvaluationSummary(total=total, correct=correct, accuracy=(correct / total) if total else 0.0, confusion={expected: {actual: matrix[expected][actual] for actual in labels} for expected in labels})
+    return EvaluationSummary(
+        total=total,
+        correct=correct,
+        accuracy=(correct / total) if total else 0.0,
+        confusion={
+            expected: {actual: matrix[expected][actual] for actual in labels} for expected in labels
+        },
+    )

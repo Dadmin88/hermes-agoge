@@ -19,8 +19,10 @@ def _exact(value: object, keys: set[str], label: str) -> dict[str, Any]:
 
 
 def _codes(value: object) -> tuple[str, ...]:
-    if type(value) is not list or not value or not all(
-        type(item) is str and item.strip() for item in value
+    if (
+        type(value) is not list
+        or not value
+        or not all(type(item) is str and item.strip() for item in value)
     ):
         raise SpecError("review reason_codes must be a non-empty string array")
     if len(value) != len(set(value)):
@@ -37,9 +39,7 @@ class CandidateReview:
     notes: str
 
     def __post_init__(self) -> None:
-        if type(self.candidate_hash) is not str or not self.candidate_hash.startswith(
-            "sha256:"
-        ):
+        if type(self.candidate_hash) is not str or not self.candidate_hash.startswith("sha256:"):
             raise SpecError("review candidate_hash is invalid")
         if self.decision not in REVIEW_DECISIONS:
             raise SpecError("review decision is unsupported")

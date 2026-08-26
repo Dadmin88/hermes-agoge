@@ -105,9 +105,7 @@ def _write_run(
             "seed": 41,
         },
     }
-    (run / "training-result-seqcls.json").write_text(
-        json.dumps(training), encoding="utf-8"
-    )
+    (run / "training-result-seqcls.json").write_text(json.dumps(training), encoding="utf-8")
 
     rows = [
         _row("1", "fleet.security-event.v1", "ALLOW", [], "ALLOW", []),
@@ -162,9 +160,7 @@ def _write_run(
         "summary": summary,
         "rows": rows,
     }
-    (run / "exam-seqcls-adapter-validation.json").write_text(
-        json.dumps(exam), encoding="utf-8"
-    )
+    (run / "exam-seqcls-adapter-validation.json").write_text(json.dumps(exam), encoding="utf-8")
     return run
 
 

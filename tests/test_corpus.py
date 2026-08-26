@@ -24,7 +24,9 @@ def test_split_is_stable_and_nonempty() -> None:
     examples = read_jsonl(CORPUS)
     first = stable_split(examples)
     second = stable_split(reversed(examples))
-    assert {k: [x.example_id for x in v] for k, v in first.items()} == {k: [x.example_id for x in v] for k, v in second.items()}
+    assert {k: [x.example_id for x in v] for k, v in first.items()} == {
+        k: [x.example_id for x in v] for k, v in second.items()
+    }
     assert first["train"] and first["validation"] and first["test"]
 
 
@@ -33,7 +35,9 @@ def test_stratified_split_is_stable_and_preserves_each_foundation_label_family()
     examples = read_jsonl(foundation)
     first = stable_stratified_split(examples)
     second = stable_stratified_split(reversed(examples))
-    assert {k: [x.example_id for x in v] for k, v in first.items()} == {k: [x.example_id for x in v] for k, v in second.items()}
+    assert {k: [x.example_id for x in v] for k, v in first.items()} == {
+        k: [x.example_id for x in v] for k, v in second.items()
+    }
 
     def strata(rows):
         return {

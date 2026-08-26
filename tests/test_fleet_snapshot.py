@@ -4,7 +4,7 @@ from agoge.fleet_snapshot import extract_python_contract
 
 
 def test_extract_python_contract_collects_closed_shapes_and_enums() -> None:
-    source = '''
+    source = """
 from dataclasses import dataclass
 from typing import Final
 EVENT_SCHEMA: Final[str] = "fleet.event.v1"
@@ -14,7 +14,7 @@ _SUPPORTED_EVENTS = frozenset({EVENT_SCHEMA, "fleet.other.v1"})
 class Example:
     name: str
     count: int
-'''
+"""
     contract = extract_python_contract(source)
     assert contract["constants"]["EVENT_SCHEMA"] == "fleet.event.v1"
     assert contract["constants"]["_LEVELS"] == ["high", "low"]

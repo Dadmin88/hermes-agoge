@@ -536,9 +536,7 @@ def cmd_compare(args: argparse.Namespace) -> int:
     from .exam import compare_exam_results
 
     run_dir = Path(args.run)
-    base = json.loads(
-        (run_dir / f"exam-base-{args.split}.json").read_text(encoding="utf-8")
-    )
+    base = json.loads((run_dir / f"exam-base-{args.split}.json").read_text(encoding="utf-8"))
     candidate = json.loads(
         (run_dir / f"exam-adapter-{args.split}.json").read_text(encoding="utf-8")
     )
@@ -567,9 +565,7 @@ def cmd_compare_seqcls(args: argparse.Namespace) -> int:
     from .exam import compare_exam_results
 
     run_dir = Path(args.run)
-    base = json.loads(
-        (run_dir / f"exam-seqcls-base-{args.split}.json").read_text(encoding="utf-8")
-    )
+    base = json.loads((run_dir / f"exam-seqcls-base-{args.split}.json").read_text(encoding="utf-8"))
     candidate = json.loads(
         (run_dir / f"exam-seqcls-adapter-{args.split}.json").read_text(encoding="utf-8")
     )
@@ -615,9 +611,7 @@ def cmd_doctor(_: argparse.Namespace) -> int:
             "available": cuda_available,
             "device_count": torch.cuda.device_count(),
             "device_name": torch.cuda.get_device_name(0) if cuda_available else None,
-            "bf16_supported": (
-                torch.cuda.is_bf16_supported() if cuda_available else False
-            ),
+            "bf16_supported": (torch.cuda.is_bf16_supported() if cuda_available else False),
         }
     except ImportError:
         cuda = {"available": False, "reason": "torch-not-installed"}
@@ -695,7 +689,10 @@ def parser() -> argparse.ArgumentParser:
         "--exam", action="append", required=True, help="candidate Exam JSON; repeat per runtime"
     )
     runtime_tournament.add_argument(
-        "--catalog", action="append", default=[], help="optional API catalog JSON for pricing/free metadata"
+        "--catalog",
+        action="append",
+        default=[],
+        help="optional API catalog JSON for pricing/free metadata",
     )
     runtime_tournament.add_argument("--out", required=True)
     runtime_tournament.set_defaults(func=cmd_runtime_tournament)
@@ -740,9 +737,7 @@ def parser() -> argparse.ArgumentParser:
     examine_bank_seqcls.add_argument("--run", required=True)
     examine_bank_seqcls.add_argument("--manifest", required=True)
     examine_bank_seqcls.add_argument("--body", required=True)
-    examine_bank_seqcls.add_argument(
-        "--model", choices=("base", "adapter"), default="adapter"
-    )
+    examine_bank_seqcls.add_argument("--model", choices=("base", "adapter"), default="adapter")
     examine_bank_seqcls.add_argument("--max-length", type=int, default=2048)
     examine_bank_seqcls.add_argument("--seed", type=int, default=41)
     examine_bank_seqcls.add_argument("--calibration", default=None)
@@ -887,18 +882,14 @@ def parser() -> argparse.ArgumentParser:
         "compare", help="compare base and adapter Exam results for one Askesis split"
     )
     compare.add_argument("--run", required=True)
-    compare.add_argument(
-        "--split", choices=("train", "validation", "test"), default="test"
-    )
+    compare.add_argument("--split", choices=("train", "validation", "test"), default="test")
     compare.set_defaults(func=cmd_compare)
     examine = subs.add_parser(
         "examine", help="evaluate the base model or trained adapter on an Askesis split"
     )
     examine.add_argument("--run", required=True)
     examine.add_argument("--model", choices=("base", "adapter"), required=True)
-    examine.add_argument(
-        "--split", choices=("train", "validation", "test"), default="test"
-    )
+    examine.add_argument("--split", choices=("train", "validation", "test"), default="test")
     examine.add_argument("--max-new-tokens", type=int, default=128)
     examine.set_defaults(func=cmd_examine)
     examine_api = subs.add_parser(
@@ -940,9 +931,7 @@ def parser() -> argparse.ArgumentParser:
         help="compare untrained and adapted sequence-classification Exam results",
     )
     compare_seqcls.add_argument("--run", required=True)
-    compare_seqcls.add_argument(
-        "--split", choices=("train", "validation", "test"), default="test"
-    )
+    compare_seqcls.add_argument("--split", choices=("train", "validation", "test"), default="test")
     compare_seqcls.set_defaults(func=cmd_compare_seqcls)
     examine_seqcls = subs.add_parser(
         "examine-seqcls",
@@ -950,9 +939,7 @@ def parser() -> argparse.ArgumentParser:
     )
     examine_seqcls.add_argument("--run", required=True)
     examine_seqcls.add_argument("--model", choices=("base", "adapter"), required=True)
-    examine_seqcls.add_argument(
-        "--split", choices=("train", "validation", "test"), default="test"
-    )
+    examine_seqcls.add_argument("--split", choices=("train", "validation", "test"), default="test")
     examine_seqcls.add_argument("--max-length", type=int, default=2048)
     examine_seqcls.add_argument("--calibration", default=None)
     examine_seqcls.set_defaults(func=cmd_examine_seqcls)

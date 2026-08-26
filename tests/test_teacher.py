@@ -58,9 +58,7 @@ def _response(request: TeacherRequest) -> TeacherResponse:
 
 
 def test_teacher_request_is_content_addressed_and_round_trips() -> None:
-    request = TeacherRequest.from_student(
-        STUDENT, competency="prompt-injection", count=3
-    )
+    request = TeacherRequest.from_student(STUDENT, competency="prompt-injection", count=3)
     duplicate = TeacherRequest.from_dict(request.to_dict())
     assert duplicate.request_id == request.request_id
     assert request.request_id.startswith("sha256:")
@@ -72,9 +70,7 @@ def test_teacher_request_rejects_unknown_competency() -> None:
 
 
 def test_teacher_response_becomes_unreviewed_candidate() -> None:
-    request = TeacherRequest.from_student(
-        STUDENT, competency="prompt-injection", count=2
-    )
+    request = TeacherRequest.from_student(STUDENT, competency="prompt-injection", count=2)
     response = _response(request)
     candidates = response_to_candidates(request, response)
     assert len(candidates) == 1
@@ -86,13 +82,9 @@ def test_teacher_response_becomes_unreviewed_candidate() -> None:
 
 
 def test_teacher_response_rejects_wrong_request_and_invalid_contract() -> None:
-    request = TeacherRequest.from_student(
-        STUDENT, competency="prompt-injection", count=2
-    )
+    request = TeacherRequest.from_student(STUDENT, competency="prompt-injection", count=2)
     response = _response(request)
-    other = TeacherRequest.from_student(
-        STUDENT, competency="secret-handling", count=2
-    )
+    other = TeacherRequest.from_student(STUDENT, competency="secret-handling", count=2)
     with pytest.raises(SpecError, match="another request"):
         response_to_candidates(other, response)
 

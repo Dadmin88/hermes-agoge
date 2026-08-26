@@ -32,7 +32,9 @@ def _bridge_path(name: str) -> Path:
     return path
 
 
-def _run_bridge(args: list[str], *, hermes_root: Path | None = None, timeout: int = 300) -> dict[str, Any]:
+def _run_bridge(
+    args: list[str], *, hermes_root: Path | None = None, timeout: int = 300
+) -> dict[str, Any]:
     root = (hermes_root or default_hermes_root()).resolve()
     python = root / "venv" / "bin" / "python"
     completed = subprocess.run(
@@ -44,7 +46,9 @@ def _run_bridge(args: list[str], *, hermes_root: Path | None = None, timeout: in
         timeout=timeout,
     )
     if completed.returncode != 0:
-        detail = completed.stderr.strip() or completed.stdout.strip() or f"exit {completed.returncode}"
+        detail = (
+            completed.stderr.strip() or completed.stdout.strip() or f"exit {completed.returncode}"
+        )
         raise ApiRuntimeError(f"Hermes bridge failed: {detail[:1200]}")
     try:
         value = json.loads(completed.stdout)

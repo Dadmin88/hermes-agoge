@@ -116,7 +116,11 @@ class TeacherRequest:
             _nonempty(value, label)
         if self.purpose not in TEACHER_PURPOSES:
             raise SpecError("teacher request purpose is unsupported")
-        if type(self.count) is not int or isinstance(self.count, bool) or not 1 <= self.count <= 1000:
+        if (
+            type(self.count) is not int
+            or isinstance(self.count, bool)
+            or not 1 <= self.count <= 1000
+        ):
             raise SpecError("teacher request count must be between 1 and 1000")
         if type(self.constraints) is not dict:
             raise SpecError("teacher request constraints must be an object")
@@ -228,15 +232,15 @@ class TeacherResponseItem:
 
     @classmethod
     def from_dict(cls, value: object) -> TeacherResponseItem:
-        item = _exact(
-            value, {"prompt", "completion", "rationale", "basis"}, "teacher item"
-        )
+        item = _exact(value, {"prompt", "completion", "rationale", "basis"}, "teacher item")
         if type(item["prompt"]) is not dict or type(item["completion"]) is not dict:
             raise SpecError("teacher item prompt/completion must be objects")
         rationale = _nonempty(item["rationale"], "teacher item rationale")
         basis = item["basis"]
-        if type(basis) is not list or not basis or not all(
-            type(entry) is str and entry.strip() for entry in basis
+        if (
+            type(basis) is not list
+            or not basis
+            or not all(type(entry) is str and entry.strip() for entry in basis)
         ):
             raise SpecError("teacher item basis must be a non-empty string array")
         return cls(item["prompt"], item["completion"], rationale, tuple(basis))
@@ -258,9 +262,7 @@ class TeacherResponse:
 
     @classmethod
     def from_dict(cls, value: object) -> TeacherResponse:
-        item = _exact(
-            value, {"schema", "request_id", "teacher", "items"}, "teacher response"
-        )
+        item = _exact(value, {"schema", "request_id", "teacher", "items"}, "teacher response")
         if item["schema"] != "agoge.teacher-response.v1":
             raise SpecError("teacher response schema is unsupported")
         items = item["items"]
@@ -301,9 +303,7 @@ def load_teacher_response(path: Path) -> TeacherResponse:
     return TeacherResponse.from_dict(value)
 
 
-def response_to_candidates(
-    request: TeacherRequest, response: TeacherResponse
-) -> list[Example]:
+def response_to_candidates(request: TeacherRequest, response: TeacherResponse) -> list[Example]:
     if response.request_id != request.request_id:
         raise SpecError("teacher response is bound to another request")
     if len(response.items) > request.count:
@@ -317,9 +317,7 @@ def response_to_candidates(
             json.dumps(item.completion, sort_keys=True, separators=(",", ":")), contract
         )
         if not parsed.contract_valid:
-            raise SpecError(
-                f"teacher proposed an invalid completion: {parsed.error or 'unknown'}"
-            )
+            raise SpecError(f"teacher proposed an invalid completion: {parsed.error or 'unknown'}")
         candidate_material = {
             "request_id": request.request_id,
             "teacher": response.teacher.to_dict(),

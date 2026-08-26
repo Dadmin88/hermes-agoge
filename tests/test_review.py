@@ -27,9 +27,7 @@ def _identity(teacher_id: str, *, training_use: str = "allowed") -> TeacherIdent
 
 
 def _candidate(*, training_use: str = "allowed"):
-    request = TeacherRequest.from_student(
-        STUDENT, competency="prompt-injection", count=1
-    )
+    request = TeacherRequest.from_student(STUDENT, competency="prompt-injection", count=1)
     response = TeacherResponse.from_dict(
         {
             "schema": "agoge.teacher-response.v1",
@@ -91,13 +89,9 @@ def test_reject_beats_accept_and_disagreement_quarantines() -> None:
     candidate = _candidate()
     accept = _review(candidate.content_hash, "reviewer-a", "ACCEPT")
     reject = _review(candidate.content_hash, "reviewer-b", "REJECT")
-    accepted, rejected, quarantined = promote_candidates(
-        [candidate], [accept, reject]
-    )
+    accepted, rejected, quarantined = promote_candidates([candidate], [accept, reject])
     assert not accepted and len(rejected) == 1 and not quarantined
 
     quarantine = _review(candidate.content_hash, "reviewer-b", "QUARANTINE")
-    accepted, rejected, quarantined = promote_candidates(
-        [candidate], [accept, quarantine]
-    )
+    accepted, rejected, quarantined = promote_candidates([candidate], [accept, quarantine])
     assert not accepted and not rejected and len(quarantined) == 1

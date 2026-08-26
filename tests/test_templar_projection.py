@@ -59,7 +59,9 @@ def test_learning_projection_is_identity_free_and_preserves_bounded_material() -
     assert projected["risk_signals"] == sorted(projected["risk_signals"])
 
 
-def test_learning_projection_accepts_current_fleet_source_execution_id_without_changing_model_input() -> None:
+def test_learning_projection_accepts_current_fleet_source_execution_id_without_changing_model_input() -> (
+    None
+):
     corpus = ROOT / "students" / "templar" / "corpus" / "phase23-learning-events-v1.jsonl"
     row = json.loads(corpus.read_text(encoding="utf-8").splitlines()[0])
     legacy = row["prompt"]

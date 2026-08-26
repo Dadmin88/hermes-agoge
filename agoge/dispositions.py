@@ -35,8 +35,10 @@ def disposition_label_id(decision: str, reason_codes: tuple[str, ...]) -> str:
 def _completion_key(completion: dict[str, Any]) -> tuple[str, tuple[str, ...]]:
     decision = completion.get("decision")
     reasons = completion.get("reason_codes")
-    if type(decision) is not str or type(reasons) is not list or not all(
-        type(item) is str and item for item in reasons
+    if (
+        type(decision) is not str
+        or type(reasons) is not list
+        or not all(type(item) is str and item for item in reasons)
     ):
         raise SpecError("disposition registry requires closed decision/reason labels")
     if len(reasons) != len(set(reasons)):

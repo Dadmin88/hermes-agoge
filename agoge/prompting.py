@@ -10,8 +10,10 @@ def specialist_system_prompt(contract: dict[str, Any]) -> str:
     reason_vocabulary = contract.get("reason_code_vocabulary", [])
     if type(schema) is not str or not schema:
         raise RuntimeError("Student output contract has no valid schema")
-    if type(decisions) is not list or not decisions or not all(
-        type(item) is str and item for item in decisions
+    if (
+        type(decisions) is not list
+        or not decisions
+        or not all(type(item) is str and item for item in decisions)
     ):
         raise RuntimeError("Student output contract has no valid decisions")
     if type(reason_vocabulary) is not list or not all(
@@ -52,9 +54,7 @@ def training_messages(
     ]
 
 
-def inference_messages(
-    prompt: dict[str, Any], contract: dict[str, Any]
-) -> list[dict[str, str]]:
+def inference_messages(prompt: dict[str, Any], contract: dict[str, Any]) -> list[dict[str, str]]:
     return [
         {"role": "system", "content": specialist_system_prompt(contract)},
         {"role": "user", "content": user_content(prompt)},

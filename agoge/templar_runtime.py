@@ -53,9 +53,8 @@ def _validate_request(value: object) -> dict[str, Any]:
     if type(evaluation_id) is not str or digest(request_document) != evaluation_id:
         raise SpecError("Fleet Templar evaluation ID binding is invalid")
     request = event.get("request")
-    if (
-        type(request) is not dict
-        or request.get("policy_digest") != value.get("fleet_policy_digest")
+    if type(request) is not dict or request.get("policy_digest") != value.get(
+        "fleet_policy_digest"
     ):
         raise SpecError("Fleet Templar policy binding is invalid")
     issued_at_ms = value.get("issued_at_ms")
@@ -96,9 +95,7 @@ class TemplarRuntime:
         if self.registry["registry_hash"] != self.manifest.get("disposition_registry_hash"):
             raise SpecError("Askesis disposition registry does not match its manifest")
         self.policy = (
-            None
-            if calibration_path is None
-            else load_calibration_policy(calibration_path)
+            None if calibration_path is None else load_calibration_policy(calibration_path)
         )
 
         lib = _imports()
@@ -117,9 +114,7 @@ class TemplarRuntime:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
         compute_dtype = (
-            self.torch.bfloat16
-            if self.torch.cuda.is_bf16_supported()
-            else self.torch.float16
+            self.torch.bfloat16 if self.torch.cuda.is_bf16_supported() else self.torch.float16
         )
         quantization = lib["BitsAndBytesConfig"](
             load_in_4bit=True,
@@ -127,9 +122,7 @@ class TemplarRuntime:
             bnb_4bit_use_double_quant=True,
             bnb_4bit_compute_dtype=compute_dtype,
         )
-        id2label = {
-            index: str(entry["label_id"]) for index, entry in enumerate(entries)
-        }
+        id2label = {index: str(entry["label_id"]) for index, entry in enumerate(entries)}
         label2id = {label: index for index, label in id2label.items()}
         self.torch.manual_seed(seed)
         self.torch.cuda.manual_seed_all(seed)
@@ -171,9 +164,7 @@ class TemplarRuntime:
         assert type(event) is dict
         projected = project_templar_event(event)
         text = user_content(projected)
-        encoded_length = len(
-            self.tokenizer(text, add_special_tokens=True)["input_ids"]
-        )
+        encoded_length = len(self.tokenizer(text, add_special_tokens=True)["input_ids"])
         if encoded_length > self.max_length:
             raise RuntimeError(
                 "Templar local runtime max_length would truncate the Fleet projection"
@@ -186,9 +177,7 @@ class TemplarRuntime:
         )
         encoded = {key: value.to(self.model.device) for key, value in encoded.items()}
         with self.torch.inference_mode():
-            probabilities = self.torch.softmax(
-                self.model(**encoded).logits[0].float(), dim=-1
-            )
+            probabilities = self.torch.softmax(self.model(**encoded).logits[0].float(), dim=-1)
         class_index = int(self.torch.argmax(probabilities).item())
         disposition = disposition_for_class(self.registry, class_index)
         actual: dict[str, Any] = {

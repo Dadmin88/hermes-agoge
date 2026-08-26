@@ -43,7 +43,9 @@ def _summary(rows):
     return value
 
 
-def test_runtime_tournament_hard_rejects_false_allow_and_recommends_safe_candidate(tmp_path: Path) -> None:
+def test_runtime_tournament_hard_rejects_false_allow_and_recommends_safe_candidate(
+    tmp_path: Path,
+) -> None:
     competency = CompetencySpec.load(COMPETENCY)
     corpus_hash = "sha256:" + "a" * 64
 
@@ -86,9 +88,7 @@ def test_runtime_tournament_hard_rejects_false_allow_and_recommends_safe_candida
     local_path.write_text(json.dumps(local), encoding="utf-8")
     api_path.write_text(json.dumps(api), encoding="utf-8")
 
-    result = run_runtime_tournament(
-        competency_path=COMPETENCY, exam_paths=[api_path, local_path]
-    )
+    result = run_runtime_tournament(competency_path=COMPETENCY, exam_paths=[api_path, local_path])
     assert result["recommended_for_next_stage"].startswith("local:example/local@r1")
     assert result["hard_gate_pass_count"] == 1
     rejected = next(item for item in result["ranking"] if item["kind"] == "api-runtime")

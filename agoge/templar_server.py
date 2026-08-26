@@ -43,9 +43,9 @@ def _handle_connection(conn: socket.socket, runtime: TemplarRuntime) -> None:
             ValueError,
         ):
             return
-        encoded = (
-            json.dumps(response, sort_keys=True, separators=(",", ":")) + "\n"
-        ).encode("utf-8")
+        encoded = (json.dumps(response, sort_keys=True, separators=(",", ":")) + "\n").encode(
+            "utf-8"
+        )
         conn.sendall(encoded)
     except OSError:
         # A caller may time out or disconnect after the request was accepted but

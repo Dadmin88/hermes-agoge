@@ -147,14 +147,10 @@ def _balance_rows(
             per_label_target = max(1, (decision_target + len(labels) - 1) // len(labels))
             for label in sorted(labels):
                 strata = labels[label]
-                per_stratum_target = max(
-                    1, (per_label_target + len(strata) - 1) // len(strata)
-                )
+                per_stratum_target = max(1, (per_label_target + len(strata) - 1) // len(strata))
                 for key in sorted(strata, key=repr):
                     balanced.extend(
-                        _resample_group(
-                            strata[key], target=per_stratum_target, rng=rng
-                        )
+                        _resample_group(strata[key], target=per_stratum_target, rng=rng)
                     )
         rng.shuffle(balanced)
         return balanced
@@ -175,9 +171,7 @@ def _balance_rows(
             strata = by_label[label]
             per_stratum_target = max(1, (class_target + len(strata) - 1) // len(strata))
             for key in sorted(strata, key=repr):
-                balanced.extend(
-                    _resample_group(strata[key], target=per_stratum_target, rng=rng)
-                )
+                balanced.extend(_resample_group(strata[key], target=per_stratum_target, rng=rng))
         rng.shuffle(balanced)
         return balanced
 
@@ -236,10 +230,18 @@ def train(
     num_labels = len(entries)
     rows = _rows(run_dir, registry)
     original_counts = Counter(int(row["labels"]) for row in rows)
-    original_balance_counts = Counter(repr(_balance_key(row, balance_mode)) for row in rows) if balance_mode != "none" else Counter({"none": len(rows)})
+    original_balance_counts = (
+        Counter(repr(_balance_key(row, balance_mode)) for row in rows)
+        if balance_mode != "none"
+        else Counter({"none": len(rows)})
+    )
     training_rows = _balance_rows(rows, seed=seed, mode=balance_mode)
     balanced_counts = Counter(int(row["labels"]) for row in training_rows)
-    training_balance_counts = Counter(repr(_balance_key(row, balance_mode)) for row in training_rows) if balance_mode != "none" else Counter({"none": len(training_rows)})
+    training_balance_counts = (
+        Counter(repr(_balance_key(row, balance_mode)) for row in training_rows)
+        if balance_mode != "none"
+        else Counter({"none": len(training_rows)})
+    )
 
     model_name = manifest["base_model"]
     model_revision = manifest["base_model_revision"]

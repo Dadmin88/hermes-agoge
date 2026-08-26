@@ -61,8 +61,10 @@ def extract_python_contract(source: str) -> dict[str, Any]:
     for node in tree.body:
         target_name: str | None = None
         value_node: ast.AST | None = None
-        if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(
-            node.targets[0], ast.Name
+        if (
+            isinstance(node, ast.Assign)
+            and len(node.targets) == 1
+            and isinstance(node.targets[0], ast.Name)
         ):
             target_name = node.targets[0].id
             value_node = node.value
@@ -94,19 +96,13 @@ def extract_python_contract(source: str) -> dict[str, Any]:
                 continue
             fields: list[tuple[str, str]] = []
             for statement in node.body:
-                if isinstance(statement, ast.AnnAssign) and isinstance(
-                    statement.target, ast.Name
-                ):
-                    fields.append(
-                        (statement.target.id, ast.unparse(statement.annotation))
-                    )
+                if isinstance(statement, ast.AnnAssign) and isinstance(statement.target, ast.Name):
+                    fields.append((statement.target.id, ast.unparse(statement.annotation)))
             classes[node.name] = ExtractedClass(tuple(fields))
 
     return {
         "constants": constants,
-        "dataclasses": {
-            name: value.to_dict() for name, value in sorted(classes.items())
-        },
+        "dataclasses": {name: value.to_dict() for name, value in sorted(classes.items())},
     }
 
 
@@ -136,9 +132,7 @@ def fleet_revision_from_student(student: StudentSpec) -> str:
     return matches[0].revision
 
 
-def build_fleet_contract_snapshot(
-    *, student_path: Path, fleet_repo: Path
-) -> dict[str, Any]:
+def build_fleet_contract_snapshot(*, student_path: Path, fleet_repo: Path) -> dict[str, Any]:
     student = StudentSpec.load(student_path)
     revision = fleet_revision_from_student(student)
     modules: dict[str, Any] = {}
@@ -161,9 +155,7 @@ def build_fleet_contract_snapshot(
 def write_fleet_contract_snapshot(
     *, student_path: Path, fleet_repo: Path, out: Path
 ) -> dict[str, Any]:
-    snapshot = build_fleet_contract_snapshot(
-        student_path=student_path, fleet_repo=fleet_repo
-    )
+    snapshot = build_fleet_contract_snapshot(student_path=student_path, fleet_repo=fleet_repo)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(snapshot, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return snapshot

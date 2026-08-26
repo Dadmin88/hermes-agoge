@@ -37,7 +37,10 @@ def test_base_candidate_run_preserves_capability_and_marks_artifact_non_promotab
     assert manifest["corpus_rebind_required_before_promotion"] is True
     assert manifest["counts"] == {"train": 412, "validation": 46, "test": 46}
     assert manifest["disposition_count"] == 16
-    assert json.loads((run_dir / "spec" / "competency.json").read_text())["competency_id"] == competency.competency_id
+    assert (
+        json.loads((run_dir / "spec" / "competency.json").read_text())["competency_id"]
+        == competency.competency_id
+    )
 
 
 def test_candidate_runs_use_the_same_deterministic_examples_across_bases(tmp_path: Path) -> None:

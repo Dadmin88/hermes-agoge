@@ -74,7 +74,9 @@ def _normalize_run(run_dir: Path, *, competency: CompetencySpec) -> dict[str, An
     if manifest.get("corpus_rebind_required_before_promotion") is not True:
         raise BaseTournamentError(f"benchmark run does not require corpus rebinding: {run_dir}")
     if training.get("status") != "TRAINED" or training.get("backend") != "qlora-seqcls":
-        raise BaseTournamentError(f"benchmark run is not a completed sequence-classification Askesis: {run_dir}")
+        raise BaseTournamentError(
+            f"benchmark run is not a completed sequence-classification Askesis: {run_dir}"
+        )
     if training.get("base_model") != manifest.get("base_model"):
         raise BaseTournamentError(f"training/model manifest mismatch: {run_dir}")
     if training.get("base_model_revision") != manifest.get("base_model_revision"):
@@ -89,7 +91,13 @@ def _normalize_run(run_dir: Path, *, competency: CompetencySpec) -> dict[str, An
         raise BaseTournamentError(f"benchmark validation Exam is incomplete: {run_dir}")
     if exam_spec.get("model_kind") != "adapter" or exam_spec.get("split") != "validation":
         raise BaseTournamentError(f"benchmark must use the adapted validation Exam: {run_dir}")
-    for key in ("competency_id", "competency_hash", "corpus_hash", "base_model", "base_model_revision"):
+    for key in (
+        "competency_id",
+        "competency_hash",
+        "corpus_hash",
+        "base_model",
+        "base_model_revision",
+    ):
         expected = manifest.get(key)
         if exam_spec.get(key) != expected:
             raise BaseTournamentError(f"benchmark Exam/manifest mismatch for {key}: {run_dir}")
@@ -105,13 +113,15 @@ def _normalize_run(run_dir: Path, *, competency: CompetencySpec) -> dict[str, An
     criteria = competency.transfer_criteria
     if criteria.get("both_event_families_required") is True and len(family_metrics) < 2:
         reasons.append("missing-required-event-family")
-    if criteria.get("zero_false_allow_required_for_graduation") is True and int(
-        computed_summary.get("false_allow", 0)
-    ) != 0:
+    if (
+        criteria.get("zero_false_allow_required_for_graduation") is True
+        and int(computed_summary.get("false_allow", 0)) != 0
+    ):
         reasons.append("false-allow-hard-gate")
-    if criteria.get("reason_disposition_must_be_closed") is True and float(
-        computed_summary.get("contract_valid_rate", 0.0)
-    ) < 1.0:
+    if (
+        criteria.get("reason_disposition_must_be_closed") is True
+        and float(computed_summary.get("contract_valid_rate", 0.0)) < 1.0
+    ):
         reasons.append("closed-contract-hard-gate")
 
     cuda = training.get("cuda")
@@ -208,9 +218,7 @@ def _pareto_frontier(candidates: list[dict[str, Any]]) -> list[str]:
     passing = [item for item in candidates if item["hard_gate_pass"]]
     frontier = []
     for candidate in passing:
-        if not any(
-            other is not candidate and _dominates(other, candidate) for other in passing
-        ):
+        if not any(other is not candidate and _dominates(other, candidate) for other in passing):
             frontier.append(candidate["candidate_id"])
     return sorted(frontier)
 
@@ -228,9 +236,7 @@ def run_base_tournament(
     budgets = {digest(item["training_budget"]) for item in candidates}
     if len(budgets) != 1:
         raise BaseTournamentError("base tournament candidates use different training budgets")
-    corpus_hashes = {
-        _load_object(path / "manifest.json").get("corpus_hash") for path in run_dirs
-    }
+    corpus_hashes = {_load_object(path / "manifest.json").get("corpus_hash") for path in run_dirs}
     if len(corpus_hashes) != 1:
         raise BaseTournamentError("base tournament candidates use different corpora")
 

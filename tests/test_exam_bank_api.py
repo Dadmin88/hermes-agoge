@@ -10,9 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 STUDENT = ROOT / "students" / "templar" / "student.json"
 COMPETENCY = ROOT / "students" / "templar" / "competency.json"
 BODY = ROOT / "students" / "templar" / "exams" / "templar-fresh-transfer-v1.jsonl"
-MANIFEST = (
-    ROOT / "students" / "templar" / "exams" / "templar-fresh-transfer-v1.manifest.json"
-)
+MANIFEST = ROOT / "students" / "templar" / "exams" / "templar-fresh-transfer-v1.manifest.json"
 
 
 def test_api_bank_exam_uses_sealed_cases_and_strict_contract(tmp_path: Path) -> None:

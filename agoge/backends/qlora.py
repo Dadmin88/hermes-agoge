@@ -46,11 +46,7 @@ def _read_examples(path: Path, contract: dict[str, Any]) -> list[dict[str, Any]]
                 continue
             item = json.loads(raw)
             rows.append(
-                {
-                    "messages": training_messages(
-                        item["prompt"], item["completion"], contract
-                    )
-                }
+                {"messages": training_messages(item["prompt"], item["completion"], contract)}
             )
     return rows
 
@@ -69,30 +65,22 @@ def train(
     lib = _imports()
     torch = lib["torch"]
     if not torch.cuda.is_available():
-        raise RuntimeError(
-            "QLoRA backend requires a CUDA GPU in the initial Agoge implementation"
-        )
+        raise RuntimeError("QLoRA backend requires a CUDA GPU in the initial Agoge implementation")
     if max_steps is not None and max_steps < 1:
         raise RuntimeError("max_steps must be a positive integer when supplied")
     if gradient_accumulation_steps < 1:
         raise RuntimeError("gradient_accumulation_steps must be positive")
 
     manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
-    student_document = json.loads(
-        (run_dir / "spec" / "student.json").read_text(encoding="utf-8")
-    )
+    student_document = json.loads((run_dir / "spec" / "student.json").read_text(encoding="utf-8"))
     contract = student_document["output_contract"]
     model_name = manifest["base_model"]
     model_revision = manifest["base_model_revision"]
-    dataset = lib["Dataset"].from_list(
-        _read_examples(run_dir / "data" / "train.jsonl", contract)
-    )
+    dataset = lib["Dataset"].from_list(_read_examples(run_dir / "data" / "train.jsonl", contract))
     artifact_dir = run_dir / "artifacts" / "adapter"
     artifact_dir.mkdir(parents=True, exist_ok=True)
 
-    compute_dtype = (
-        torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
-    )
+    compute_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
     quantization = lib["BitsAndBytesConfig"](
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
@@ -118,9 +106,7 @@ def train(
         tokenizer.pad_token = tokenizer.eos_token
     token_lengths: list[int] = []
     for row in dataset:
-        encoded = tokenizer.apply_chat_template(
-            row["messages"], tokenize=True, return_dict=True
-        )
+        encoded = tokenizer.apply_chat_template(row["messages"], tokenize=True, return_dict=True)
         token_lengths.append(len(encoded["input_ids"]))
     max_observed_tokens = max(token_lengths)
     if max_observed_tokens > max_length:

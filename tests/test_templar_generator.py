@@ -32,24 +32,17 @@ def test_deterministic_generator_covers_every_templar_competency() -> None:
         candidates = response_to_candidates(request, response)
         assert len(candidates) == 3
         assert all(item.competency == competency for item in candidates)
-        assert all(
-            item.provenance["review_state"] == "generated-unreviewed"
-            for item in candidates
-        )
+        assert all(item.provenance["review_state"] == "generated-unreviewed" for item in candidates)
 
 
 def test_prompt_injection_generator_includes_allow_deny_and_review() -> None:
-    request = TeacherRequest.from_student(
-        STUDENT, competency="prompt-injection", count=7
-    )
+    request = TeacherRequest.from_student(STUDENT, competency="prompt-injection", count=7)
     response = generate_response(request)
     decisions = {item.completion["decision"] for item in response.items}
     assert decisions == {"ALLOW", "DENY", "REVIEW"}
 
 
 def test_deterministic_generator_refuses_duplicate_padding() -> None:
-    request = TeacherRequest.from_student(
-        STUDENT, competency="benign-nonoverblocking", count=100
-    )
+    request = TeacherRequest.from_student(STUDENT, competency="benign-nonoverblocking", count=100)
     with pytest.raises(SpecError, match="distinct cases"):
         generate_response(request)

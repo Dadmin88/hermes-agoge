@@ -110,9 +110,7 @@ def test_registered_exam_manifest_blocks_future_training_prompt(tmp_path: Path) 
         kind="hidden-adversarial",
         visibility="external-hidden",
     )
-    (exam_dir / "protected-bank.manifest.json").write_text(
-        json.dumps(manifest), encoding="utf-8"
-    )
+    (exam_dir / "protected-bank.manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
     with pytest.raises(SpecError, match="overlaps registered exam bank"):
         assert_no_registered_exam_overlap(
             student_root=student_root,

@@ -91,7 +91,9 @@ def _normalize_candidate(
         item = catalog.get((provider, model))
         pricing = item.get("pricing") if item else None
         free = item.get("free") if item else None
-        cost_class = "free-api" if free is True else "priced-api" if free is False else "api-unknown-cost"
+        cost_class = (
+            "free-api" if free is True else "priced-api" if free is False else "api-unknown-cost"
+        )
     else:
         raise RuntimeTournamentError(f"unsupported runtime Exam schema {schema!r}: {path}")
 
@@ -101,13 +103,15 @@ def _normalize_candidate(
     criteria = competency.transfer_criteria
     if criteria.get("both_event_families_required") is True and len(families) < 2:
         reasons.append("missing-required-event-family")
-    if criteria.get("zero_false_allow_required_for_graduation") is True and int(
-        summary.get("false_allow", 0)
-    ) != 0:
+    if (
+        criteria.get("zero_false_allow_required_for_graduation") is True
+        and int(summary.get("false_allow", 0)) != 0
+    ):
         reasons.append("false-allow-hard-gate")
-    if criteria.get("reason_disposition_must_be_closed") is True and float(
-        summary.get("contract_valid_rate", 0.0)
-    ) < 1.0:
+    if (
+        criteria.get("reason_disposition_must_be_closed") is True
+        and float(summary.get("contract_valid_rate", 0.0)) < 1.0
+    ):
         reasons.append("closed-contract-hard-gate")
     if kind == "api-runtime" and float(summary.get("api_success_rate", 0.0)) < 1.0:
         reasons.append("api-availability-hard-gate")
@@ -171,9 +175,7 @@ def run_runtime_tournament(
     competency = CompetencySpec.load(competency_path)
     catalog = _catalog_lookup(catalog_paths or [])
     candidates = [
-        _normalize_candidate(
-            _load_object(path), path=path, competency=competency, catalog=catalog
-        )
+        _normalize_candidate(_load_object(path), path=path, competency=competency, catalog=catalog)
         for path in exam_paths
     ]
     corpus_hashes = {item["corpus_hash"] for item in candidates}

@@ -32,10 +32,23 @@ class Example:
         for key in ("prompt", "completion", "provenance"):
             if type(value[key]) is not dict:
                 raise SpecError(f"{key} must be an object")
-        return cls(value["example_id"], value["competency"], value["prompt"], value["completion"], value["provenance"])
+        return cls(
+            value["example_id"],
+            value["competency"],
+            value["prompt"],
+            value["completion"],
+            value["provenance"],
+        )
 
     def to_dict(self) -> dict[str, Any]:
-        return {"schema": "agoge.example.v1", "example_id": self.example_id, "competency": self.competency, "prompt": self.prompt, "completion": self.completion, "provenance": self.provenance}
+        return {
+            "schema": "agoge.example.v1",
+            "example_id": self.example_id,
+            "competency": self.competency,
+            "prompt": self.prompt,
+            "completion": self.completion,
+            "provenance": self.provenance,
+        }
 
     @property
     def content_hash(self) -> str:
@@ -103,8 +116,10 @@ def stable_event_stratified_split(examples: Iterable[Example]) -> dict[str, list
         reasons = example.completion.get("reason_codes")
         if type(event_schema) is not str or not event_schema.strip():
             raise SpecError("event-stratified split requires a closed prompt schema")
-        if type(decision) is not str or type(reasons) is not list or not all(
-            type(item) is str for item in reasons
+        if (
+            type(decision) is not str
+            or type(reasons) is not list
+            or not all(type(item) is str for item in reasons)
         ):
             raise SpecError("event-stratified split requires closed decision/reason labels")
         key = (event_schema, example.competency, decision, tuple(sorted(reasons)))
@@ -148,8 +163,10 @@ def stable_stratified_split(examples: Iterable[Example]) -> dict[str, list[Examp
     for example in examples:
         decision = example.completion.get("decision")
         reasons = example.completion.get("reason_codes")
-        if type(decision) is not str or type(reasons) is not list or not all(
-            type(item) is str for item in reasons
+        if (
+            type(decision) is not str
+            or type(reasons) is not list
+            or not all(type(item) is str for item in reasons)
         ):
             raise SpecError("stratified split requires closed decision/reason labels")
         key = (example.competency, decision, tuple(sorted(reasons)))

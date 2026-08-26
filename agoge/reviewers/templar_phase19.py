@@ -42,8 +42,7 @@ def _event_integrity(candidate: Example) -> tuple[bool, str]:
     event_hash = digest(prompt)
     basis_refs = candidate.provenance.get("basis_refs")
     if type(basis_refs) is not list or not any(
-        type(item) is str
-        and item == f"Fleet-validated fleet.security-event.v1 {event_hash}"
+        type(item) is str and item == f"Fleet-validated fleet.security-event.v1 {event_hash}"
         for item in basis_refs
     ):
         return False, "fleet-oracle-binding-missing"
@@ -63,9 +62,7 @@ def _secret_actions(event: dict[str, Any]) -> set[str]:
     if type(value) is not list:
         return set()
     return {
-        row.get("action")
-        for row in value
-        if type(row) is dict and type(row.get("action")) is str
+        row.get("action") for row in value if type(row) is dict and type(row.get("action")) is str
     }
 
 
@@ -80,18 +77,13 @@ def _has_signal(event: dict[str, Any], signal: str, *, levels: set[str] | None =
             continue
         signals = row.get("signal_codes")
         level = row.get("risk_level")
-        if type(signals) is list and signal in signals and (
-            levels is None or level in levels
-        ):
+        if type(signals) is list and signal in signals and (levels is None or level in levels):
             return True
     return False
 
 
 def _quarantine_state(event: dict[str, Any], state: str) -> bool:
-    return any(
-        type(row) is dict and row.get("state") == state
-        for row in _quarantine_rows(event)
-    )
+    return any(type(row) is dict and row.get("state") == state for row in _quarantine_rows(event))
 
 
 def _verified_candidate(event: dict[str, Any]) -> bool:
@@ -113,9 +105,7 @@ def _expected(candidate: Example) -> tuple[str, tuple[str, ...]]:
     """
 
     event = candidate.prompt
-    high_authority = _has_signal(
-        event, "authority-manipulation", levels={"high", "critical"}
-    )
+    high_authority = _has_signal(event, "authority-manipulation", levels={"high", "critical"})
     medium_stored = _has_signal(event, "stored-instruction", levels={"medium"})
     medium_network = _has_signal(event, "network-requirement", levels={"medium"})
     actions = _secret_actions(event)

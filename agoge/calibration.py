@@ -75,10 +75,7 @@ def apply_calibration(
     if result.get("decision") != "ALLOW":
         return result
     confidence = result.get("confidence")
-    if (
-        type(confidence) is not float
-        or confidence >= policy["phase23_risk_allow_min_confidence"]
-    ):
+    if type(confidence) is not float or confidence >= policy["phase23_risk_allow_min_confidence"]:
         return result
     signals = prompt.get("risk_signals")
     if type(signals) is not list or not signals:

@@ -69,9 +69,7 @@ def probe_sequence_classifier(
     assert type(checks) is dict
 
     config = lib["AutoConfig"].from_pretrained(model_id, revision=revision)
-    model_class = lib["AutoModelForSequenceClassification"]._model_mapping.get(
-        type(config), None
-    )
+    model_class = lib["AutoModelForSequenceClassification"]._model_mapping.get(type(config), None)
     checks["auto_config"] = {
         "ok": True,
         "model_type": getattr(config, "model_type", None),
@@ -98,7 +96,9 @@ def probe_sequence_classifier(
             result["probe_id"] = digest({k: v for k, v in result.items() if k != "probe_id"})
             if out is not None:
                 out.parent.mkdir(parents=True, exist_ok=True)
-                out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+                out.write_text(
+                    json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+                )
             return result
         tokenizer.pad_token = tokenizer.eos_token
     checks["tokenizer"] = {
@@ -174,7 +174,9 @@ def probe_sequence_classifier(
         "logits_shape": list(logits.shape),
     }
     if tuple(logits.shape) != (1, num_labels):
-        raise RuntimeError(f"sequence-classification forward shape is invalid: {tuple(logits.shape)!r}")
+        raise RuntimeError(
+            f"sequence-classification forward shape is invalid: {tuple(logits.shape)!r}"
+        )
 
     result["status"] = "benchmark-compatible"
     result["elapsed_seconds"] = time.perf_counter() - started

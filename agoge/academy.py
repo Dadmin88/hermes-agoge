@@ -72,8 +72,7 @@ class AcademyFacultyBinding:
     def teacher_identity(self) -> TeacherIdentity:
         return TeacherIdentity(
             teacher_id=(
-                f"academy:{self.faculty_id}@{self.faculty_distribution}"
-                f"+{self.faculty_revision}"
+                f"academy:{self.faculty_id}@{self.faculty_distribution}+{self.faculty_revision}"
             ),
             kind="academy",
             provider=self.inference_provider,
@@ -133,9 +132,11 @@ def build_faculty_prompt(
     if type(contract_schema) is not str or type(decisions) is not list or not decisions:
         raise SpecError("Academy bridge requires a concrete closed-output contract")
     sample_decision = "DENY" if "DENY" in decisions else decisions[0]
-    sample_reasons = ["bounded-reason-code"] if sample_decision in output_contract.get(
-        "reason_codes_required_for", []
-    ) else []
+    sample_reasons = (
+        ["bounded-reason-code"]
+        if sample_decision in output_contract.get("reason_codes_required_for", [])
+        else []
+    )
     payload_shape = {
         "schema": ACADEMY_PAYLOAD_SCHEMA,
         "request_id": request.request_id,

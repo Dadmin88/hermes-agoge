@@ -39,7 +39,9 @@ def _request() -> dict[str, object]:
     return request
 
 
-def test_validate_request_accepts_exact_bound_fleet_document(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_validate_request_accepts_exact_bound_fleet_document(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     monkeypatch.setattr("agoge.templar_runtime.time.time_ns", lambda: 1_999_999_999_000_000_000)
     request = _request()
     assert _validate_request(request) == request

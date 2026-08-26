@@ -144,9 +144,7 @@ def seal_exam_bank(
     training_hashes, corpus_hashes = _training_prompt_hashes(training_corpora or [])
     overlap = sorted(set(prompt_hashes) & training_hashes)
     if overlap:
-        raise SpecError(
-            f"exam bank overlaps training corpus by {len(overlap)} exact prompt(s)"
-        )
+        raise SpecError(f"exam bank overlaps training corpus by {len(overlap)} exact prompt(s)")
     event_schemas = sorted(
         {
             str(case.prompt.get("schema"))
@@ -233,9 +231,7 @@ def registered_exam_manifests(student_root: Path) -> list[dict[str, Any]]:
     return [load_exam_manifest(path) for path in sorted(exam_dir.glob("*.manifest.json"))]
 
 
-def assert_no_registered_exam_overlap(
-    *, student_root: Path, examples: list[Example]
-) -> None:
+def assert_no_registered_exam_overlap(*, student_root: Path, examples: list[Example]) -> None:
     manifests = registered_exam_manifests(student_root)
     if not manifests:
         return

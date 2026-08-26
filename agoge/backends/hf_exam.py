@@ -186,7 +186,5 @@ def examine(
         "rows": rows,
     }
     output_path = run_dir / f"exam-{model_kind}-{split}.json"
-    output_path.write_text(
-        json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
+    output_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return result

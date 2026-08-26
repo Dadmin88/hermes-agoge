@@ -19,6 +19,7 @@ def test_runtime_competency_map_binds_pinned_contract_and_supported_inputs() -> 
     assert mapping["model_input"]["supported_schemas"] == supported
     ids = [item["id"] for item in mapping["competencies"]]
     assert len(ids) == len(set(ids)) == 9
-    assert "raw user prompt merely because Templar is evaluating security" in mapping[
-        "unavailable_or_forbidden_model_inputs"
-    ]
+    assert (
+        "raw user prompt merely because Templar is evaluating security"
+        in mapping["unavailable_or_forbidden_model_inputs"]
+    )

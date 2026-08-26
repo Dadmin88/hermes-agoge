@@ -38,6 +38,8 @@ def test_prepare_can_select_an_accepted_student_relative_corpus(tmp_path: Path) 
 
 def test_prepare_rejects_a_corpus_outside_the_student_directory(tmp_path: Path) -> None:
     outside = tmp_path / "outside.jsonl"
-    outside.write_text((STUDENT.parent / "seed_cases.jsonl").read_text(encoding="utf-8"), encoding="utf-8")
+    outside.write_text(
+        (STUDENT.parent / "seed_cases.jsonl").read_text(encoding="utf-8"), encoding="utf-8"
+    )
     with pytest.raises(SpecError, match="inside the Student directory"):
         prepare_run(STUDENT, tmp_path / "run-outside", corpus_path=outside)

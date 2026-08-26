@@ -95,7 +95,9 @@ def examine(
     )
     if registry["registry_hash"] != manifest.get("disposition_registry_hash"):
         raise RuntimeError("Askesis disposition registry does not match its manifest")
-    calibration = load_calibration_policy(calibration_path) if calibration_path is not None else None
+    calibration = (
+        load_calibration_policy(calibration_path) if calibration_path is not None else None
+    )
     entries = registry["entries"]
     assert type(entries) is list
     num_labels = len(entries)
@@ -110,9 +112,7 @@ def examine(
         tokenizer.pad_token = tokenizer.eos_token
 
     texts = [user_content(project_templar_event(example.prompt)) for example in examples]
-    lengths = [
-        len(tokenizer(text, add_special_tokens=True)["input_ids"]) for text in texts
-    ]
+    lengths = [len(tokenizer(text, add_special_tokens=True)["input_ids"]) for text in texts]
     observed_max_tokens = max(lengths)
     if observed_max_tokens > max_length:
         raise RuntimeError(
@@ -153,9 +153,7 @@ def examine(
 
     # Warm the tokenizer/model path once so runtime latency excludes one-time CUDA
     # graph/kernel initialization while still including normal per-request tokenization.
-    warmup = tokenizer(
-        texts[0], return_tensors="pt", add_special_tokens=True, truncation=False
-    )
+    warmup = tokenizer(texts[0], return_tensors="pt", add_special_tokens=True, truncation=False)
     warmup = {key: value.to(model.device) for key, value in warmup.items()}
     with torch.inference_mode():
         model(**warmup)
@@ -258,7 +256,5 @@ def examine(
         "rows": rows,
     }
     output_path = run_dir / f"exam-seqcls-{model_kind}-{split}.json"
-    output_path.write_text(
-        json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
+    output_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return result

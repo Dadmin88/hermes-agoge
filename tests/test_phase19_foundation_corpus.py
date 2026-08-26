@@ -57,9 +57,7 @@ def test_phase19_foundation_corpus_is_accepted_fleet_shaped_and_content_addresse
         assert item.competency not in json.dumps(item.prompt, sort_keys=True)
         assert item.provenance["review_state"] == "accepted"
         assert item.provenance["candidate_hash"].startswith("sha256:")
-        reviewer_ids = {
-            review["reviewer"]["teacher_id"] for review in item.provenance["reviews"]
-        }
+        reviewer_ids = {review["reviewer"]["teacher_id"] for review in item.provenance["reviews"]}
         assert reviewer_ids == {"templar-phase19-independent-rule-reviewer-v1"}
         assert item.provenance["teacher"]["teacher_id"] != next(iter(reviewer_ids))
 

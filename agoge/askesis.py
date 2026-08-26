@@ -70,9 +70,7 @@ def prepare_run(
     if competency is not None:
         shutil.copy2(competency_path, snapshot_dir / "competency.json")
     disposition_registry = build_disposition_registry(examples, student_id=student.student_id)
-    (snapshot_dir / "dispositions.json").write_bytes(
-        canonical_json(disposition_registry) + b"\n"
-    )
+    (snapshot_dir / "dispositions.json").write_bytes(canonical_json(disposition_registry) + b"\n")
     manifest = {
         "schema": "agoge.askesis-run.v1",
         "student_id": student.student_id,

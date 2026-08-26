@@ -48,13 +48,17 @@ def examine_seqcls_bank(
     )
     if registry["registry_hash"] != run_manifest.get("disposition_registry_hash"):
         raise SpecError("Askesis disposition registry does not match its manifest")
-    calibration = load_calibration_policy(calibration_path) if calibration_path is not None else None
+    calibration = (
+        load_calibration_policy(calibration_path) if calibration_path is not None else None
+    )
     lookup = registry_lookup(registry)
     for case in cases:
         decision = case.expected.get("decision")
         reasons = case.expected.get("reason_codes")
-        if type(decision) is not str or type(reasons) is not list or not all(
-            type(item) is str and item for item in reasons
+        if (
+            type(decision) is not str
+            or type(reasons) is not list
+            or not all(type(item) is str and item for item in reasons)
         ):
             raise SpecError(f"exam case {case.case_id} has an invalid expected disposition")
         key = (decision, tuple(sorted(reasons)))
@@ -80,9 +84,7 @@ def examine_seqcls_bank(
         tokenizer.pad_token = tokenizer.eos_token
 
     texts = [user_content(project_templar_event(case.prompt)) for case in cases]
-    lengths = [
-        len(tokenizer(text, add_special_tokens=True)["input_ids"]) for text in texts
-    ]
+    lengths = [len(tokenizer(text, add_special_tokens=True)["input_ids"]) for text in texts]
     observed_max_tokens = max(lengths)
     if observed_max_tokens > max_length:
         raise RuntimeError(
