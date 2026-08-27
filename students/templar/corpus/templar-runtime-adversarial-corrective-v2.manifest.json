@@ -1,0 +1,40 @@
+{
+  "schema": "agoge.templar-adversarial-corrective-corpus-manifest.v1",
+  "student_id": "templar-v1",
+  "student_hash": "sha256:eaabc2035dba64562530ccffcd938d53b4471997b7aceae92e656e84b2fcb8f1",
+  "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+  "status": "accepted-corrective-curriculum-not-graduation-exam",
+  "count": 543,
+  "corpus_hash": "sha256:0c1e39df69d1f169e8ae57c413e4206c7160916668f8d734696c585cee60ab11",
+  "event_schema_counts": {
+    "fleet.security-event.v1": 252,
+    "fleet.learning-promotion-event.v1": 291
+  },
+  "parent_corpus": {
+    "path": "corpus/templar-runtime-adversarial-corrective-v1.jsonl",
+    "corpus_hash": "sha256:4bd8dd4f01b8750ea6eba863b55e8e3638b4b13ed87d33bf596d9539b9a3a721",
+    "count": 522
+  },
+  "corrective_addition": {
+    "competency": "authority-boundaries",
+    "failure_class": "fresh-transfer-anchor-regression",
+    "expected_decision": "DENY",
+    "expected_reason_codes": ["disguised-privilege-escalation"],
+    "raw_failed_exam_body_copied_to_training": false,
+    "teacher_request_id": "sha256:957788cfed72aa36f0bc6f49884751538b0e0914e45534a2019334ad6f6e05ff",
+    "teacher_response_hash": "sha256:9b16e477fa389760b2cb7efc5428d3fc4ef8f8b82f78a9a5f1d58bc17eabfe80",
+    "reviewed_count": 24,
+    "accepted_count": 24,
+    "rejected_count": 0,
+    "quarantined_count": 0,
+    "novel_prompt_count": 21,
+    "novel_corpus_hash": "sha256:ed37a3832ed6927c25220153eb7f3a2eff09ed7715298466ce4c3b7f3134877e",
+    "novel_disposition_counts": {
+      "DENY/disguised-privilege-escalation": 15,
+      "REVIEW/hidden-instructions": 4,
+      "ALLOW": 2
+    }
+  },
+  "registered_exam_overlap_count": 0,
+  "external_hidden_exam_overlap_count": 0
+}

@@ -366,6 +366,101 @@ def cmd_model_probe(args: argparse.Namespace) -> int:
     return 0 if result["status"] == "benchmark-compatible" else 2
 
 
+def cmd_adversarial_mutate(args: argparse.Namespace) -> int:
+    from collections import Counter
+
+    from .adversarial import mutate_examples, write_adversarial_candidates
+    from .corpus import read_jsonl
+    from .spec import digest
+
+    student_path = Path(args.student)
+    StudentSpec.load(student_path)
+    source = read_jsonl(Path(args.corpus))
+    mutants = mutate_examples(
+        source,
+        student_root=student_path.parent,
+        families=args.family,
+        variants_per_family=args.variants_per_family,
+    )
+    out = Path(args.out)
+    write_adversarial_candidates(out, mutants)
+    by_family = Counter(str(item.provenance["mutation"]["family"]) for item in mutants)
+    by_schema = Counter(str(item.prompt.get("schema")) for item in mutants)
+    _json(
+        {
+            "ok": True,
+            "schema": "agoge.adversarial-mutation-batch.v1",
+            "source_count": len(source),
+            "source_hash": digest([item.to_dict() for item in source]),
+            "candidate_count": len(mutants),
+            "candidate_hash": digest([item.to_dict() for item in mutants]),
+            "families": dict(sorted(by_family.items())),
+            "event_schemas": dict(sorted(by_schema.items())),
+            "review_state": "generated",
+            "training_use": "candidate-only",
+            "out": str(out),
+        }
+    )
+    return 0
+
+
+def cmd_adversarial_cluster(args: argparse.Namespace) -> int:
+    from .adversarial_exam import cluster_adversarial_failures
+
+    result = json.loads(Path(args.result).read_text(encoding="utf-8"))
+    clusters = cluster_adversarial_failures(result)
+    document = {
+        "schema": "agoge.adversarial-failure-clusters.v1",
+        "source_exam_id": result.get("exam_id"),
+        "cluster_count": len(clusters),
+        "clusters": clusters,
+    }
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(document, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    _json({"cluster_count": len(clusters), "out": str(out)})
+    return 0
+
+
+def cmd_adversarial_corrective_request(args: argparse.Namespace) -> int:
+    from .adversarial_exam import build_corrective_teacher_request
+
+    document = json.loads(Path(args.clusters).read_text(encoding="utf-8"))
+    if document.get("schema") != "agoge.adversarial-failure-clusters.v1":
+        raise SpecError("corrective request requires an adversarial failure-clusters document")
+    clusters = document.get("clusters")
+    if type(clusters) is not list:
+        raise SpecError("adversarial failure-clusters document is invalid")
+    selected = [cluster for cluster in clusters if cluster.get("cluster_id") == args.cluster_id]
+    if len(selected) != 1:
+        raise SpecError(f"adversarial cluster id did not resolve exactly once: {args.cluster_id}")
+    request = build_corrective_teacher_request(
+        student_path=Path(args.student), cluster=selected[0], count=args.count
+    )
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(request.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    _json({"request_id": request.request_id, "cluster_id": args.cluster_id, "out": str(out)})
+    return 0
+
+
+def cmd_examine_adversarial_seqcls(args: argparse.Namespace) -> int:
+    from .adversarial_exam import examine_adversarial_seqcls
+
+    result = examine_adversarial_seqcls(
+        run_dir=Path(args.run),
+        candidates_path=Path(args.candidates),
+        model_kind=args.model,
+        max_length=args.max_length,
+        seed=args.seed,
+        calibration_path=None if args.calibration is None else Path(args.calibration),
+        limit=args.limit,
+        out=Path(args.out),
+    )
+    _json(result["summary"])
+    return 0
+
+
 def cmd_exam_bank_seal(args: argparse.Namespace) -> int:
     from .exam_bank import seal_exam_bank
 
@@ -502,6 +597,8 @@ def cmd_model_audit(args: argparse.Namespace) -> int:
 
 def cmd_train(args: argparse.Namespace) -> int:
     run_dir = Path(args.run)
+    if args.initial_run is not None and args.backend != "qlora-seqcls":
+        raise SpecError("--initial-run is supported only by qlora-seqcls training")
     if args.backend == "dry-run":
         from .backends.dryrun import train
 
@@ -527,6 +624,7 @@ def cmd_train(args: argparse.Namespace) -> int:
             per_device_train_batch_size=args.batch_size,
             gradient_accumulation_steps=args.gradient_accumulation_steps,
             balance_mode=args.balance_mode,
+            initial_run_dir=None if args.initial_run is None else Path(args.initial_run),
         )
     _json(result)
     return 0
@@ -705,6 +803,58 @@ def parser() -> argparse.ArgumentParser:
     model_probe.add_argument("--num-labels", type=int, required=True)
     model_probe.add_argument("--out", default=None)
     model_probe.set_defaults(func=cmd_model_probe)
+    from .adversarial import mutation_families
+
+    adversarial_mutate = subs.add_parser(
+        "adversarial-mutate",
+        help="generate review-required adversarial mutation candidates from an accepted corpus",
+    )
+    adversarial_mutate.add_argument("--student", required=True)
+    adversarial_mutate.add_argument("--corpus", required=True)
+    adversarial_mutate.add_argument(
+        "--family",
+        action="append",
+        choices=mutation_families(),
+        required=True,
+        help="bounded mutation family; repeat to combine families",
+    )
+    adversarial_mutate.add_argument("--variants-per-family", type=int, default=1)
+    adversarial_mutate.add_argument("--out", required=True)
+    adversarial_mutate.set_defaults(func=cmd_adversarial_mutate)
+
+    adversarial_examine = subs.add_parser(
+        "examine-adversarial-seqcls",
+        help="score generated adversarial candidates without treating them as graduation evidence",
+    )
+    adversarial_examine.add_argument("--run", required=True)
+    adversarial_examine.add_argument("--candidates", required=True)
+    adversarial_examine.add_argument("--model", choices=("base", "adapter"), default="adapter")
+    adversarial_examine.add_argument("--max-length", type=int, default=2048)
+    adversarial_examine.add_argument("--seed", type=int, default=41)
+    adversarial_examine.add_argument("--calibration", default=None)
+    adversarial_examine.add_argument("--limit", type=int, default=None)
+    adversarial_examine.add_argument("--out", required=True)
+    adversarial_examine.set_defaults(func=cmd_examine_adversarial_seqcls)
+
+    adversarial_cluster = subs.add_parser(
+        "adversarial-cluster",
+        help="cluster failed development adversarial cases without exposing prompt bodies",
+    )
+    adversarial_cluster.add_argument("--result", required=True)
+    adversarial_cluster.add_argument("--out", required=True)
+    adversarial_cluster.set_defaults(func=cmd_adversarial_cluster)
+
+    corrective_request = subs.add_parser(
+        "adversarial-corrective-request",
+        help="create a Teacher request from one adversarial failure cluster",
+    )
+    corrective_request.add_argument("--student", required=True)
+    corrective_request.add_argument("--clusters", required=True)
+    corrective_request.add_argument("--cluster-id", required=True)
+    corrective_request.add_argument("--count", type=int, required=True)
+    corrective_request.add_argument("--out", required=True)
+    corrective_request.set_defaults(func=cmd_adversarial_corrective_request)
+
     exam_bank_seal = subs.add_parser(
         "exam-bank-seal",
         help="seal an immutable training-forbidden Exam bank manifest from a JSONL body",
@@ -982,6 +1132,11 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     train.add_argument("--gradient-accumulation-steps", type=int, default=8)
+    train.add_argument(
+        "--initial-run",
+        default=None,
+        help="resume qlora-seqcls from a compatible trained Askesis adapter instead of the base model",
+    )
     train.set_defaults(func=cmd_train)
     return root
 

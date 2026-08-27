@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import random
 from collections import Counter
@@ -22,6 +23,7 @@ def _imports() -> dict[str, Any]:
         from datasets import Dataset
         from peft import (
             LoraConfig,
+            PeftModel,
             TaskType,
             get_peft_model,
             prepare_model_for_kbit_training,
@@ -43,6 +45,7 @@ def _imports() -> dict[str, Any]:
         "torch": torch,
         "Dataset": Dataset,
         "LoraConfig": LoraConfig,
+        "PeftModel": PeftModel,
         "TaskType": TaskType,
         "get_peft_model": get_peft_model,
         "prepare_model_for_kbit_training": prepare_model_for_kbit_training,
@@ -59,6 +62,53 @@ def _load_registry(run_dir: Path) -> dict[str, object]:
     path = run_dir / "spec" / "dispositions.json"
     value = json.loads(path.read_text(encoding="utf-8"))
     return validate_disposition_registry(value)
+
+
+def _tree_digest(path: Path) -> str:
+    if not path.is_dir():
+        raise RuntimeError(f"adapter directory does not exist: {path}")
+    hasher = hashlib.sha256()
+    files = sorted(item for item in path.rglob("*") if item.is_file())
+    if not files:
+        raise RuntimeError(f"adapter directory is empty: {path}")
+    for item in files:
+        relative = item.relative_to(path).as_posix().encode("utf-8")
+        content = item.read_bytes()
+        hasher.update(len(relative).to_bytes(8, "big"))
+        hasher.update(relative)
+        hasher.update(len(content).to_bytes(8, "big"))
+        hasher.update(content)
+    return "sha256:" + hasher.hexdigest()
+
+
+def _initial_adapter_info(
+    initial_run_dir: Path,
+    *,
+    target_manifest: dict[str, object],
+    registry_hash: str,
+) -> dict[str, object]:
+    source_manifest_path = initial_run_dir / "manifest.json"
+    source_result_path = initial_run_dir / "training-result-seqcls.json"
+    if not source_manifest_path.is_file() or not source_result_path.is_file():
+        raise RuntimeError("initial Askesis run is missing its manifest or training result")
+    source_manifest = json.loads(source_manifest_path.read_text(encoding="utf-8"))
+    source_result = json.loads(source_result_path.read_text(encoding="utf-8"))
+    for key in ("student_id", "base_model", "base_model_revision"):
+        if source_manifest.get(key) != target_manifest.get(key):
+            raise RuntimeError(f"initial Askesis run mismatch for {key}")
+    if source_manifest.get("disposition_registry_hash") != registry_hash:
+        raise RuntimeError("initial Askesis run disposition registry does not match target run")
+    if source_result.get("status") != "TRAINED" or source_result.get("backend") != "qlora-seqcls":
+        raise RuntimeError("initial Askesis run is not a trained sequence-classification adapter")
+    if source_result.get("disposition_registry_hash") != registry_hash:
+        raise RuntimeError("initial adapter training result disposition registry mismatch")
+    adapter_dir = initial_run_dir / "artifacts" / "seqcls-adapter"
+    return {
+        "run_dir": str(initial_run_dir),
+        "corpus_hash": source_manifest.get("corpus_hash"),
+        "adapter_dir": str(adapter_dir),
+        "adapter_hash": _tree_digest(adapter_dir),
+    }
 
 
 def _rows(run_dir: Path, registry: dict[str, object]) -> list[dict[str, object]]:
@@ -198,6 +248,7 @@ def train(
     per_device_train_batch_size: int = 1,
     gradient_accumulation_steps: int = 4,
     balance_mode: str = "class",
+    initial_run_dir: Path | None = None,
     seed: int = 41,
 ) -> dict[str, object]:
     lib = _imports()
@@ -228,6 +279,15 @@ def train(
     entries = registry["entries"]
     assert type(entries) is list
     num_labels = len(entries)
+    initial_adapter = (
+        _initial_adapter_info(
+            initial_run_dir,
+            target_manifest=manifest,
+            registry_hash=str(registry["registry_hash"]),
+        )
+        if initial_run_dir is not None
+        else None
+    )
     rows = _rows(run_dir, registry)
     original_counts = Counter(int(row["labels"]) for row in rows)
     original_balance_counts = (
@@ -301,16 +361,23 @@ def train(
     model.config.pad_token_id = tokenizer.pad_token_id
     model.config.problem_type = "single_label_classification"
     model = lib["prepare_model_for_kbit_training"](model)
-    peft_config = lib["LoraConfig"](
-        r=lora_r,
-        lora_alpha=lora_alpha,
-        lora_dropout=0.05,
-        bias="none",
-        task_type=lib["TaskType"].SEQ_CLS,
-        target_modules="all-linear",
-        modules_to_save=["score"],
-    )
-    model = lib["get_peft_model"](model, peft_config)
+    if initial_adapter is None:
+        peft_config = lib["LoraConfig"](
+            r=lora_r,
+            lora_alpha=lora_alpha,
+            lora_dropout=0.05,
+            bias="none",
+            task_type=lib["TaskType"].SEQ_CLS,
+            target_modules="all-linear",
+            modules_to_save=["score"],
+        )
+        model = lib["get_peft_model"](model, peft_config)
+    else:
+        model = lib["PeftModel"].from_pretrained(
+            model,
+            str(initial_adapter["adapter_dir"]),
+            is_trainable=True,
+        )
 
     artifact_dir = run_dir / "artifacts" / "seqcls-adapter"
     artifact_dir.mkdir(parents=True, exist_ok=True)
@@ -353,6 +420,7 @@ def train(
         "artifact_dir": str(artifact_dir),
         "disposition_registry_hash": registry["registry_hash"],
         "disposition_count": num_labels,
+        "initial_adapter": initial_adapter,
         "training": {
             "epochs": epochs,
             "max_steps": max_steps,

@@ -23,4 +23,27 @@ The Phase 22 deterministic-deny ordering was also exercised independently. A req
 
 A separate Phase 22 ordering proof stopped Templar entirely and supplied a deterministic Fleet hard deny. Pre-execution returned `DENY` from Fleet's deterministic policy layer in ~0.25 ms with no evaluator verdict, proving that an already-hard-denied request never consults Templar. In the same offline state, a Phase 23 learning-promotion request that did require Templar correctly failed closed as `DENY / evaluator-failure / authority=none`.
 
-This remains an integration proof, not production graduation. The Fleet Templar branch has passed the self-hosted Gitea Rust, real Nodescale/readiness, Python 3.11, and Python 3.13 gates; the remaining broader release/security, adversarial, and fault-injection gates still have to pass before the persistent evaluator is considered a released production component.
+This remains an integration proof, not production graduation. The Fleet Templar branch has passed the self-hosted Gitea Rust, real Nodescale/readiness, Python 3.11, and Python 3.13 gates; the remaining broader release/security and production-regression gates still have to pass before the persistent evaluator is considered a released production component.
+
+## Proof: Phase 10 adversarial school finds and corrects a shallow neural shortcut
+
+Agoge now has a development adversarial-school path that is deliberately separate from both training corpus rows and sealed graduation Exams. Mutation output uses `agoge.adversarial-candidate.v1` with `training_eligible=false`; normal corpus loading rejects it. Registered sealed Exam prompt fingerprints are rejected as mutation sources, generated mutants cannot recursively become accepted training examples, and the adversarial examiner marks generated results as non-graduation evidence.
+
+The first deterministic school generated 1,008 candidates from the accepted 504-event Templar foundation corpus: 252 irrelevant-noise mutations, 252 layout perturbations, and 504 unordered-list permutations across both supported Fleet event families. The previous calibrated adapter scored 1,007/1,008 exact. The only miss was a Phase 23 hidden-instruction DENY mixed with neutral documentation context: the neural classifier predicted ALLOW at about 0.52 confidence and calibration safely converted it to REVIEW. This exposed a benign-context-dilution shortcut without producing a false ALLOW at the deployed calibrated layer.
+
+The failure was clustered without embedding its raw adversarial prompt body into the corrective Teacher request. The pinned Fleet Phase 23 runtime oracle regenerated fresh bound cases from the failure concept, and the existing independent reviewer accepted 18 of 24 candidates while rejecting six label disagreements. The resulting corrective corpus versions remained prompt-distinct from all registered reviewable Exam cases and from the 20-case external-hidden bank.
+
+Two conventional full-from-base 150-step corrective runs were intentionally rejected. Both reached 1,008/1,008 on the generated school but introduced false-ALLOW or DENY-to-REVIEW regressions on the untouched 34-case fresh-transfer bank. That evidence showed that the problem was no longer missing examples alone; the corrective training strategy was moving shared decision boundaries too aggressively.
+
+Agoge therefore added explicit resume-from-parent adapter lineage for sequence-classification QLoRA. The trainer fails closed unless the parent Askesis matches the target Student, exact base model and revision, and disposition registry, and records the parent adapter hash in the new training result. Starting from the previous proven adapter `sha256:b5811a90fe6ece26a05d48d91684e466b3b4937af61705ee2cd2e6faf4df08f8`, a five-step corrective update at learning rate `1e-5` produced adapter `sha256:d4ba373f9dcb2f9f997783001faa4b691fa58f3c063c927faad2183da613358b`.
+
+That bounded repair produced the following evidence:
+
+- generated adversarial school Exam `sha256:e284a6a50aa26371d2a006d142654ce6db6db3649a4ba12dc0e68fafc787b1bd`: 1,008/1,008 exact with no calibration, zero false-ALLOWs, zero false-DENYs;
+- reviewable fresh-transfer Exam `sha256:1c010c991320840f65f14b9d4236a3a412481d42f44776237d8f7ebff3969af3`: 34/34 exact, zero false-ALLOWs, zero false-DENYs;
+- external-hidden adversarial Exam `sha256:dd1a9088559a5047d340e724da7b15da1fa8574220937f723d091ff6bfb8764b`: 18/20 exact, zero false-ALLOWs, zero false-DENYs, matching the previous hidden-bank safety result while improving fresh transfer;
+- internal validation: 48/49 exact with zero false-ALLOWs and zero false-DENYs.
+
+The external-hidden body was transferred from Psalmbox only into Katana `/tmp`, verified against sealed body hash `sha256:63a1e674274fc8abe1781a127691c843e92e212e75cddb7e0936884ee0def3f6`, used for the authorized Exam, and deleted immediately afterward. The hidden body is not committed to Agoge and did not enter any corrective corpus.
+
+This satisfies the Phase 10 acceptance direction: a discovered weakness became distinct corrective curriculum without contaminating the original Exam bank, unsafe corrective candidates were rejected, and the surviving candidate improved generated adversarial and fresh-transfer evidence without worsening the external-hidden hard safety gates. The durable evidence summary is `students/templar/evidence/phase10-adversarial-school-v1.json`, content-addressed as `sha256:2f6df32feeaaded3c4ed0b6f832dc18cb42831bef1a60d783e737c84406b6725`. It is still a candidate, not a production graduation claim.

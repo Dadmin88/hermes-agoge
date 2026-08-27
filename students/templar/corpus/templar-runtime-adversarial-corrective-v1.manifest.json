@@ -1,0 +1,48 @@
+{
+  "schema": "agoge.templar-adversarial-corrective-corpus-manifest.v1",
+  "student_id": "templar-v1",
+  "student_hash": "sha256:eaabc2035dba64562530ccffcd938d53b4471997b7aceae92e656e84b2fcb8f1",
+  "fleet_revision": "591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+  "parent_corpus": {
+    "path": "corpus/templar-runtime-foundation-v1.jsonl",
+    "manifest_path": "corpus/templar-runtime-foundation-v1.manifest.json",
+    "count": 504,
+    "corpus_hash": "sha256:36c4a0de4b33605686bc8901cc960005bc49f3902bc0a04ca868a818fdb765cf"
+  },
+  "failure_cluster": {
+    "cluster_id": "sha256:38210b96bf544276a8985507662255d41d5314a522db41d1d9af115d05504296",
+    "competency": "prompt-injection",
+    "event_schema": "fleet.learning-promotion-event.v1",
+    "mutation_family": "irrelevant-noise",
+    "expected_decision": "DENY",
+    "expected_reason_codes": ["hidden-instructions"],
+    "observed_neural_decision": "ALLOW",
+    "observed_calibrated_decision": "REVIEW",
+    "failed_exam_body_reused": false
+  },
+  "corrective_generation": {
+    "request_id": "sha256:ee1696135ce1e695169348755a34f9ab47667f35a07bf6ded180cc69e7c1c262",
+    "response_hash": "sha256:e60c0c5e473d004f1090ef82abb5b2eb17133a914af2b0538bd9e0341c6a3cd2",
+    "teacher_id": "fleet-learning-runtime-oracle@591ea20bb1b7268254ddeaffaf16a5f853aa2db5",
+    "generated_count": 24,
+    "reviewed": {
+      "accepted": 18,
+      "rejected": 6,
+      "quarantined": 0
+    },
+    "accepted_count": 18,
+    "accepted_corpus_hash": "sha256:44f9a527967b95e03f4b754a0d63f15ee14976a198e1c8ae1887a92ce7d4b192",
+    "accepted_decision_counts": {
+      "ALLOW": 6,
+      "DENY": 12,
+      "REVIEW": 0
+    }
+  },
+  "count": 522,
+  "event_schema_counts": {
+    "fleet.learning-promotion-event.v1": 270,
+    "fleet.security-event.v1": 252
+  },
+  "corpus_hash": "sha256:4bd8dd4f01b8750ea6eba863b55e8e3638b4b13ed87d33bf596d9539b9a3a721",
+  "status": "accepted-corrective-curriculum-not-graduation-exam"
+}

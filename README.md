@@ -55,7 +55,8 @@ Agoge already implements a substantial end-to-end vertical slice:
 17. credential-isolated API inference through short-lived Hermes subprocesses so Agoge never receives or persists provider credentials;
 18. API Exams using the same Templar projection, closed contract, held-out split, false-ALLOW/false-DENY metrics, latency, and usage accounting as local candidates;
 19. a normalized **Runtime Tournament** that compares local and API candidates under one Competency Contract and recommends only a next-stage candidate, never automatic graduation;
-20. an equal-budget **Base Adaptation Tournament** that recomputes Exam metrics, verifies identical training budgets, ranks trainable bases on capability, and exposes a capability/resource Pareto frontier across training time, CUDA footprint, and inference latency.
+20. an equal-budget **Base Adaptation Tournament** that recomputes Exam metrics, verifies identical training budgets, ranks trainable bases on capability, and exposes a capability/resource Pareto frontier across training time, CUDA footprint, and inference latency;
+21. a first **Templar Adversarial School** path with non-training mutation candidates, failure clustering, contamination-safe corrective requests, resume-from-proven-adapter QLoRA, and evidence that a five-step bounded repair can improve adversarial and fresh-transfer behavior without worsening the external-hidden hard safety gates.
 
 ## First mixed-runtime proof
 
@@ -72,7 +73,7 @@ On the same 45-case validation split:
 | Nous Laguna S 2.1 free | 33.3% | 0 | 97.8% | ~2.7 s |
 | Nous Solar Pro4 free | 42.2% | 1 | 88.9% | ~1.5 s |
 
-The tournament therefore recommends the local Qwen adapter for the **next stage only**. It is **not graduated**. Fresh-transfer, adversarial, calibration, and production-integration gates remain open.
+The tournament therefore recommends the local Qwen adapter for the **next stage only**. It is **not graduated**. Since that first tournament, Phase 10 adversarial-school work has produced a bounded resume-from-parent candidate that reaches 1,008/1,008 on the raw generated adversarial school, 34/34 on the unchanged fresh-transfer bank, and 18/20 on the unchanged external-hidden bank with zero false-ALLOWs and zero false-DENYs. Broader release/security and production Fleet regression gates remain open.
 
 The result is evidence-driven, not local-first dogma. For another profile or capability, a free Nous model, paid API model, different downloadable base, or no model change at all may be the correct answer.
 
